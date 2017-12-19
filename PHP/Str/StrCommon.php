@@ -1,6 +1,6 @@
 <?php
 
-namespace rusphp\PHP\Str;
+namespace ItForFree\rusphp\PHP\Str;
 
 
 /**
@@ -172,5 +172,25 @@ class StrCommon {
     public static function up($str)
     {
         return strtoupper($str);
+    }
+    
+    /**
+     * Запишет содержимое файла в строку
+     * 
+     * @param string $filePath  путь к файлу
+     * @return string
+     */
+    public static function fromFile($filePath)
+    {
+        $result = false;
+        
+        $fdata = fopen($filePath, "r");
+        if ($fdata) // если удалось открыть файл
+        { // то читаем данные из него
+            $result = fread($fdata, filesize($filePath));
+            fclose($fdata); //закрываем файл
+        }
+        
+        return $result;
     }
 }
