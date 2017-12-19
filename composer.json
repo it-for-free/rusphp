@@ -1,0 +1,13 @@
+{
+    "name": "it-for-free/rusphp",
+    "type": "library",
+    "description": "PHP fucntions library for different perposis",
+    "keywords": ["php", "ssh", "archive", "memory"],
+    "homepage": "http://fkn.ktu10.com/?q=node/8592",
+    
+    "autoload": {
+        "psr-4": {
+            "ItForFree\\rusphp\\": ""
+        }
+    }
+}
