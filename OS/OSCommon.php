@@ -1,10 +1,10 @@
 <?php
 
-namespace rusphp\OS;
+namespace ItForFree\rusphp\OS;
 
-use rusphp\Common\ArrayLib\Merger as ArrayMerger;
-use rusphp\Common\ArrayLib\ArrCommon as cArray;
-use rusphp\Log\SimpleEchoLog as log;
+use ItForFree\rusphp\PHP\ArrayLib\Merger as ArrayMerger;
+use ItForFree\rusphp\PHP\ArrayLib\ArrCommon as cArray;
+use ItForFree\rusphp\Log\SimpleEchoLog as log;
 
 /**
  * Общие функции связанные, например с определением типа системы

@@ -1,6 +1,6 @@
 <?php
 
-namespace rusphp\PHP\ArrayLib;
+namespace ItForFree\rusphp\PHP\ArrayLib;
 
 
 /**

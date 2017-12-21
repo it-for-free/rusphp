@@ -1,9 +1,9 @@
 <?php
 
-namespace rusphp\PHP\ArrayLib;
+namespace ItForFree\rusphp\PHP\ArrayLib;
 
-use rusphp\PHP\Str\StrCommon as Str;
-use rusphp\Log\SimpleEchoLog as log;
+use ItForFree\rusphp\PHP\Str\StrCommon as Str;
+use ItForFree\rusphp\Log\SimpleEchoLog as log;
 
 /**
  * Фунции для работы с массивами, котроым не нашлось места в специализированых классах с конктреным названием 

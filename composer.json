@@ -5,9 +5,13 @@
     "keywords": ["php", "ssh", "archive", "memory"],
     "homepage": "http://fkn.ktu10.com/?q=node/8592",
     
+    "require": {
+        "ralouphie/mimey": "v1.0.*"        
+    },
+    
     "autoload": {
         "psr-4": {
             "ItForFree\\rusphp\\": ""
         }
-    }
+    } 
 }

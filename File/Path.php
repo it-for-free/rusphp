@@ -1,13 +1,14 @@
 <?php
 
-namespace rusphp\File;
+namespace ItForFree\rusphp\File;
 
-use rusphp\OS\OSCommon as OS;
+use ItForFree\rusphp\OS\OSCommon as OS;
 
 /**
- * для работы с файлами
- *
- * @author 
+ * Для работы с файлами --
+ * их путями и расширениями
+ * 
+ * @author vedro-compota 
  */
 class Path {
     
