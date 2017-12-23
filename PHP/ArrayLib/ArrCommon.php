@@ -174,5 +174,63 @@ class ArrCommon
     {
         return array_values($arr);
     }
+    
+    
+    /**
+     * Проверит если ли в массиве вложенный подмассив
+     * 
+     * @param array $parentArray
+     */
+    public static function hasSubarray($parentArray)
+    {
+        $result = false;
+        foreach ($parentArray as $value) {
+            if (is_array($value)) {
+                $result = true;
+                break;
+            }
+        }
+        
+        return $result;
+    }
+    
+    /**
+     * Вернёт строку (срез) двумерного массива, еслио на есть
+     * 
+     * @param array $sourceArray
+     * @param  int $rowNumber
+     * @return boolean|array
+     */
+    public static function getRowIfIsset($sourceArray, $rowNumber)
+    {
+        $result = false;
+        
+        if (isset($sourceArray[$rowNumber])) {
+           $result = $sourceArray[$rowNumber];
+        }
+        return $result;
+    }
+    
+    /**
+     * Вернёт строку (срез) двумерного массива, еслио на есть
+     * 
+     * @param  mixed $sourceMayBeArray
+     * @param  int $number
+     * @return boolean|array
+     */
+    public static function getRowIfIssetOrItselfForZeroIndex($source, $number)
+    {
+        $result = false;
+        
+        if (isset($sourceArray[$rowNumber])) {
+           $result = $sourceArray[$rowNumber];
+        } else if ($number == 0) {
+            $result = $source;
+        }
+        return $result;
+    }
+    
+    
+    
    
 }
