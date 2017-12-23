@@ -12,47 +12,20 @@ use ItForFree\rusphp\PHP\ArrayLib\ArrCommon  as ArrCommon;
  *  вложенные масивы атк, чтобы его было удобно выводить в html таблицу
  * определить colspan и rowspan для каждого элемента
  * 
+ * Поддерживает одноуровневую вложенность
  */
-class ArrayRebuilder
+class ArrayRebuilderForTwoDemesions extends ArrayRebuilder
 {
-    /**
-     * Исходные данные, которые планируется выводить в виде html-таблицы
-     * 
-     * @var array 
-     */
-    protected $sourceArray = array();
     
     
-    /**
-     * Сюда из needleElementsAndSubarrays будут извелены "имена колонок"
-     * таблицы, которую мы строим (с учётом вложенности).
-     * Ведь по сути этот класс разворачивает массив со вложенностями в думерный (таблицу)
-     * 
-     * @var array
-     */
-    private $columnNames = array();
-    
-    /**
-     * Описывает какие именно поля надо извлечь для таблицы
-     * -- массив с вложенными подмассивами, где перечислены имена ключей, которые следует извлекать из данных.
-     * 
-     * По факту описывает структуры одной сущности, которая будет выведена в виде "основной строки (в которй могут быть вложенности)",
-     * такие "строки" в таблицы могут повторяться  сколько угодно раз,
-     * но структура их описывается именно  этим массивом.
-     * 
-     * @var array
-     */
-    private $needleElementsAndSubarrays = array();
 
-    /**
-     * Массив-результат (построенный с новой структурой для табличного вывода)
-     * 
-     * @var array
-     */
-    private $result = array();
+    
     
     
     public function __construct($sourceArray, $needleElementsAndSubarrays) {
+        
+        parent::__construct($sourceArray, $needleElementsAndSubarrays);
+        
         $this->sourceArray = $sourceArray;
         $this->needleElementsAndSubarrays = $needleElementsAndSubarrays;
         $this->getColumnNames($needleElementsAndSubarrays);
