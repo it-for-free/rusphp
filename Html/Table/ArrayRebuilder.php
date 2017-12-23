@@ -44,6 +44,14 @@ class ArrayRebuilder
      */
     private $columnNames = array();
     
+    
+    /**
+     * Массив-результат (построенный с новой структурой дял табличного вывода)
+     * 
+     * @var array
+     */
+    private $result = array();
+    
     public function __construct($sourceArray, $needleElementsAndSubarrays) {
         $this->sourceArray = $sourceArray;
         $this->needleElementsAndSubarrays = $needleElementsAndSubarrays;
@@ -57,6 +65,8 @@ class ArrayRebuilder
         {
             $result[$key] = $this->rebuildEntity($row);
         }
+        
+        $this->result = $result;
         
         return $result;
     }
