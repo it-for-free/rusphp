@@ -17,18 +17,10 @@ use ItForFree\rusphp\PHP\ArrayLib\ArrCommon  as ArrCommon;
 class ArrayRebuilderForTwoDemesions extends ArrayRebuilder
 {
     
-    
-
-    
-    
-    
     public function __construct($sourceArray, $needleElementsAndSubarrays) {
         
         parent::__construct($sourceArray, $needleElementsAndSubarrays);
         
-        $this->sourceArray = $sourceArray;
-        $this->needleElementsAndSubarrays = $needleElementsAndSubarrays;
-        $this->getColumnNames($needleElementsAndSubarrays);
     }
     
     public function rebulid()
@@ -180,37 +172,6 @@ class ArrayRebuilderForTwoDemesions extends ArrayRebuilder
         return $result;
     }
     
-    private static function getInfoForCellIndependentIfArrayOrNot()
-    {
-    }
-    
-    
-    /**
-     * Вернёт инфромацию о ячейка табилицы в фиксированном формате
-     * 
-     * @param string|int $content  то что будет отображено в ячейке таблицы
-     * @param int $rowspan
-     * @param false $emptyCell
-     * @param int $colspan
-     * @return array   информацию о ячейке в виде:
-     * [
-     *   'content' => '...', // соответствующий контент из $rowSourceArray
-     *   'emptyCell' => false, // true если данных этой ячейки вообще нет в исходном массиве (при выводе в html такие вообще можно пропускать)
-     *   'rowspan'  => 1,  // или реальное значение (из-за неоднородной длины вложенных массиво) 
-     *                    //   -- одна из основных задач этого класса -- рассчитать это число.
-     *   'colspan'  => 1, // просто для возможной совместимости 
-     * ]
-     * 
-     */
-    private static function getInfoForCellStructure($content, $rowspan = 1, $emptyCell = false, $colspan = 1)
-    {
-        return array(
-            'content' => $content,
-            'emptyCell' => $emptyCell, 
-            'rowspan'  => $rowspan,                 
-            'colspan' => $colspan
-        );
-    }
     
     /**
      * Посчитает реальное число колонок с учетом вложенности
