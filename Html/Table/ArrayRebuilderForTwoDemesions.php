@@ -198,17 +198,6 @@ class ArrayRebuilderForTwoDemesions extends ArrayRebuilder
         return $count;
     }
     
-    
-    /**
-     * Извлечёт данные в нужном виде
-     * 
-     * @param array $needleElementsAndSubarrays
-     */
-    public static function getColumnNames($needleElementsAndSubarrays)
-    {
-        $this->columnNames = ArrayStructure::getAllValuesAsOneDemisionalArray($needleElementsAndSubarrays);
-    }
-    
    
 }
 

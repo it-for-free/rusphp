@@ -126,5 +126,16 @@ class ArrayRebuilder
     {
         echo $this->getResultAsHTMLTable();
     }  
+    
+    /**
+     * Извлечёт данные в нужном виде
+     * 
+     * @param array $needleElementsAndSubarrays
+     */
+    public function getColumnNames($needleElementsAndSubarrays)
+    {
+        $this->columnNames = ArrayStructure::getAllValuesAsOneDemisionalArray($needleElementsAndSubarrays);
+    }
+    
 }
 
