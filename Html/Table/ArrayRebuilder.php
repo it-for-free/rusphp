@@ -89,7 +89,8 @@ class ArrayRebuilder
     
     
     /**
-     * Построит для уже известных результатов html таблицу -- можно использовать в отладке
+     * Построит для уже известных результатов html таблицу 
+     * -- можно использовать в отладке
      * 
      * @return string
      */
@@ -98,20 +99,34 @@ class ArrayRebuilder
         $result = $this->result;
         $html = '<table>';
         $columnNames = $this->columnNames;
-         $html .= '<tr>';  
-        foreach ($result as $columnName) {
-            $html .= '<th>';
+         $html .= '<thead><tr>';  
+        foreach ($columnNames as $columnName) {
+            $html .= "<th> $columnName </th>";
         }
-        $html .= '</tr>';
+        $html .= '</tr></thead>';
         
         foreach ($result as $row) {
-            
-        
+            $html .= '<tr>';
+                foreach ($row as $cell) {
+                    $html .= '<td>' . $cell['content'] . '</td>';
+                }
+            $html .= '</tr>';
+           
         }
-        $html = '</table>';
+        $html .= '</table>';
         
         return $html;
     }
+    
+    
+    /**
+     * Выведет в виде html -- для тестирования
+     */
+    public function printResultHtmlTest()
+    {
+        echo $this->getResultAsHTMLTable();
+    }
+    
     
     
    
