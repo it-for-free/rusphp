@@ -5,6 +5,8 @@ namespace ItForFree\rusphp\Html\Table;
 
 use ItForFree\rusphp\PHP\ArrayLib\Structure  as ArrayStructure;
 use ItForFree\rusphp\PHP\ArrayLib\ArrCommon  as ArrCommon;
+use ItForFree\rusphp\Log\SimpleEchoLog as Log;
+
 
 /**
  * 
