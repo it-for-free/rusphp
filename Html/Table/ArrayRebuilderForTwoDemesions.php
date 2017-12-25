@@ -206,7 +206,7 @@ class ArrayRebuilderForTwoDemesions extends ArrayRebuilder
      */
     public static function getColumnNames($needleElementsAndSubarrays)
     {
-        $this->columnNames = ArrayStructure::getAllValuesAsOneDemisionalArray($needleElementsAndSubarraysy);
+        $this->columnNames = ArrayStructure::getAllValuesAsOneDemisionalArray($needleElementsAndSubarrays);
     }
     
    

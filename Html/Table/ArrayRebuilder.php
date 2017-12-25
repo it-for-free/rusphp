@@ -125,10 +125,6 @@ class ArrayRebuilder
     public function printResultHtmlTest()
     {
         echo $this->getResultAsHTMLTable();
-    }
-    
-    
-    
-   
+    }  
 }
 
