@@ -5,6 +5,7 @@ namespace ItForFree\rusphp\Html\Table;
 
 use ItForFree\rusphp\PHP\ArrayLib\Structure  as ArrayStructure;
 use ItForFree\rusphp\PHP\ArrayLib\ArrCommon  as ArrCommon;
+use ItForFree\rusphp\PHP\ArrayLib\Slice as Slice;
 use ItForFree\rusphp\Log\SimpleEchoLog as Log;
 
 
@@ -28,9 +29,9 @@ class ArrayRebuilderForTwoDemesions extends ArrayRebuilder
     public function rebulid()
     {
         $result = array();
-        foreach ($this->sourceArray as $key => $row)
+        foreach ($this->sourceArray as $key => $entity)
         {
-            $result[$key] = $this->rebuildEntity($row);
+            $result = array_merge($result, $this->rebuildEntity($entity));
         }
         
         $this->result = $result;
@@ -78,14 +79,18 @@ class ArrayRebuilderForTwoDemesions extends ArrayRebuilder
         
         $result = array();
         $inEntityTableRowNumber = 0;
-        
+       // Log::pre($twoDemArr);
+        //Log::me('до цикла');
         foreach ($twoDemArr[$maxLenghtName] as $subArrayKey => $value) {
             
-            $sliceValues = $this->getValueFromSlice($twoDemArr, $inEntityTableRowNumber); 
+            $sliceValues = $this->getValueFromSlice($twoDemArr, $inEntityTableRowNumber);
             $result = array_merge($result, $sliceValues);
+           // Log::pre($sliceValues, "Срез № $inEntityTableRowNumber " . count($sliceValues[0]));
+            
     
             $inEntityTableRowNumber++;
         }
+       // Log::me('после цикла');
         
         return $result;
     }
@@ -109,54 +114,81 @@ class ArrayRebuilderForTwoDemesions extends ArrayRebuilder
         
         //print_r($twoDemArr);
         $needleElementsKeyNames = $this->needleElementsAndSubarrays;
-       
-        $result = array();
+        
+       // Log::me('',"-------начинаем выбирать знчения из среза---------------");
+        $result[0] = array();
         $currentCoumnNumber = 0;
+        //print_r($result[0]);
         foreach ($needleElementsKeyNames as  $needleKeyName => $needle) {
            
             $needle = $this->needleElementsAndSubarrays[$needleKeyName];
         
+            //Log::me('Извлекаем для среза значение эламента:'); Log::echoFirstOrSecondIfFirstIsArray($needle, $needleKeyName);
             if (is_array($needle)) {
                 
-                $slice = ArrCommon::getRowIfIsset($twoDemArr[$needleKeyName], $inEntityTableRowNumber);
-                if ($slice) {
+               //Log::me('--------это массив-----------');
+                 
+                $slice = Slice::getRow($twoDemArr[$needleKeyName], $inEntityTableRowNumber);
+                if ($slice !== false) {
                     foreach ($needle as $needleSubFiledName) { // срезаем слой в подмассива
+                        //Log::me("------------------поле масива--$needleSubFiledName-----------");
+                       // Log::me('-------------------------Номер колонки: ' . $currentCoumnNumber 
+                              //  . ' значение: ' . $twoDemArr[$needleKeyName][$inEntityTableRowNumber][$needleSubFiledName]);
                         $result[0][$currentCoumnNumber] = 
-                                $twoDemArr[$needleKeyName][$inEntityTableRowNumber][$needleSubFiledName];
+                                self::getCell($twoDemArr[$needleKeyName][$inEntityTableRowNumber][$needleSubFiledName]);
+                       // print_r($result[0]);
                         $currentCoumnNumber++;
                     }
 
                 } else { // если такого среза нет
+                   // Log::me('--------пустой массив-----------');
                     $emptyCount = count($needle);
                     $emptyColumns = self::getEmptyCells($emptyCount);// заполняем нулями
                     $result[0] =  array_merge($result[0], $emptyColumns); // корректно ли объединение?
                     $currentCoumnNumber += $emptyCount;
+                   // print_r($result[0]);
                 }
 
             } else {
-                $result[0][$currentCoumnNumber] = $twoDemArr[$needle];
+                //Log::me('Номер колонки перед присваиванием: ' . $currentCoumnNumber);
+                $result[0][$currentCoumnNumber] = self::getCellFromScalar(
+                        $twoDemArr[$needle], $inEntityTableRowNumber, 
+                        $currentCoumnNumber);
+                $currentCoumnNumber++;
+                //print_r($result[0]);
             }
         }
 
         return $result;    
     }
     
+ 
+    
+   
     /**
-     * Сгенерирует и вернёт массив пустых ячеек
+     * Вернёт значение ячейки, возможно, как пустое
      * 
-     * @param type $count
+     * @param mixed $sourceScalar       значение сущности (не подмассив) для которого надо получить ячейку с четом номер среза
+     * @param int $sliceIndex           номер среза (по сути номер строки html таблицы данной сущности)
      * @return type
      */
-    private static function getEmptyCells($count)
+    protected function getCellFromScalar($sourceScalar, $sliceIndex)
     {
-        $result = array();
-        for ($i = 0; $i <= ($count-1); $i++) {
-            $result[] = self::getInfoForCellStructure('', 1, true, 1);
+        
+       // Log::me('это не массив, значение: ' . $sourceScalar);
+        
+        $result = self::getEmptyCell();
+        $slice = Slice::getRow($sourceScalar, $sliceIndex);
+        if ($slice !== false) {
+           $result = self::getCell($sourceScalar);
+        } else {
+           $result = self::getEmptyCell(); 
         }
         
         return $result;
     }
-        
+    
+
     /**
      * Извлекаем значение для строки из обычного массива --
      * тут объект будет представлен одной тсоркой таблицы, так ка нет вложенных данных
@@ -170,7 +202,7 @@ class ArrayRebuilderForTwoDemesions extends ArrayRebuilder
         $columnNames = $this->columnNames; 
         foreach ($columnNames as $key => $colName)
         {
-            $result[$key] =  self::getInfoForCellStructure($oneDemArr[$colName]);  // извлекаем только нужное
+            $result[$key] =  self::getCell($oneDemArr[$colName]);  // извлекаем только нужное
         }
         
         return $result;

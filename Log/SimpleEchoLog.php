@@ -1,6 +1,6 @@
 <?php
 
-namespace rusphp\Log;
+namespace ItForFree\rusphp\Log;
 
 /**
  * Простое логгирование "а браузер"
@@ -87,6 +87,22 @@ class SimpleEchoLog
     public static function hr()
     {
         echo '<hr>';
+    }
+    
+    
+    /**
+     *  Распечатывает первое, если оно не массив, или второе в обратном случае
+     * 
+     * @param mixed $firstValue
+     * @param mixed $secondValue
+     */
+    public static function echoFirstOrSecondIfFirstIsArray($firstValue, $secondValue) 
+    {
+        if (is_array($firstValue)) {
+           echo ($secondValue);
+        } else {
+           echo ($firstValue); 
+        }
     }
     
 }

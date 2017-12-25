@@ -5,6 +5,7 @@ namespace ItForFree\rusphp\Html\Table;
 
 use ItForFree\rusphp\PHP\ArrayLib\Structure  as ArrayStructure;
 use ItForFree\rusphp\PHP\ArrayLib\ArrCommon  as ArrCommon;
+use ItForFree\rusphp\Log\SimpleEchoLog as Log;
 
 /**
  * 
@@ -76,7 +77,7 @@ class ArrayRebuilder
      * ]
      * 
      */
-    protected static function getInfoForCellStructure($content, $rowspan = 1, $emptyCell = false, $colspan = 1)
+    protected static function getCell($content, $rowspan = 1, $emptyCell = false, $colspan = 1)
     {
         return array(
             'content' => $content,
@@ -84,9 +85,7 @@ class ArrayRebuilder
             'rowspan'  => $rowspan,                 
             'colspan' => $colspan
         );
-    }
-    
-    
+    }  
     
     /**
      * Построит для уже известных результатов html таблицу 
@@ -97,7 +96,7 @@ class ArrayRebuilder
     protected function getResultAsHTMLTable()
     {
         $result = $this->result;
-        $html = '<table>';
+        $html = '<table border=1>';
         $columnNames = $this->columnNames;
          $html .= '<thead><tr>';  
         foreach ($columnNames as $columnName) {
@@ -108,6 +107,7 @@ class ArrayRebuilder
         foreach ($result as $row) {
             $html .= '<tr>';
                 foreach ($row as $cell) {
+                    //Log::pre($cell, 'ячейка');
                     $html .= '<td>' . $cell['content'] . '</td>';
                 }
             $html .= '</tr>';
@@ -137,5 +137,41 @@ class ArrayRebuilder
         $this->columnNames = ArrayStructure::getAllValuesAsOneDemisionalArray($needleElementsAndSubarrays);
     }
     
+    /**
+     * Сгенерирует и вернёт массив пустых ячеек
+     * 
+     * @param type $count
+     * @return type
+     */
+    protected static function getEmptyCells($count)
+    {
+        $result = array();
+        for ($i = 0; $i <= ($count-1); $i++) {
+            $result[] = self::getEmptyCell();
+        }
+        
+        return $result;
+    }
+    
+    
+    /**
+     * Вернёт данные для пустой ячейки
+     * 
+     * @return array  массив её полей
+     */
+    protected static function getEmptyCell()
+    {
+        return self::getCell('', 1, true, 1);
+    }
+    
+    
+    
+    public function printSource()
+    {
+        Log::pre($this->sourceArray, 'Входящий массив:');
+        Log::pre($this->result, 'Массив-результат:');
+    }
+    
+
 }
 
