@@ -16,6 +16,9 @@ use ItForFree\rusphp\Log\SimpleEchoLog as Log;
  */
 class ArrayRebuilder
 {
+    
+    use \ItForFree\rusphp\Html\Table\traits\ArrayRebuilderResultInHtmlTest;
+    
     /**
      * Исходные данные, которые планируется выводить в виде html-таблицы
      * 
@@ -86,47 +89,7 @@ class ArrayRebuilder
             'colspan' => $colspan
         );
     }  
-    
-    /**
-     * Построит для уже известных результатов html таблицу 
-     * -- можно использовать в отладке
-     * 
-     * @return string
-     */
-    protected function getResultAsHTMLTable()
-    {
-        $result = $this->result;
-        $html = '<table border=1>';
-        $columnNames = $this->columnNames;
-         $html .= '<thead><tr>';  
-        foreach ($columnNames as $columnName) {
-            $html .= "<th> $columnName </th>";
-        }
-        $html .= '</tr></thead>';
-        
-        foreach ($result as $row) {
-            $html .= '<tr>';
-                foreach ($row as $cell) {
-                    //Log::pre($cell, 'ячейка');
-                    $html .= '<td>' . $cell['content'] . '</td>';
-                }
-            $html .= '</tr>';
-           
-        }
-        $html .= '</table>';
-        
-        return $html;
-    }
-    
-    
-    /**
-     * Выведет в виде html -- для тестирования
-     */
-    public function printResultHtmlTest()
-    {
-        echo $this->getResultAsHTMLTable();
-    }  
-    
+
     /**
      * Извлечёт данные в нужном виде
      * 
@@ -165,12 +128,6 @@ class ArrayRebuilder
     }
     
     
-    
-    public function printSource()
-    {
-        Log::pre($this->sourceArray, 'Входящий массив:');
-        Log::pre($this->result, 'Массив-результат:');
-    }
     
 
 }
