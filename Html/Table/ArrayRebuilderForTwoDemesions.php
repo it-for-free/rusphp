@@ -53,9 +53,9 @@ class ArrayRebuilderForTwoDemesions extends ArrayRebuilder
     {
         $result  = array();
         if (ArrCommon::hasSubarray($entitySourceArray)) {
-            $result = self::getEntityResultForTwoDemisionalArray($rowSourceArray);
+            $result = $this->getEntityResultForTwoDemisionalArray($entitySourceArray);
         } else {
-            $result[0] = getEntityResultForOneDemisinalArray($rowSourceArray); // только одна строка
+            $result[0] = $this->getEntityResultForOneDemisinalArray($entitySourceArray); // только одна строка
         }
         
         return $result;
@@ -70,7 +70,7 @@ class ArrayRebuilderForTwoDemesions extends ArrayRebuilder
      * 
      * @param type $twoDemArr
      */
-    private static function getEntityResultForTwoDemisionalArray($twoDemArr)
+    private function getEntityResultForTwoDemisionalArray($twoDemArr)
     {
         $maxLenghtName = ArrayStructure::getKeyOfLogestSubarray($twoDemArr);
         
@@ -79,7 +79,7 @@ class ArrayRebuilderForTwoDemesions extends ArrayRebuilder
         
         foreach ($twoDemArr[$maxLenghtName] as $subArrayKey => $value) {
             
-            $sliceValues = self::getValueFromSlice($twoDemArr, $inEntityTableRowNumber); 
+            $sliceValues = $this->getValueFromSlice($twoDemArr, $inEntityTableRowNumber); 
             $result = array_merge($result, $sliceValues);
     
             $inEntityTableRowNumber++;
@@ -102,8 +102,10 @@ class ArrayRebuilderForTwoDemesions extends ArrayRebuilder
      * 
      *  @return array   массив "строк таблицы" (в каждой подмассив ячеек), для данной сущности
      */
-    private static function getValueFromSlice($twoDemArr, $inEntityTableRowNumber)
+    private function getValueFromSlice($twoDemArr, $inEntityTableRowNumber)
     {
+        
+        //print_r($twoDemArr);
         $needleElementsKeyNames = $this->needleElementsAndSubarrays;
        
         $result = array();
@@ -113,7 +115,7 @@ class ArrayRebuilderForTwoDemesions extends ArrayRebuilder
             $needle = $this->needleElementsAndSubarrays[$needleKeyName];
         
             if (is_array($needle)) {
-
+                
                 $slice = ArrCommon::getRowIfIsset($twoDemArr[$needleKeyName], $inEntityTableRowNumber);
                 if ($slice) {
                     foreach ($needle as $needleSubFiledName) { // срезаем слой в подмассива
@@ -160,7 +162,7 @@ class ArrayRebuilderForTwoDemesions extends ArrayRebuilder
      * 
      * @param type $oneDemArr  
      */
-    private static function getEntityResultForOneDemisinalArray($oneDemArr)
+    private  function getEntityResultForOneDemisinalArray($oneDemArr)
     {
         $result = array();
         $columnNames = $this->columnNames; 

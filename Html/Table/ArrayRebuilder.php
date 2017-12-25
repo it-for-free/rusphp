@@ -76,7 +76,7 @@ class ArrayRebuilder
      * ]
      * 
      */
-    private static function getInfoForCellStructure($content, $rowspan = 1, $emptyCell = false, $colspan = 1)
+    protected static function getInfoForCellStructure($content, $rowspan = 1, $emptyCell = false, $colspan = 1)
     {
         return array(
             'content' => $content,
