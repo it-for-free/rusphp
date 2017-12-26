@@ -50,6 +50,7 @@ class ArrayRebuilderForTwoDemesions extends ArrayRebuilder
         }
         
         if ($countRowColSpans) {
+           // Log::me('считаем спаны');
            $entityRows = self::countSpans($entityRows);
         }
 

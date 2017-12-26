@@ -44,13 +44,18 @@ trait RowColSpanCounter
     {
         $columnCount = count($entityRows[0]);
         $rowCount = count($entityRows);
+       // Log::me("Чило колонок $columnCount");
         
-        for ($i = 0; $i++; $i <= ($columnCount - 1)) { // движемся по колонкам
+        for ($i = 0;  $i <= ($columnCount - 1); $i++) { // движемся по колонкам
+
             $columnNumber = $i;
+           // Log::me("-----Колонка $columnNumber");
+            
             $column = array_column($entityRows, $i);
             $revercedOrderColumnElements = array_reverse($column);
             $rowspanCount = 1;
             foreach ($revercedOrderColumnElements as $key => $cell) {
+                //Log::me("объедиение $rowspanCount");
                 if ($cell['emptyCell']) {
                     $rowspanCount++;
                 } else {
@@ -61,10 +66,10 @@ trait RowColSpanCounter
             }
         }
  
+        //Log::pre($entityRows, 'после расчета спанов');
         return $entityRows;    
     }
     
     
  
 }
-

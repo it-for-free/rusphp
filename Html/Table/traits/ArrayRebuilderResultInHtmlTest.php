@@ -46,7 +46,7 @@ trait ArrayRebuilderResultInHtmlTest
     }
     
     /**
-     * Вернёт тэг td html табилцы с нужными атрибутами и содержимым для данной ячейки
+     * Вернёт тэг td html таблицы с нужными атрибутами и содержимым для данной ячейки
      * 
      * @param array  $cell
      * @param boolean $useRowColSpans
@@ -56,12 +56,13 @@ trait ArrayRebuilderResultInHtmlTest
         $content = $this->getCellContent($cell);
         
         $result  = '';
-        if ($useRowColSpans ) {
+        if ($useRowColSpans && !$cell['emptyCell'] ) {
             $result = '<td rowspan=' . $cell['rowspan'] 
                     . ' colspan=' . $cell['colspan'] . '>' 
                     . $content . '</td>';
-        } else {
+        } else if (!$useRowColSpans){
             $result = '<td>' . $this->getCellContent($cell) . '</td>'; 
+             
         }
         
         return $result;

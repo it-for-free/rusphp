@@ -16,11 +16,11 @@ class Reverce
      *
      * @param int $afterReverceIndex              текущий порядковый номер элемента
      * @param int $inArrayElementsCount           число элементов в массиве  
-     * @param int $startArrayIndexBeforeReverse   начальный индекс (по умолчанию = 0) 
+     * @param int $startArrayIndexBeforeReverse   начальный индекс (по умолчанию = 0) -- подразумевается, что он одинаковый в обоих массивах 
      * @return int
      */
     public static function getIndexBefore($afterReverceIndex, $inArrayElementsCount, $startArrayIndexBeforeReverse = 0)
     {     
-       return ($inArrayElementsCount - $afterReverceIndex + $startArrayIndexBeforeReverse);
+       return (($inArrayElementsCount - 1)- $afterReverceIndex + $startArrayIndexBeforeReverse);
     }
 }
