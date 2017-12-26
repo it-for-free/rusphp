@@ -20,7 +20,7 @@ trait ArrayRebuilderResultInHtmlTest
      * 
      * @return string
      */
-    protected function getResultAsHTMLTable()
+    protected function getResultAsHTMLTable($useRowColSpans = false)
     {
         $result = $this->result;
         $html = '<table border=1>';
@@ -35,7 +35,7 @@ trait ArrayRebuilderResultInHtmlTest
             $html .= '<tr>';
                 foreach ($row as $cell) {
                     //Log::pre($cell, 'ячейка');
-                    $html .= '<td>' . $this->getCellContent($cell) . '</td>';
+                    $html .= $this->td($cell, $useRowColSpans);
                 }
             $html .= '</tr>';
            
@@ -43,6 +43,28 @@ trait ArrayRebuilderResultInHtmlTest
         $html .= '</table>';
         
         return $html;
+    }
+    
+    /**
+     * Вернёт тэг td html табилцы с нужными атрибутами и содержимым для данной ячейки
+     * 
+     * @param array  $cell
+     * @param boolean $useRowColSpans
+     * @return string
+     */
+    protected function td($cell, $useRowColSpans = false) {
+        $content = $this->getCellContent($cell);
+        
+        $result  = '';
+        if ($useRowColSpans ) {
+            $result = '<td rowspan=' . $cell['rowspan'] 
+                    . ' colspan=' . $cell['colspan'] . '>' 
+                    . $content . '</td>';
+        } else {
+            $result = '<td>' . $this->getCellContent($cell) . '</td>'; 
+        }
+        
+        return $result;
     }
     
     /**
@@ -69,6 +91,8 @@ trait ArrayRebuilderResultInHtmlTest
     public function printResultHtmlTest()
     {
         echo $this->getResultAsHTMLTable();
+        echo('<br>-----Withrowspans--------<br>');
+        echo $this->getResultAsHTMLTable(true);
     }  
     
     
@@ -80,7 +104,7 @@ trait ArrayRebuilderResultInHtmlTest
     public function printSource()
     {
         Log::pre($this->sourceArray, 'Входящий массив');
-        Log::pre($this->result, 'Результат без col/rowspan-ов');
+        Log::pre($this->result, 'Результат');
     }
     
 
