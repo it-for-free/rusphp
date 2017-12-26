@@ -35,7 +35,7 @@ trait ArrayRebuilderResultInHtmlTest
             $html .= '<tr>';
                 foreach ($row as $cell) {
                     //Log::pre($cell, 'ячейка');
-                    $html .= '<td>' . $cell['content'] . '</td>';
+                    $html .= '<td>' . $this->getCellContent($cell) . '</td>';
                 }
             $html .= '</tr>';
            
@@ -43,6 +43,16 @@ trait ArrayRebuilderResultInHtmlTest
         $html .= '</table>';
         
         return $html;
+    }
+    
+    protected function getCellContent($cell)
+    {
+        $result = '[[empty]]';
+        if (!$cell['emptyCell']) {
+           $result = $cell['content'];
+        }
+        
+        return $result;
     }
     
     
