@@ -14,7 +14,7 @@ use ItForFree\rusphp\Log\SimpleEchoLog as Log;
  * определить colspan и rowspan для каждого элемента
  * 
  */
-class ArrayRebuilder
+abstract class ArrayRebuilder
 {
     
     use \ItForFree\rusphp\Html\Table\traits\ArrayRebuilderResultInHtmlTest;
