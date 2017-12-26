@@ -45,9 +45,16 @@ trait ArrayRebuilderResultInHtmlTest
         return $html;
     }
     
+    /**
+     * Можно переопределить вывод контента для пустых ячеек
+     * 
+     * 
+     * @param array $cell
+     * @return array
+     */
     protected function getCellContent($cell)
     {
-        $result = '[[empty]]';
+        $result = ''; // [[empty]]
         if (!$cell['emptyCell']) {
            $result = $cell['content'];
         }
@@ -66,10 +73,14 @@ trait ArrayRebuilderResultInHtmlTest
     
     
     
+    /**
+     * Распечатка для отладки входящих данных и некоторых результатов 
+     * (в т.ч. промежуточных)
+     */
     public function printSource()
     {
-        Log::pre($this->sourceArray, 'Входящий массив:');
-        Log::pre($this->result, 'Массив-результат:');
+        Log::pre($this->sourceArray, 'Входящий массив');
+        Log::pre($this->result, 'Результат без col/rowspan-ов');
     }
     
 

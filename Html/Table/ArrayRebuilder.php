@@ -18,6 +18,7 @@ class ArrayRebuilder
 {
     
     use \ItForFree\rusphp\Html\Table\traits\ArrayRebuilderResultInHtmlTest;
+    use \ItForFree\rusphp\Html\Table\traits\RowColSpanCounter;
     
     /**
      * Исходные данные, которые планируется выводить в виде html-таблицы
@@ -49,6 +50,13 @@ class ArrayRebuilder
     protected $needleElementsAndSubarrays = array();
 
     /**
+     * Результат для рассчета colspan и rowspan каждой ячейки-
+     * 
+     * @var array
+     */
+    protected $resultWithoutRowColSpans = array();
+    
+    /**
      * Массив-результат (построенный с новой структурой для табличного вывода)
      * 
      * @var array
@@ -63,7 +71,26 @@ class ArrayRebuilder
     }
     
     
-        /**
+    /**
+     * Главный вызываемый метод 
+     * 
+     * @return array  массив в виде удобным для вывод в html
+     */
+    public function rebulid()
+    {
+        $result = array();
+        foreach ($this->sourceArray as $key => $entity)
+        {
+            $result = array_merge($result, $this->rebuildEntity($entity));
+        }
+        
+        $this->result = $result;
+        
+        return $result;
+    }
+    
+    
+    /**
      * Вернёт инфромацию о ячейка табилицы в фиксированном формате
      * 
      * @param string|int $content  то что будет отображено в ячейке таблицы

@@ -26,18 +26,6 @@ class ArrayRebuilderForTwoDemesions extends ArrayRebuilder
         
     }
     
-    public function rebulid()
-    {
-        $result = array();
-        foreach ($this->sourceArray as $key => $entity)
-        {
-            $result = array_merge($result, $this->rebuildEntity($entity));
-        }
-        
-        $this->result = $result;
-        
-        return $result;
-    }
     
     /**
      * Вернёт данные для конкретной сущности (с учетом вложенности разместив её в несокльих строках таблицы)
@@ -52,16 +40,21 @@ class ArrayRebuilderForTwoDemesions extends ArrayRebuilder
      * 
      * @return array    -- массив, который можно назвать строками html таблицы, но для одной сущности.
      */
-    public function rebuildEntity($entitySourceArray)
+    protected function rebuildEntity($entitySourceArray, $countRowColSpans = true)
     {
-        $result  = array();
+        $entityRows = array();
         if (ArrCommon::hasSubarray($entitySourceArray)) {
-            $result = $this->getEntityResultForTwoDemisionalArray($entitySourceArray);
+            $entityRows = $this->getEntityResultForTwoDemisionalArray($entitySourceArray);
         } else {
-            $result[0] = $this->getEntityResultForOneDemisinalArray($entitySourceArray); // только одна строка
+            $entityRows = $this->getEntityResultForOneDemisinalArray($entitySourceArray); // только одна строка
         }
         
-        return $result;
+        if ($countRowColSpans) {
+           $entityRows = self::countSpans($entityRows);
+        }
+
+        
+        return $entityRows;
     }
     
     
@@ -198,14 +191,14 @@ class ArrayRebuilderForTwoDemesions extends ArrayRebuilder
      */
     private  function getEntityResultForOneDemisinalArray($oneDemArr)
     {
-        $result = array();
+        $result[0] = array();
         $columnNames = $this->columnNames; 
         foreach ($columnNames as $key => $colName)
         {
-            $result[$key] =  self::getCell($oneDemArr[$colName]);  // извлекаем только нужное
+            $result[0][$key] =  self::getCell($oneDemArr[$colName]);  // извлекаем только нужное
         }
         
-        return $result;
+        return $result ;
     }
     
     
