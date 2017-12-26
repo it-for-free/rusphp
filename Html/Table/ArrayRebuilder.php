@@ -63,6 +63,12 @@ class ArrayRebuilder
      */
     protected $result = array();
     
+    /**
+     * Ключевая функция, построит "массив строк html таблицы" 
+     * (каждый элемент -- массив, описывающий ячейки)
+     * 
+     */
+    abstract protected function rebuildEntity($entityData);
     
     public function __construct($sourceArray, $needleElementsAndSubarrays) {
         $this->sourceArray = $sourceArray;
@@ -88,6 +94,7 @@ class ArrayRebuilder
         
         return $result;
     }
+    
     
     
     /**
