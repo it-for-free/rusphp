@@ -2,16 +2,25 @@
     "name": "it-for-free/rusphp",
     "type": "library",
     "description": "PHP fucntions library for different perposis",
-    "keywords": ["php", "ssh", "archive", "memory"],
+    "keywords": ["php", "ssh", "archive", "memory", "html", "table"],
     "homepage": "http://fkn.ktu10.com/?q=node/8592",
     
     "require": {
-        "ralouphie/mimey": "v1.0.*"        
+        "php": ">=5.3.0",
+        "ralouphie/mimey": "v1.0.*",
+        "it-for-free/php-new-to-old": "dev-master"
     },
     
     "autoload": {
         "psr-4": {
             "ItForFree\\rusphp\\": ""
         }
-    } 
+    },
+    
+    "repositories": [
+        {
+           "type": "vcs",
+           "url": "https://github.com/it-for-free/php-new-to-old"
+        }
+    ]
 }
