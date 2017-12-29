@@ -4,6 +4,7 @@
     "description": "PHP fucntions library for different perposis",
     "keywords": ["php", "ssh", "archive", "memory", "html", "table"],
     "homepage": "http://fkn.ktu10.com/?q=node/8592",
+    "license": "MIT",
     
     "require": {
         "php": ">=5.3.0",
