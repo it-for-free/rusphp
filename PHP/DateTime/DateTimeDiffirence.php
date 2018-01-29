@@ -1,9 +1,7 @@
 <?php
 
-namespace rusphp\PHP\DateTime;
+namespace ItForFree\rusphp\PHP\DateTime;
 
-use rusphp\PHP\Str\StrCommon as Str;
-use rusphp\Log\SimpleEchoLog as log;
 
 /**
  * Для измерения дистанции между двумя датами
