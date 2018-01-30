@@ -3,11 +3,18 @@
 namespace ItForFree\rusphp\Log;
 
 /**
- * Простое логгирование "а браузер"
+ * Простое логгирование "а браузер" или в файл -- 
  */
 class SimpleEchoLog
 {
     public static $log = true;
+    
+    /**
+     * Вывод нужен в формате html или текстового файла?
+     * @var boolean 
+     */
+    public static $inBrowserForHtml = true;
+    
     
     /**
      * пусть относительно корня сайта
@@ -17,6 +24,56 @@ class SimpleEchoLog
     public static $logInFileEnabled = false;
     
     
+    /**
+     * Вернёт комбинцию для переноса строки в зависимосмти от значения 
+     * self::$inBrowserForHtml
+     * 
+     * @return string
+     */
+    protected static function newLineSymbol()
+    {
+        $result = '\n';
+        if (static::$inBrowserForHtml) {
+            $result = '<br>';
+        }
+        
+        return $result;
+    }
+    
+    /**
+     * Вернёт значение тэга для "оригинального"
+     * вывода текста, в зависимости от формата вывода данного 
+     * класса логирования
+     * 
+     * @return string
+     */
+    protected static function preStartSymbol()
+    {
+        $result = '';
+        if (static::$inBrowserForHtml) {
+            $result = '<pre>';
+        }
+        
+        return $result;
+    }
+    
+    
+        /**
+     * Вернёт значение тэга для "оригинального"
+     * вывода текста, в зависимости от формата вывода данного 
+     * класса логирования
+     * 
+     * @return string
+     */
+    protected static function preStartEnd()
+    {
+        $result = '';
+        if (static::$inBrowserForHtml) {
+            $result = '</pre>';
+        }
+        
+        return $result;
+    }
 
 
     /**
@@ -27,7 +84,7 @@ class SimpleEchoLog
     public static function me($var, $comment = '') {
         
         if (self::$log) {
-            echo "<br>$comment" . $var . '<br>';
+            echo  self::newLineSymbol() . " $comment " . $var .  self::newLineSymbol();
         }
         
         if (self::$logInFileEnabled) {
@@ -65,6 +122,8 @@ class SimpleEchoLog
     }
     
     
+    
+    
     /**
      * Вывод сообщения, или возврат строки с окруженирем тэгами
      * 
@@ -77,9 +136,10 @@ class SimpleEchoLog
         
         if (self::$log) {    
             if ($returnOnly) {
-                return "$comment:<pre>" . print_r($var, true) . '</pre>';
+                return "$comment:" . self::preStartSymbol() . print_r($var, true) . self::preEndSymbol();
             } else {
-                echo "<br>$comment:<pre>" . print_r($var, true) . '</pre>';
+                echo  self::newLineSymbol() 
+                        . " $comment:" . self::preStartSymbol() . print_r($var, true) . self::preStartSymbol();
             }
         }
     }
