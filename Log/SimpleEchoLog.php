@@ -77,14 +77,16 @@ class SimpleEchoLog
 
 
     /**
-     * Простой вывод в браузер
+     * Простой вывод зачения 
+     * (обёртка над echo())
      * 
      * @param mixed $var
+     * @param string $comment
      */
     public static function me($var, $comment = '') {
         
         if (self::$log) {
-            echo  self::newLineSymbol() . " $comment " . $var .  self::newLineSymbol();
+            echo  self::newLineSymbol() . " $comment: " . $var .  self::newLineSymbol();
         }
         
         if (self::$logInFileEnabled) {
