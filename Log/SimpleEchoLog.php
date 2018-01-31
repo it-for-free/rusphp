@@ -79,12 +79,12 @@ class SimpleEchoLog extends SimpleLog
      * Простой вывод зачения 
      * (обёртка над echo())
      * 
-     * @param mixed $var
-     * @param string $comment
+     * @param mixed $var         то что рапечатываем 
+     * @param string $comment    необязательный комментарий
      */
     public static function me($var, $comment = '') {
         
-        $comment = $comment . ':';
+        $comment = $comment ? ($comment .= ':') : '';
         
         if (self::$log) {
             echo  self::newLineSymbol() . $comment . $var .  self::newLineSymbol();
@@ -129,13 +129,13 @@ class SimpleEchoLog extends SimpleLog
      * Вывод сообщения, или возврат строки с окруженирем тэгами
      * 
      * @param mixed  $var        логгируемый объект или переменная
-     * @param string $comment    комментарий
+     * @param string $comment    необязательный комментарий 
      * @param bool $returnOnly   возвращать (true) или просто выводить на экран
      * @return string
      */
-    public static function pre($var, $comment = '--', $returnOnly = false) {
+    public static function pre($var, $comment = '', $returnOnly = false) {
         
-        $comment = $comment . ':';
+        $comment = $comment ? ($comment .= ':') : '';
         if (self::$log) {    
             if ($returnOnly) {
                 return $comment . self::preStartSymbol() . print_r($var, true) . self::preEndSymbol();
@@ -149,6 +149,9 @@ class SimpleEchoLog extends SimpleLog
         }
     }
     
+    /**
+     * Печатает тэг hr
+     */
     public static function hr()
     {
         echo '<hr>';
