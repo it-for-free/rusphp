@@ -31,7 +31,7 @@ class SimpleEchoLog extends SimpleLog
      */
     protected static function newLineSymbol()
     {
-        $result = '\n';
+        $result = "\n";
         if (static::$inBrowserForHtml) {
             $result = '<br>';
         }
@@ -84,8 +84,10 @@ class SimpleEchoLog extends SimpleLog
      */
     public static function me($var, $comment = '') {
         
+        $comment = $comment . ':';
+        
         if (self::$log) {
-            echo  self::newLineSymbol() . " $comment: " . $var .  self::newLineSymbol();
+            echo  self::newLineSymbol() . $comment . $var .  self::newLineSymbol();
         }
         
         if (self::$logInFileEnabled) {
