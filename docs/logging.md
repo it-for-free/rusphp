@@ -16,12 +16,12 @@ use /var/www/rusphp/Log/SimpleEchoLog.php as Log;
  например:
 
 * Обёртка над  echo:
-```
+```php
 Log::me($value, 'первое значение');
 Log::med($value, 'первое значение'); // после вывода вызовет die()
 ```
 * Обёртка над print:
-```
+```php
 Log::pre($value, 'первое значение');
 Log::pred($value, 'первое значение'); // после вывода вызовет die()
 ```
