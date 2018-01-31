@@ -4,6 +4,7 @@ namespace ItForFree\rusphp\Log;
 
 /**
  * Простое логгирование "а браузер" или в консоль 
+ * (отладка, логгирование, поиск ошибок)
  */
 class SimpleEchoLog extends SimpleLog
 {
@@ -82,7 +83,8 @@ class SimpleEchoLog extends SimpleLog
      * @param mixed $var         то что рапечатываем 
      * @param string $comment    необязательный комментарий
      */
-    public static function me($var, $comment = '') {
+    public static function me($var, $comment = '') 
+    {
         
         $comment = $comment ? ($comment .= ':') : '';
         
@@ -93,6 +95,19 @@ class SimpleEchoLog extends SimpleLog
         if (self::$logInFileEnabled) {
            self::logInFile($var);  
         } 
+    }
+    
+    /**
+     * Обёртка над
+     *  ::me($var, $comment) + die() 
+     * 
+     * @param mixed $var         то что рапечатываем 
+     * @param string $comment    необязательный комментарий
+     */
+    public static function med($var, $comment = '')
+    {
+        self::me($var, $comment);
+        die();
     }
     
     /**
@@ -126,7 +141,7 @@ class SimpleEchoLog extends SimpleLog
     }
 
     /**
-     * Вывод сообщения, или возврат строки с окруженирем тэгами
+     * Вывод значения через print_r, или возврат строки с окружением тэгами <pre>
      * 
      * @param mixed  $var        логгируемый объект или переменная
      * @param string $comment    необязательный комментарий 
@@ -148,6 +163,22 @@ class SimpleEchoLog extends SimpleLog
             }
         }
     }
+    
+    /**
+     * Обёртка над
+     *  ::pre($var, $comment) + die() 
+     * 
+     * @param mixed  $var        логгируемый объект или переменная
+     * @param string $comment    необязательный комментарий 
+     * @param bool $returnOnly   возвращать (true) или просто выводить на экран
+     */
+    public static function pred($var, $comment = '', $returnOnly = false)
+    {
+        self::pre($var, $comment, $returnOnly);
+        die();
+    }
+    
+    
     
     /**
      * Печатает тэг hr
