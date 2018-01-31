@@ -135,12 +135,16 @@ class SimpleEchoLog extends SimpleLog
      */
     public static function pre($var, $comment = '--', $returnOnly = false) {
         
+        $comment = $comment . ':';
         if (self::$log) {    
             if ($returnOnly) {
-                return "$comment:" . self::preStartSymbol() . print_r($var, true) . self::preEndSymbol();
+                return $comment . self::preStartSymbol() . print_r($var, true) . self::preEndSymbol();
             } else {
                 echo  self::newLineSymbol() 
-                        . " $comment:" . self::preStartSymbol() . print_r($var, true) . self::preStartSymbol();
+                        . $comment 
+                        . self::preStartSymbol() 
+                        . print_r($var, true) 
+                        . self::preStartSymbol();
             }
         }
     }
