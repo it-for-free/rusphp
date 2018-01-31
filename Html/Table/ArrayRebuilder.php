@@ -13,6 +13,8 @@ use ItForFree\rusphp\Log\SimpleEchoLog as Log;
  *  вложенные масивы атк, чтобы его было удобно выводить в html таблицу
  * определить colspan и rowspan для каждого элемента
  * 
+ * (html таблица, вложенные документы, объединение ячеек)
+ * 
  */
 abstract class ArrayRebuilder
 {
