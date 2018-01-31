@@ -3,11 +3,10 @@
 namespace ItForFree\rusphp\Log;
 
 /**
- * Простое логгирование "а браузер" или в файл -- 
+ * Простое логгирование "а браузер" или в консоль 
  */
-class SimpleEchoLog
+class SimpleEchoLog extends SimpleLog
 {
-    public static $log = true;
     
     /**
      * Вывод нужен в формате html или текстового файла?
@@ -95,6 +94,7 @@ class SimpleEchoLog
     }
     
     /**
+     * @deprecated since version 1.0.4 лучше используйте ItForFree\rusphp\Log\SimpleFileLog
      * Добавит информацию в файл
      * 
      * @param string $str
@@ -122,10 +122,7 @@ class SimpleEchoLog
         
         echo $html;
     }
-    
-    
-    
-    
+
     /**
      * Вывод сообщения, или возврат строки с окруженирем тэгами
      * 
