@@ -4,6 +4,7 @@ namespace ItForFree\rusphp\PHP\DateTime;
 
 
 /**
+ * Дата и время
  * Для измерения дистанции между двумя датами
  * -- обёртка над \DateTime
  * 
