@@ -24,6 +24,29 @@ class SimpleEchoLog extends SimpleLog
     public static $logInFileEnabled = false;
     
     
+        /**
+     * Выключить логгирование
+     * (по умолчанию включено)
+     * 
+     * -- выключение может потребоваться, 
+     * если вы не хотите удалять инструкции лога  из кода (есть подозрение, 
+     * что в будущем придётся использовать их же),
+     * но вам надо запустить код в реальной среде, где логгирование запрещено.
+     */
+    public static function off()
+    {
+        self::$log = false;
+    }
+    
+    /**
+     * Включить логгирование 
+     * (по умолчанию итак включено)
+     */
+    public static function on()
+    {
+        self::$log = true;
+    }
+    
     /**
      * Вернёт комбинцию для переноса строки в зависимосмти от значения 
      * self::$inBrowserForHtml
@@ -85,7 +108,7 @@ class SimpleEchoLog extends SimpleLog
      */
     public static function me($var, $comment = '') 
     {
-        
+        if (!self::$log) { return; }
         $comment = $comment ? ($comment .= ':') : '';
         
         if (self::$log) {
@@ -106,6 +129,7 @@ class SimpleEchoLog extends SimpleLog
      */
     public static function med($var, $comment = '')
     {
+        if (!self::$log) { return; }
         self::me($var, $comment);
         die();
     }
@@ -116,8 +140,9 @@ class SimpleEchoLog extends SimpleLog
      * 
      * @param string $str
      */
-    public static function logInFile($str) {
-
+    public static function logInFile($str) 
+    {
+        if (!self::$log) { return; }
         $log = "\n" . $str . "\n";
         file_put_contents($_SERVER['DOCUMENT_ROOT'] . self::$outputTextFilePath , $log, FILE_APPEND);
     }
@@ -129,6 +154,7 @@ class SimpleEchoLog extends SimpleLog
      */
     public static function htmlHead($title = 'Отладка кода', $encoding = 'utf-8')
     {
+        if (!self::$log) { return; }
         $html = '<html>
         <html>  
         <head>
@@ -148,7 +174,9 @@ class SimpleEchoLog extends SimpleLog
      * @param bool $returnOnly   возвращать (true) или просто выводить на экран
      * @return string
      */
-    public static function pre($var, $comment = '', $returnOnly = false) {
+    public static function pre($var, $comment = '', $returnOnly = false) 
+    {
+        if (!self::$log) { return; }
         
         $comment = $comment ? ($comment .= ':') : '';
         if (self::$log) {    
@@ -174,6 +202,7 @@ class SimpleEchoLog extends SimpleLog
      */
     public static function pred($var, $comment = '', $returnOnly = false)
     {
+        if (!self::$log) { return; }
         self::pre($var, $comment, $returnOnly);
         die();
     }
@@ -184,7 +213,8 @@ class SimpleEchoLog extends SimpleLog
      * Печатает тэг hr
      */
     public static function hr()
-    {
+    {   
+        if (!self::$log) { return; }
         echo '<hr>';
     }
     
@@ -197,6 +227,7 @@ class SimpleEchoLog extends SimpleLog
      */
     public static function echoFirstOrSecondIfFirstIsArray($firstValue, $secondValue) 
     {
+        if (!self::$log) { return; }
         if (is_array($firstValue)) {
            echo ($secondValue);
         } else {

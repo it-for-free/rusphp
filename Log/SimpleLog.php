@@ -3,11 +3,17 @@
 namespace ItForFree\rusphp\Log;
 
 /**
- * общий родитель для разных логгеров 
+ * Общий родитель для разных логгеров 
  */
 abstract class SimpleLog
 {
-    public static $log = true;
+    /**
+     * Активно ли логгирование 
+     * (обратите внимание, что эта статическая переменная)
+     * 
+     * @var boolean 
+     */
+    protected static $log = true;
     
     
 }
