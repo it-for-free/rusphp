@@ -64,6 +64,24 @@ class SimpleEchoLog extends SimpleLog
     }
     
     /**
+     * Вернёт сторку (строковый литерал) состоящую из символов переноса строки
+     * (с учетом формата вывода)
+     * 
+     * @param int $needleNewLinesCount  необходиое число переновос строки
+     * @return string
+     */
+    protected function getNewLinesSymbolsGroup($needleNewLinesCount)
+    {
+        $result = "";
+        
+        for ($i = 0; $i < $needleNewLinesCount; $i++) {
+            $result .= static::newLineSymbol();
+        }
+        
+        return $result;
+    }
+    
+    /**
      * Вернёт значение тэга для "оригинального"
      * вывода текста, в зависимости от формата вывода данного 
      * класса логирования
@@ -105,14 +123,20 @@ class SimpleEchoLog extends SimpleLog
      * 
      * @param mixed $var         то что рапечатываем 
      * @param string $comment    необязательный комментарий
+     * @param int $newLinesBeforeCount Число переносов строк "до" 
+     * @param int $newLinesAfterCount  Число переносов строк "после"
      */
-    public static function me($var, $comment = '') 
+    public static function me($var, $comment = '', $newLinesBeforeCount = 0, $newLinesAfterCount = 1) 
     {
         if (!self::$log) { return; }
+        
         $comment = $comment ? ($comment .= ':') : '';
         
         if (self::$log) {
-            echo  self::newLineSymbol() . $comment . $var .  self::newLineSymbol();
+            echo  self::getNewLinesSymbolsGroup($newLinesBeforeCount) 
+                    . $comment 
+                    . $var 
+                    . self::getNewLinesSymbolsGroup($newLinesAfterCount);
         }
         
         if (self::$logInFileEnabled) {
@@ -172,9 +196,12 @@ class SimpleEchoLog extends SimpleLog
      * @param mixed  $var        логгируемый объект или переменная
      * @param string $comment    необязательный комментарий 
      * @param bool $returnOnly   возвращать (true) или просто выводить на экран
-     * @return string
+     * @param int $newLinesBeforeCount Число переносов строк "до" 
+     * @param int $newLinesAfterCount  Число переносов строк "после"
+     * @return string/null  -- в зависимости от  значения $returnOnly
      */
-    public static function pre($var, $comment = '', $returnOnly = false) 
+    public static function pre($var, $comment = '', $returnOnly = false, 
+            $newLinesBeforeCount = 0, $newLinesAfterCount = 1) 
     {
         if (!self::$log) { return; }
         
@@ -183,11 +210,11 @@ class SimpleEchoLog extends SimpleLog
             if ($returnOnly) {
                 return $comment . self::preStartSymbol() . print_r($var, true) . self::preEndSymbol();
             } else {
-                echo  self::newLineSymbol() 
+                echo  self::getNewLinesSymbolsGroup($newLinesBeforeCount) 
                         . $comment 
                         . self::preStartSymbol() 
                         . print_r($var, true) 
-                        . self::preStartSymbol();
+                        . self::getNewLinesSymbolsGroup($newLinesAfterCount);
             }
         }
     }
