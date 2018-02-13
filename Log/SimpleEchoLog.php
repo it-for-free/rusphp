@@ -24,7 +24,23 @@ class SimpleEchoLog extends SimpleLog
     public static $logInFileEnabled = false;
     
     
-        /**
+    /**
+     * Переключение формата вывода лога
+     * 
+     * @param string $formatName позволяет в том числе определить 
+     * способ переноса строк:
+     *   возможные значения 1) text  2) html
+     */
+    public static function format($formatName)
+    {
+        if ($formatName == 'text') {
+           static::$inBrowserForHtml = false;
+        } else {
+           static::$inBrowserForHtml = true; 
+        }
+    }
+    
+    /**
      * Выключить логгирование
      * (по умолчанию включено)
      * 
