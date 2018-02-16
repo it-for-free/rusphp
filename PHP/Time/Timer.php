@@ -1,9 +1,9 @@
 <?php
 
-namespace rusphp\PHP\Time;
+namespace ItForFree\rusphp\PHP\Time;
 
-use rusphp\PHP\Str\StrCommon as Str;
-use rusphp\Log\SimpleEchoLog as log;
+use ItForFree\rusphp\PHP\Str\StrCommon as Str;
+use ItForFree\rusphp\Log\SimpleEchoLog as log;
 
 /**
  * Для того, чтобы замерять время
@@ -30,7 +30,7 @@ class Timer
     public static $roundPow =  4;
    
    /**
-    * Начёнм измерять время для интервала
+    * Начнем измерять время для интервала
     * 
     * @param string $key -- уникальный (в рамках скрипта) ключ для данного интеревала (важно если за один запуск измеряются несколько разных интервалов)
     * @return boolean
