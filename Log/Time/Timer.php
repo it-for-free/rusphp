@@ -1,6 +1,6 @@
 <?php
 
-namespace ItForFree\Log\Time;
+namespace ItForFree\rusphp\Log\Time;
 
 use ItForFree\rusphp\Log\SimpleEchoLog;
 

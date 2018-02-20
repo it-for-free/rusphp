@@ -1,6 +1,6 @@
 <?php
 
-namespace ItForFree\Log\Json;
+namespace ItForFree\rusphp\Log\Json;
 
 /**
  * Предоставляет глобальный массив для хранения значений

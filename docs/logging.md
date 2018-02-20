@@ -50,7 +50,7 @@ Log::on();
 Использование  `ItForFree\Log\Time\Timer`:
 
 ```php
-use ItForFree\Log\Time\Timer;
+use ItForFree\rusphp\Log\Time\Timer;
 use ItForFree\rusphp\Log\SimpleEchoLog;
 
 // необязательно  но можно выставить эти и другие настройки:
