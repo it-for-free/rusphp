@@ -1,9 +1,12 @@
 <?php
 
-namespace app\components\loggers;
+namespace ItForFree\Log\Json;
 
 /**
  * Предоставляет глобальный массив для хранения значений
+ * - умеет распечатывать в json
+ * 
+ * @todo по сути это просто статический логгер -- надо понять что с ним делать.
  */
 class AjaxLogger {
     
