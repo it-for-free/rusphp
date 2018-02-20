@@ -6,6 +6,8 @@ use rusphp\PHP\Str\StrCommon as Str;
 use rusphp\Log\SimpleEchoLog as log;
 
 /**
+ * @deprecated since version 2.0.2  Используйте 
+ * 
  * Для того, чтобы замерять время
  */
 class Timer
