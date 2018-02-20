@@ -24,6 +24,11 @@ class SimpleFileLog extends SimpleLog
     public static $filePath = null;
     
     
+    
+    public static function me() 
+    {
+        throw new \Exception('No realization of me() here!');
+    }
   
     
 }

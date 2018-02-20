@@ -8,14 +8,7 @@ namespace ItForFree\rusphp\Log;
  */
 class SimpleEchoLog extends SimpleLog
 {
-    
-    /**
-     * Вывод нужен в формате html или текстового файла?
-     * @var boolean 
-     */
-    public static $inBrowserForHtml = true;
-    
-    
+
     /**
      * пусть относительно корня сайта
      */
@@ -23,45 +16,6 @@ class SimpleEchoLog extends SimpleLog
     
     public static $logInFileEnabled = false;
     
-    
-    /**
-     * Переключение формата вывода лога
-     * 
-     * @param string $formatName позволяет в том числе определить 
-     * способ переноса строк:
-     *   возможные значения 1) text  2) html
-     */
-    public static function format($formatName)
-    {
-        if ($formatName == 'text') {
-           static::$inBrowserForHtml = false;
-        } else {
-           static::$inBrowserForHtml = true; 
-        }
-    }
-    
-    /**
-     * Выключить логгирование
-     * (по умолчанию включено)
-     * 
-     * -- выключение может потребоваться, 
-     * если вы не хотите удалять инструкции лога  из кода (есть подозрение, 
-     * что в будущем придётся использовать их же),
-     * но вам надо запустить код в реальной среде, где логгирование запрещено.
-     */
-    public static function off()
-    {
-        self::$log = false;
-    }
-    
-    /**
-     * Включить логгирование 
-     * (по умолчанию итак включено)
-     */
-    public static function on()
-    {
-        self::$log = true;
-    }
     
     /**
      * Вернёт комбинцию для переноса строки в зависимосмти от значения 

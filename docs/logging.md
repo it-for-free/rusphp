@@ -45,4 +45,31 @@ Log::on();
 -- фактически общей для всего скрипта. 
 
 
-##  Распечатка -- Логгирование в файл или консоль ##
+## Замеры времени выполнения разных участков кода ##
+
+Использование  `ItForFree\Log\Time\Timer`:
+
+```php
+use ItForFree\Log\Time\Timer;
+use ItForFree\rusphp\Log\SimpleEchoLog;
+
+// необязательно  но можно выставить эти и другие настройки:
+
+Timer::maxUsefulLevel = 0.001;
+Timer::roundAfterZeroTo = 4;
+
+// начинаем замерять время выполнения
+Timer::start('участок 1');
+echo('123');
+Timer::end('участок 1');
+
+Timer::start('участок 2');
+print_r('123');
+Timer::end('участок 2');
+
+Timer::me('участок 2'); // конкретный результат участка
+
+// или можно получить сразу все результаты и распечатать их:
+SimpleEchoLog::pre(Timer::getResults());
+```
+

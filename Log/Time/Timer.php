@@ -1,18 +1,21 @@
 <?php
 
-namespace app\components\loggers;
+namespace ItForFree\Log\Time;
+
+use ItForFree\rusphp\Log\SimpleEchoLog;
+
 
 /**
  * Класс для замера времени выполнения разных участков кода
  */
-class TimeLogger {
+class Timer extends ItForFree\rusphp\Log\SimpleLog {
     
     /**
      * Ассоциативный массив, где в качестве ключа указывается время 
      * 
      * @var array 
      */
-    public static $times = [];
+    protected static $times = [];
     
     
     /**
@@ -23,7 +26,11 @@ class TimeLogger {
      */
     public static $maxUsefulLevel = 0.001;
     
-    
+    /**
+     * Число отображаемых знаков
+     * 
+     * @var int
+     */
     public static $roundAfterZeroTo = 4;
     
     /**
@@ -49,8 +56,8 @@ class TimeLogger {
     /**
      * Возращает результат
      * 
-     * @param boolean $includeIndefined -- нужно ли возвращать нули для значений, с которыми что-то нет так (например не задано начальное и конечное время), в противном случае будет брошено исключение
-     * @return type
+     * @param boolean $includeUndefinedAsZero -- нужно ли возвращать нули для значений, с которыми что-то нет так (например не задано начальное и конечное время), в противном случае будет брошено исключение
+     * @return array
      */
     public static function getResults($includeUndefinedAsZero = false)
     {
@@ -104,7 +111,7 @@ class TimeLogger {
      * @return float
      * @throws \Exception
      */
-    public static function getIntervalTime($intervalName)
+    public static function getIntervalTime($intervalName = 'noname')
     {
         
         $result = 'unknow time';
@@ -131,6 +138,19 @@ class TimeLogger {
         return $result;
     }
     
-    
-
+    /**
+     * Обёртка над self::getIntervalTime($intervalName = 'noname')
+     * 
+     * Распечатает время для конктретного интервала (как результат -- число в секундах)
+     * Вернёт даже нулевое время
+     * 
+     * @param string $intervalName имя уже записанного с помощью start() и end() интервала
+     * @return float    секунды
+     * @throws \Exception
+     */
+    public static function me($intervalName = 'noname')
+    {
+        $time = self::getIntervalTime($intervalName);
+        SimpleEchoLog::me($time, $intervalName);
+    }
 }
