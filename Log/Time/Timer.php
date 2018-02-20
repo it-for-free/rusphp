@@ -50,7 +50,11 @@ class Timer extends ItForFree\rusphp\Log\SimpleLog {
      */
     public static  function end($timeLabel = 'noname')
     {
-        static::$times[$timeLabel]['end'] = microtime(true); 
+        if (empty(static::$times[$timeLabel]['start'])) {
+            throw new \Exception('Start time not set!');
+        } else {
+            static::$times[$timeLabel]['end'] = microtime(true); 
+        }
     }
     
     /**
