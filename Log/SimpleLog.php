@@ -64,9 +64,5 @@ abstract class SimpleLog
         self::$log = true;
     }
     
-    /**
-     * Производит запись очередного значения в журнал
-     */
-    abstract public static function me($intervalName = 'noname');
 
 }
