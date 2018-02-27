@@ -57,6 +57,7 @@ class  IFFAcceptanceTester extends \AcceptanceTester
             $this->newLineAlreadyExists = true;
         }
     }
+    
 
    
 }
