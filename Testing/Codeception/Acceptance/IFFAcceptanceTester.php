@@ -2,6 +2,8 @@
 namespace ItForFree\rusphp\Testing\Codeception\Acceptance;
 
 
+use ItForFree\rusphp\Network\Url\Url as Url;
+
 /**
  * Обобщенный класс, добавляющий полезный функционал ACtor- идам тестирования
  * 
@@ -30,8 +32,6 @@ class  IFFAcceptanceTester extends \AcceptanceTester
     
     /**
      * Log additinal info into console
-     * idea by @link https://github.com/Codeception/Codeception/issues/1295#issuecomment-52102734
-     * 
      * Вывод дополнительной технической информации о процессе работы теста в консоль.
      * 
      * Поддерживает тэги symfony/console @link https://symfony.com/doc/current/console/coloring.html
@@ -57,7 +57,35 @@ class  IFFAcceptanceTester extends \AcceptanceTester
             $this->newLineAlreadyExists = true;
         }
     }
-    
 
+    /**
+     * Получит текущий URL  
+     * (адрес в рамках сайта -- без доменного имени)
+     * 
+     * @return type
+     */
+    public function grabUrl()
+    {
+        $I = $this;
+        
+        $url  = $I->grabFromCurrentUrl();
+        return $url; 
+    }
+    
+    /**
+     * Получит get-параметр из текущего URL
+     * 
+     * @param string $paramName  имя параметра 
+     * @return string            значение параметра
+     */
+    public function grabUrlParam($paramName)
+    {
+  
+        $urlString  = $this->grabUrl();
+        
+        $Url = new Url($urlString);
+        
+        return $Url->getParam($paramName); 
+    }
    
 }
