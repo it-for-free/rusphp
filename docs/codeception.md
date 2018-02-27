@@ -2,7 +2,7 @@
 
 # Дополнения к codeception
 
-Примеры работыс codeception на русском: http://fkn.ktu10.com/?q=node/9956
+Примеры работы с codeception на русском: http://fkn.ktu10.com/?q=node/9956
 
 
 ## IFFAcceptanceTester
