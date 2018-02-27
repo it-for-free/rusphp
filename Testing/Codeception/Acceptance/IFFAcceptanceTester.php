@@ -30,6 +30,8 @@ class  IFFAcceptanceTester extends \AcceptanceTester
     
     /**
      * Log additinal info into console
+     * idea by @link https://github.com/Codeception/Codeception/issues/1295#issuecomment-52102734
+     * 
      * Вывод дополнительной технической информации о процессе работы теста в консоль.
      * 
      * Поддерживает тэги symfony/console @link https://symfony.com/doc/current/console/coloring.html
