@@ -91,7 +91,7 @@ class Url {
             throw new \Exception("Cant parse url = $url");
         }
         
-        parse_str($parts['query'], $this->queryParams);
+        parse_str($this->query, $this->queryParams);
 
     }
     
@@ -111,8 +111,8 @@ class Url {
     public function getParam($parameterName)
     {
         $paramValue = '';
-        if (isset($this->$queryParams[$parameterName])) {
-            $paramValue = $this->$queryParams[$parameterName]; 
+        if (isset($this->queryParams[$parameterName])) {
+            $paramValue = $this->queryParams[$parameterName]; 
         } else {
             throw new \Exception("There isnt any parameter with name '$parameterName' in queryStr = $this->query");
         }
