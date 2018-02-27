@@ -25,7 +25,10 @@ class TestUser extends \ItForFree\rusphp\Testing\Codeception\Acceptance\IFFAccep
 ```php
 $I = new TestUser($scenario);
 ```
+Далее рассмотрим имеющийся функционал (тут не все функции 
+-- см. исходник для того, чтобы узнать сведения о полном функционале).
 
+### log()
 Позволяет в частности удобно записывать в консоль дополнительную инфромацию (logging):
 ```php
 $I->log('Im here!');
