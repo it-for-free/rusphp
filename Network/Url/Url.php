@@ -61,7 +61,7 @@ class Url {
     public $query;
     
     /**
-     * (если есть)
+     * Фрагмент после # -- хвост (если есть)
      * @var string 
      */
     public $fragment;

@@ -6,10 +6,11 @@ use ItForFree\rusphp\Network\Url\Url as Url;
 
 /**
  * Обобщенный класс, добавляющий полезный функционал ACtor- идам тестирования
+ * -- запускается обычно из консоли.
  * 
  * require: codeception
  */
-class  IFFAcceptanceTester extends \AcceptanceTester
+class IFFAcceptanceTester extends \AcceptanceTester
 {
     public function __construct(\Codeception\Scenario $scenario) {
         parent::__construct($scenario);
