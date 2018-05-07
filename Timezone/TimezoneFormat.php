@@ -20,7 +20,7 @@ class TimezoneFormat
      * @param минуты $minutes
      * @return string
      */
-    protected static function getOffsetString($hours = 0, $minutes = 0) {
+    public static function getOffsetString($hours = 0, $minutes = 0) {
         $sign = '+';
         if ($hours < 0) {
             $sign = '-';
