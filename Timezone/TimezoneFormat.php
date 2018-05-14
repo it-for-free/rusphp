@@ -4,6 +4,7 @@ namespace ItForFree\rusphp\Timezone;
 
 /**
  * Для вывода таймзоны определённом виде
+ * временная зона, часовой пояс
  */
 class TimezoneFormat
 {
