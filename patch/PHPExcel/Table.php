@@ -1,6 +1,6 @@
 <?php
 
-namespace app\patch\PHPExcel;
+namespace ItForFree\rusphp\patch\PHPExcel;
 use ItForFree\rusphp\Log\SimpleEchoLog;
 
 /**
@@ -12,6 +12,20 @@ use ItForFree\rusphp\Log\SimpleEchoLog;
  * Реализует примерно тот же механизм что HTML-интерпретатор при парсинге кода,
  * но с учетом того, что любое олбъединение ячеек может быть исполнено вне зависимости от того заданы ли они далее в таблице, 
  * так как эксель уже даёт "бесконечное" поле единчных ячеек.
+ * 
+ * 
+ * Добавление колонок выглядит так (вычислять позицию на листе не нужно):
+ * 
+ 
+        use aItForFree\rusphp\patch\PHPExcel\Table as ExcelTable;
+ 
+        $Table = new ExcelTable($sheet);
+  
+        $Table->add(1, 'Данные', 1, 7);
+        $Table->add(1, 'Степень ', 1, 4);
+  
+        $Table->add(2, 'значение', 2, 1); // во вторую строку таблицы
+        $Table->add(2, 'Уровень ', 1, 3);
  *
  * @author qwer
  */

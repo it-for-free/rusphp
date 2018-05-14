@@ -1,6 +1,6 @@
 <?php
 
-namespace app\patch\PHPExcel;
+namespace ItForFree\rusphp\patch\PHPExcel;
 
 /**
  *  Строка таблицы
