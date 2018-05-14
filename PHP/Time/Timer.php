@@ -6,6 +6,8 @@ use ItForFree\rusphp\PHP\Str\StrCommon as Str;
 use ItForFree\rusphp\Log\SimpleEchoLog as log;
 
 /**
+ * @deprecated since version 2.0.2  Используйте  ItForFree\Log\Time\Timer
+ * 
  * Для того, чтобы замерять время
  */
 class Timer

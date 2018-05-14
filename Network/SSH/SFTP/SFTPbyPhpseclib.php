@@ -1,11 +1,11 @@
 <?php
 
-namespace rusphp\Network\SSH\SFTP;
+namespace ItForFree\rusphp\Network\SSH\SFTP;
 
-use rusphp\PHP\Str\StrCommon as Str;
-use rusphp\Log\SimpleEchoLog as log;
+use ItForFree\rusphp\PHP\Str\StrCommon as Str;
+use ItForFree\rusphp\Log\SimpleEchoLog as log;
 
-use phpseclib\Net\SFTP as SFTP; // реализация в phpseclib
+use ItForFree\phpseclib\Net\SFTP as SFTP; // реализация в phpseclib
 
 
 /**
