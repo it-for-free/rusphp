@@ -16,7 +16,7 @@ use ItForFree\rusphp\Log\SimpleEchoLog;
  * 
  * Добавление колонок выглядит так (вычислять позицию на листе не нужно):
  * 
- 
+```php 
         use aItForFree\rusphp\patch\PHPExcel\Table as ExcelTable;
  
         $Table = new ExcelTable($sheet);
@@ -26,6 +26,7 @@ use ItForFree\rusphp\Log\SimpleEchoLog;
   
         $Table->add(2, 'значение', 2, 1); // во вторую строку таблицы
         $Table->add(2, 'Уровень ', 1, 3);
+  ```
  *
  * @author qwer
  */
