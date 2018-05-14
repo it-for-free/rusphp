@@ -61,8 +61,15 @@ class Timer
         return $timeInterval;
     }
     
-
-    public static function me($message = 'Время выполнения скрипта: ', $key = 'default')
+    /**
+     * @deprecated since version 2.0.0 Испольльзуйте SimpleEchoLog или иную систему логгирования отдельно
+     * 
+     * printm Распечатает результат для отрезка
+     * 
+     * @param string $key      имя отрезка изменения
+     * @param string $comment  (необзятельно) дополнительный комментарий
+     */
+    public static function pme($key = 'default', $comment = 'Время выполнения скрипта: ')
     {
         if ($key != 'default') {
             $keytext = "[$key]";
