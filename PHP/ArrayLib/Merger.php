@@ -3,6 +3,9 @@
 namespace ItForFree\rusphp\PHP\ArrayLib;
 
 
+use ItForFree\rusphp\PHP\ArrayLib\helpers\UnsetArrayValue;
+use ItForFree\rusphp\PHP\ArrayLib\helpers\ReplaceArrayValue;
+
 /**
  * Всевозможные функции объединения массивов и их полей
  * 
@@ -11,8 +14,10 @@ namespace ItForFree\rusphp\PHP\ArrayLib;
 class Merger
 {
     /**
+     * Конкатенирует соотвествующие значения двух массивов, добавляя второе к первому
+     * 
      * Подразумевается, что массивы имеют одинаковое число полей с обычными 
-     * числовыми индексами 
+     * числовыми индексами (или одинаковыми строковыми). 
      * 
      * @param array $arr1
      * @param array $arr2
@@ -40,4 +45,62 @@ class Merger
         
         return $result;
     }
+    
+    
+    /**
+     * Рекурсирсивное слияние массивов
+     * Если во втором значении есть то же строковый ключ, что что и в первом, 
+     * то первое будет затёрто вторым (в этом отличие от array_merge_recursive())
+     * 
+     * Также есть возможность вообще удалить элемент из первого 
+     * если во втором на соответствующую
+     * позицию добавить экземпляр класса UnsetArrayValue
+     * или заменить эту позицию в первом без слияния, если на ту же позицию
+     *  во втром добавить  экземпляр: ReplaceArrayValue
+     * 
+     * -------
+     * Идея и релализации взята из Yii2 (yii\helpers\ArrayHelper::merge()):
+     * 
+     * Merges two or more arrays into one recursively.
+     * If each array has an element with the same string key value, the latter
+     * will overwrite the former (different from array_merge_recursive).
+     * Recursive merging will be conducted if both arrays have an element of array
+     * type and are having the same key.
+     * For integer-keyed elements, the elements from the latter array will
+     * be appended to the former array.
+     * You can use [[UnsetArrayValue]] object to unset value from previous array or
+     * [[ReplaceArrayValue]] to force replace former value instead of recursive merging.
+     * @param array $a array to be merged to
+     * @param array $b array to be merged from. You can specify additional
+     * arrays via third argument, fourth argument etc.
+     * @return array the merged array (the original arrays are not changed.)
+     */
+    public static function mergeRecursivelyWithReplace($a, $b)
+    {
+        $args = func_get_args();
+        $res = array_shift($args);
+        while (!empty($args)) {
+            $next = array_shift($args);
+            foreach ($next as $k => $v) {
+                if ($v instanceof UnsetArrayValue) {
+                    unset($res[$k]);
+                } elseif ($v instanceof ReplaceArrayValue) {
+                    $res[$k] = $v->value;
+                } elseif (is_int($k)) {
+                    if (array_key_exists($k, $res)) {
+                        $res[] = $v;
+                    } else {
+                        $res[$k] = $v;
+                    }
+                } elseif (is_array($v) && isset($res[$k]) && is_array($res[$k])) {
+                    $res[$k] = self::merge($res[$k], $v);
+                } else {
+                    $res[$k] = $v;
+                }
+            }
+        }
+
+        return $res;
+    }
+   
 }
