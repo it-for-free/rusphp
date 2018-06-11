@@ -92,7 +92,7 @@ class Merger
                         $res[$k] = $v;
                     }
                 } elseif (is_array($v) && isset($res[$k]) && is_array($res[$k])) {
-                    $res[$k] = self::merge($res[$k], $v);
+                    $res[$k] = self::mergeRecursivelyWithReplace($res[$k], $v);
                 } else {
                     $res[$k] = $v;
                 }
