@@ -40,7 +40,7 @@ class SimpleEchoLog extends SimpleLog
      * @param int $needleNewLinesCount  необходиое число переновос строки
      * @return string
      */
-    protected function getNewLinesSymbolsGroup($needleNewLinesCount)
+    protected static function getNewLinesSymbolsGroup($needleNewLinesCount)
     {
         $result = "";
         
