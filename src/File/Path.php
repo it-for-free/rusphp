@@ -73,4 +73,18 @@ class Path {
         $path_parts = \pathinfo($filePath);
         return $path_parts['extension'];
     }
+    
+    /**
+     * Добавит данный путь к пути от корня сайта 
+     * @see зависит от $_SERVER
+     * @param type $additioanlPath
+     * 
+     * @return string
+     */
+    public static function addToDocumentRoot($additioanlPath)
+    {
+        $path = $_SERVER['DOCUMENT_ROOT'] 
+                . DIRECTORY_SEPARATOR . 'views' . DIRECTORY_SEPARATOR;
+        return $path;
+    }
 }
