@@ -76,8 +76,8 @@ class Path {
     
     /**
      * Добавит данный путь к пути от корня сайта 
-     * @see зависит от $_SERVER
-     * @param type $additioanlPath
+     * @see зависит от $_SERVER['DOCUMENT_ROOT'] 
+     * @param string $additioanlPath  путь, который нужно прибавить к пути к корню сайта 
      * 
      * @return string
      */
