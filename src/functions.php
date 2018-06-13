@@ -14,7 +14,7 @@ if (!function_exists('rpath')) {
      * 
      * @return string
      */
-    function rpath($additionalPath) {
+    function rpath($additioanlPath) {
         return \ItForFree\rusphp\File\Path::addToDocumentRoot($additioanlPath);
     }
 }
