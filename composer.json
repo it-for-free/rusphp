@@ -16,9 +16,9 @@
     
     "autoload": {
         "psr-4": {
-            "ItForFree\\rusphp\\": "src",
-            "files": ["src/functions.php"]
-        }
+            "ItForFree\\rusphp\\": "src"
+        },
+        "files": ["src/functions.php"]
     },
     
     "repositories": [
