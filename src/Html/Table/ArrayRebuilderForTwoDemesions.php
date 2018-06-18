@@ -117,7 +117,7 @@ class ArrayRebuilderForTwoDemesions extends ArrayRebuilder
            
             $needle = $this->needleElementsAndSubarrays[$needleKeyName];
             
-            self::checkDataExistsOrAddEmptyFake($entityData, $needle, $needleKeyName);
+            self::checkDataExistsOrAddEmptyFake($twoDemArr, $needle, $needleKeyName);
             
             //Log::me('Извлекаем для среза значение эламента:'); Log::echoFirstOrSecondIfFirstIsArray($needle, $needleKeyName);
             if (is_array($needle)) {
