@@ -250,7 +250,8 @@ class ArrayRebuilderForTwoDemesions extends ArrayRebuilder
     {
         if (is_array($needle)) {
             if (empty($entityData[$needleKeyName])) { // если массив  пуст
-                $entityData[$needleKeyName] = ArrCommon::getArrayWithEmptyStringValues($needle);
+                $entityData[$needleKeyName][0] = 
+                        ArrCommon::getArrayWithEmptyStringValues($needle);
             }
         } else {
             if (!isset($entityData[$needle])) { // если скаляр вообще не определён
