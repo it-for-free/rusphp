@@ -212,7 +212,7 @@ class ArrCommon
     }
     
     /**
-     * Вернёт строку (срез) двумерного массива, еслио на есть
+     * Вернёт строку (срез) двумерного массива, если она есть
      * 
      * @param  mixed $sourceMayBeArray
      * @param  int $number
@@ -230,6 +230,24 @@ class ArrCommon
         return $result;
     }
     
+    /**
+     * Вернёт массив с данными ключами, у которого все значения буудт пустыми строками
+     * 
+     * пустые строки
+     * 
+     * @param  array $arrayKeys
+     * @return array
+     */
+    public static function getArrayWithEmptyStringValues($arrayKeys)
+    {
+        $result  = array();
+        
+        foreach ($arrayKeys as $key) {
+             $result[$key] = '';     
+        }
+        
+        return $result;
+    }
 
     
    

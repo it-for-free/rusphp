@@ -161,10 +161,7 @@ abstract class ArrayRebuilder
     protected static function getEmptyCell()
     {
         return self::getCell('', 1, true, 1);
-    }
-    
-    
-    
+    }     
 
 }
 

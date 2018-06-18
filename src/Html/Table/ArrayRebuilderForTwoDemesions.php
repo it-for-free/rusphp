@@ -116,7 +116,10 @@ class ArrayRebuilderForTwoDemesions extends ArrayRebuilder
         foreach ($needleElementsKeyNames as  $needleKeyName => $needle) {
            
             $needle = $this->needleElementsAndSubarrays[$needleKeyName];
-        
+            
+  
+            self::getExistsDataOrEmptyFake($entityData, $needle, $needleKeyName);
+            
             //Log::me('Извлекаем для среза значение эламента:'); Log::echoFirstOrSecondIfFirstIsArray($needle, $needleKeyName);
             if (is_array($needle)) {
                 
@@ -226,6 +229,35 @@ class ArrayRebuilderForTwoDemesions extends ArrayRebuilder
         }
         
         return $count;
+    }
+    
+    
+        
+    /**
+     * Проверит, что данное значенире вообще есть в исходном массиве.
+     * Если есть, то никаких действий не предпринимается, если нет,
+     * то для скаляра создаётся значение с пустой строкой, а для массива 
+     * задаётся только одна строка "как в требуемом списке", где все значения выставляются как пусте строки.
+     * 
+     * @todo Возможно, эту функцию надо вынести выше -- в родительский класс (вопрос в том, как она будет испоьлзоваться для организации кода для
+     * произвольной вложенности)
+     * 
+     * 
+     * @param array $entityData данные сущности в виде массива - отсюда мы извлекаем данные для очередной сторки сущности
+     * @param string $needle     имя требуемого поля (из массима, описывающего таблицу)
+     * @param string $needleKeyName имя ключа требуемого поля (из массима, описывающего таблицу), используется ТОЛЬКО для извлчения подмассивов
+     */
+    protected static function checkDataExistsOrAddEmptyFake(&$entityData, $needle, $needleKeyName)
+    {
+        if (is_array($needle)) {
+            if (empty($entityData[$needleKeyName])) {
+                $entityData[$needleKeyName] = ArrCommon::getArrayWithEmptyStringValues($needle);
+            }
+        } else {
+            if (empty($entityData[$needle])) {
+                $entityData[$needle] = '';
+            } 
+        }
     }
     
    
