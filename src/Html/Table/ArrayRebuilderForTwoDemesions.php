@@ -249,11 +249,11 @@ class ArrayRebuilderForTwoDemesions extends ArrayRebuilder
     protected static function checkDataExistsOrAddEmptyFake(&$entityData, $needle, $needleKeyName)
     {
         if (is_array($needle)) {
-            if (empty($entityData[$needleKeyName])) {
+            if (empty($entityData[$needleKeyName])) { // если массив  пуст
                 $entityData[$needleKeyName] = ArrCommon::getArrayWithEmptyStringValues($needle);
             }
         } else {
-            if (empty($entityData[$needle])) {
+            if (!isset($entityData[$needle])) { // если скаляр вообще не определён
                 $entityData[$needle] = '';
             } 
         }
