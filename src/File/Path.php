@@ -84,7 +84,7 @@ class Path {
     public static function addToDocumentRoot($additioanlPath)
     {
         $path = $_SERVER['DOCUMENT_ROOT'] 
-                . DIRECTORY_SEPARATOR . 'views' . DIRECTORY_SEPARATOR;
+                . DIRECTORY_SEPARATOR . $additioanlPath . DIRECTORY_SEPARATOR;
         return $path;
     }
 }
