@@ -5,17 +5,19 @@ namespace ItForFree\rusphp\PHP\Object;
 use ItForFree\rusphp\PHP\Object\ObjectClass\Constructor;
 
 /**
- * Для рбаоты с объектами
+ * Для порождения объектов
  *
  */
 class ObjectFactory {
    
    /**
+    * Вернёт экземпляр класса -- или обычный объект или "одиночку" 
+    * (по паттерну Singletone)
     * 
-    * 
-    * @param type $className
-    * @param type $singletoneInstanceAccessStaticMethodName
-    */ 
+    * @param string $className   Имя класса
+    * @param string $singletoneInstanceAccessStaticMethodName  необязательное имя статического метода для доступа к объекту-одиночке. По умолчанию 'get'
+    * @return object
+    */
    public static function getInstanceOrSingletone($className, 
         $singletoneInstanceAccessStaticMethodName = 'get')
    {
