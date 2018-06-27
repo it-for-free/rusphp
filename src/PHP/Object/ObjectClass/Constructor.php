@@ -15,7 +15,7 @@ class Constructor {
     */
    public static function isPublic($className)
    {
-       $result = false;
+       $result = true; //если без конструктора, то экземплярвсё же можно создать
        
        if (method_exists($className, '__construct')) {
         $constructor = new \ReflectionMethod($className, '__construct');
