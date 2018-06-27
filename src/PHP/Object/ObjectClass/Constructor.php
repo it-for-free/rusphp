@@ -11,12 +11,18 @@ class Constructor {
     * Проверит является ли конструктор данного класса публичным
     * 
     * @param  string $className
-    * @return bool
+    * @return bool  false если конструктор непубличен или вообще неописан
     */
    public static function isPublic($className)
    {
-       $constructor = new \ReflectionMethod($className, '__construct');
-       return $constructor->isPublic();
+       $result = false;
+       
+       if (method_exists($className, '__construct')) {
+        $constructor = new \ReflectionMethod($className, '__construct');
+        $result = $constructor->isPublic();
+       }
+       
+       return $result;
    }    
    
 }
