@@ -15,7 +15,7 @@ class Constructor {
     */
    public static function isPublic($className)
    {
-       $constructor = new ReflectionMethod($className, '__construct');
+       $constructor = new \ReflectionMethod($className, '__construct');
        return $constructor->isPublic();
    }    
    
