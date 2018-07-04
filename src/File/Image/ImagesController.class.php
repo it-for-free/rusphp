@@ -27,6 +27,143 @@ class ImagesController
      */
     public $allowBrowserImagesCache = true;
 
+    /**
+     * Вычленяет ширину изображения из строки параметров изображения
+     * (например, из строки 257_121_s_b)
+     * 
+     * @param string $imageParameters
+     * 
+     * @return string
+     */
+    public function getImageWidth(string $imageParameters): string
+    {
+        $arrayImageParameters = explode('_', $imageParameters);
+        
+        $imageWidth = $arrayImageParameters[0];
+        
+        if (empty($imageWidth) || !is_numeric($imageWidth)) {
+            throw InvalidArgumentException('Ширина изобаржения не передана');
+        }
+        
+        return $imageWidth;
+    }
+    
+    /**
+     * Вычленяет высоту изображения из строки параметров изображения
+     * (например, из строки 257_121_s_b)
+     * Формат ответа 
+     * 
+     * @param string $imageParameters
+     * 
+     * @return string
+     */
+    public function getImageHeight(string $imageParameters): string
+    {
+        $arrayImageParameters = explode('_', $imageParameters);
+        
+        $imageHeight = $arrayImageParameters[1];
+        
+        if (empty($imageHeight) || !is_numeric($imageHeight)) {
+            throw InvalidArgumentException('Высота изобаржения не передана');
+        }
+        
+        return $imageHeight;
+    }
+    
+    /**
+     * Вычленяет строгий ли размер изображения из строки параметров изображения 
+     * (например, из строки 257_121_s_b)
+     * 
+     * @param string $imageParameters
+     * 
+     * @return bool
+     */
+    public function isImageSizeStrong(string $imageParameters): bool
+    {
+        $arrayImageParameters = explode('_', $imageParameters);
+        
+        $isStrong = $arrayImageParameters[2];
+        
+        return (isset($isStrong) && strtolower($isStrong) == 's') ? true : false;
+    }
+    
+    /**
+     * Вычленяет позицию изображения из строки параметров изображения 
+     * (например, из строки 257_121_s_b)
+     * 
+     * @param string $imageParameters
+     * 
+     * @return string
+     */
+    public function getImagePosition(string $imageParameters): string
+    {
+        $arrayImageParameters = explode('_', $imageParameters);
+        
+        switch ($arrayImageParameters[3]):
+            case 't':
+                $imagePosition = 'top';
+                break;
+            case 'b':
+                $imagePosition = 'bottom';
+                break;
+            default :
+                $imagePosition = 'center';
+        endswitch;
+        
+        return $imagePosition;
+    }
+    
+    /**
+     * 
+     * @param string $imagePath
+     * 
+     * @return string
+     */
+    public function getImage(string $imagePath): string
+    {
+        // здесь функционал поиска изобаржения по пути
+        // например, с использовнием Doctrine и хранением пути к файлу в БД?
+        
+        return $image;
+    }
+    
+    /**
+     * Основной метод, выводящий изображение
+     * 
+     * @param string $imagePath
+     * 
+     * @return string
+     */
+    public function showImage(string $imageParameters, string $imagePath): string
+    {
+        if ($this->isImageSizeStrong($imageParameters)) {
+            // делаем стронг обрезку и позиционирование, созраняем новый ыайл и его отдаём
+        } else {
+           $info = getImageSize($image);
+
+            header("Content-Type: " . $info['mime']);
+            header("Last-Modified: " . date(DATE_RFC822, filemtime($image)));
+            header("Cache-Control: private, max-age=10800, pre-check=10800");
+            header("Pragma: private");
+            header("Expires: " . date(DATE_RFC822, strtotime(" 2 day")));
+
+            if($this->allowBrowserImagesCache)
+            {
+                if(isset($_SERVER['HTTP_IF_MODIFIED_SINCE']) && // не передаём дважды уже переданные файлы
+                    (strtotime($_SERVER['HTTP_IF_MODIFIED_SINCE']) == filemtime($image)))
+                {
+                    // send the last mod time of the file back
+                    header('Last-Modified: ' . gmdate('D, d M Y H:i:s', filemtime($image)) . ' GMT', true, 304);
+                    exit;
+                }
+            }
+
+            readfile($image);
+
+            return $image; 
+        }
+    }
+    
     public function Index($args = null)
     {
         $args[0] = str_replace('_', '', $args[0]); // нужно для пустых imageID, чтобы $args[0] вообще существовал (см. документацию BP)
