@@ -10,7 +10,6 @@ use ItForFree\rusphp\Network\Url\Url;
 class Domain {
     
     /**
-     * 
      * @param string $url строка, содержащая url (ссылку)
      */
     public function __construct($url) 
