@@ -37,7 +37,7 @@ class ImageResizer
             return self::ShowImage($imageFilePath); // отдаём как есть
         }
         
-        // Определим параметры обрезки, разбрав стоку формата
+      // Определим параметры обрезки, разбрав стоку формата
         $size     = explode("x", $format);
         $width    = $size[0];
         $height   = $size[1];
@@ -50,9 +50,10 @@ class ImageResizer
         $position = (isset($size[3]) && $size[3] == 'b') ? 2 : 
             ((isset($size[3]) && $size[3] == 't') ? 1 : 0);
         
+      // Зададим новый путь дял картинки, параллельно скопировав её  
         $newImagePath = self::CopyImage($imageFilePath, $format);
         
-        if ($strong) {
+        if ($strong) { // определяем способ обрезки
             self::StrongImageResize($newImagePath, $width, $height, $position);
         } else {
             self::ImageResize($newImagePath, $width, $height);
@@ -63,7 +64,7 @@ class ImageResizer
     }
     
     /**
-     * Cкопирует картинку, лежающую по адресу $imagePath в подпапку $subdirName, 
+     * Cкопирует картинку, лежащую по адресу $imagePath в подпапку $subdirName, 
      * лежащую в той же директории, что и сама картинка.
      * Вернёт путь к копии.
      * 
