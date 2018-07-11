@@ -3,13 +3,12 @@
 namespace \ItForFree\rusphp\File\Image;
 
 /**
- * Класс для работы с изображениями 
- * (версия которая режет картинку по центру)
- *
- * ver. 1.1.1
- *
+ * Класс для изменение размеров (обрезки) изображений
+ * (версия которая режет картинку по центру)\
+ * 
+ * Помимо собственно функций обрезки содержит удобную во многих случаях showInFormat
  */
-class ImageManager
+class ImageResizer
 {
     /**
      * Поддиректория общей директории загруженных файлов, в которой хранятся изображения
@@ -24,16 +23,106 @@ class ImageManager
      * @var boolean 
      */
     public static $proportionalResize = false;
-
+    
+    
     /**
-     * Загружаем изображение на сервер
-     *
-     * @param string $imageName Название поля name тега input, через который загружается изображение
-     * @return string 
+     * 
+     * @param  $imageFilePath
+     * @param type $format
      */
-    public static function ImageUpload($imageName)
+    public static function showInFormat($imageFilePath, $format = '')
     {
-        return FileManager::UploadFile($imageName, self::$uploadImagesDir);
+        if (!$format) {
+            // надо проверить есть ли вообще такой файл!
+            return self::ShowImage($imageFilePath); // отдаём как есть
+        }
+        
+        // Определим параметры обрезки, разбрав стоку формата
+        $size     = explode("x", $format);
+        $width    = $size[0];
+        $height   = $size[1];
+        $strong   = (isset($size[2]) && strtolower($size[2]) == 's') ? true : false;
+        /**
+        * b - снизу
+        * t - сверху
+        * другое/отсутствие - центр
+        */
+        $position = (isset($size[3]) && $size[3] == 'b') ? 2 : 
+            ((isset($size[3]) && $size[3] == 't') ? 1 : 0);
+        
+        $newImagePath = self::CopyImage($imageFilePath, $format);
+        
+        if ($strong) {
+            self::StrongImageResize($newImagePath, $width, $height, $position);
+        } else {
+            self::ImageResize($newImagePath, $width, $height);
+        }
+        
+        return $this->ShowImage($newImagePath);
+        
+    }
+    
+    /**
+     * Cкопирует картинку, лежающую по адресу $imagePath в подпапку $subdirName, 
+     * лежащую в той же директории, что и сама картинка.
+     * Вернёт путь к копии.
+     * 
+     * @param string $imagePath   полный путь к копируемой картинке
+     * @param string $subdirName  имяподпапки
+     * @return string             путь к копии
+     * @throws Exception
+     */
+    private static function CopyImage($imagePath, $subdirName)
+    {
+        $path    = pathinfo($imagePath);
+        $newPath = $path['dirname'] . "/" . $size;
+        if(!is_dir($newPath))
+        {
+            if(!mkdir($newPath, 0777, true))
+            {
+                throw new Exception('');
+            }
+        }
+        $newImage = $newPath . "/" . $path['basename'];
+
+        if(!copy($imagePath, $newImage))
+        {
+            throw new Exception();
+        }
+        return $newImage;
+    }
+    
+    
+    /**
+     * Отдаст файл с установкой соответствующих заголовоков
+     * 
+     * @param type $image
+     * @return \EmptyActionResult
+     */
+    private static function ShowImage($image)
+    {
+        $info = getImageSize($image);
+
+        header("Content-Type: " . $info['mime']);
+        header("Last-Modified: " . date(DATE_RFC822, filemtime($image)));
+        header("Cache-Control: private, max-age=10800, pre-check=10800");
+        header("Pragma: private");
+        header("Expires: " . date(DATE_RFC822, strtotime(" 2 day")));
+
+        if($this->allowBrowserImagesCache)
+        {
+            if(isset($_SERVER['HTTP_IF_MODIFIED_SINCE']) && // не передаём дважды уже переданные файлы
+                (strtotime($_SERVER['HTTP_IF_MODIFIED_SINCE']) == filemtime($image)))
+            {
+                // send the last mod time of the file back
+                header('Last-Modified: ' . gmdate('D, d M Y H:i:s', filemtime($image)) . ' GMT', true, 304);
+                exit;
+            }
+        }
+
+        readfile($image);
+
+        return new EmptyActionResult();
     }
 
     /**
@@ -284,41 +373,6 @@ class ImageManager
 
         return $result;
     }
-
-    /**
-     * Удаляет файл с изображением с сервера
-     *
-     * @param string $imageFile
-     */
-    public static function ImageDelete(
-    /**
-     * Адрес к удаляемому файлу
-     */
-    $imageFilePath
-    )
-    {
-        FileManager::DeleteFile($imageFilePath);
-    }
-
-    /**
-     * Копирует файл с изображением
-     * В зависимости от параметра type название файла-копии может быть следующим:
-     * 		1. type = prefix 	- 	название файла-копии получается из названия исходного файла
-     * 								путем прибавления профикса, записанного в переменной argument
-     * 		2. type = postfix 	- 	название файла-копии получается из названия исходного файла
-     * 								путем прибавления постфикса, записанного в переменной argument
-     * 		3. type = new		-	файлу-копии присваивается название, записанное в переменной argument
-     *
-     * @param string $imageFilePath
-     * @param string $type
-     * @param mix $argument
-     * @return string
-     */
-    public static function ImageCopy($imageFilePath, $type, $argument = "")
-    {
-        return FileManager::CopyFile($imageFilePath, $type, $argument);
-    }
-
     public static function ImageCrop($imageFilePath, $x1, $y1, $x2, $y2, $width, $height)
     {
         if($imageFilePath{0} == "/") $imageFilePath = IncPaths::$ROOT_PATH . $imageFilePath;
@@ -398,22 +452,6 @@ class ImageManager
         return $newImageFilePath;
     }
 
-    public static function LoadExternalImage($imageURL, $imagePath = "/images/")
-    {
-        $filePath = FileManager::LoadExternalFile($imageURL, $imagePath);
 
-        $imageFilePath = $filePath;
-        if($imageFilePath{0} == "/") $imageFilePath = IncPaths::$ROOT_PATH . $imageFilePath;
-
-        if(!file_exists($imageFilePath)) throw new Exception("Файл " . $imageFilePath . " не был загружен");
-
-        if(filesize($imageFilePath) <= 1 || !($imageInfo = getimagesize($imageFilePath)))
-        {
-            FileManager::DeleteFile($imageFilePath);
-            throw new Exception("Файл " . $imageFilePath . " не является картинкой");
-        }
-
-        return $filePath;
-    }
 
 }

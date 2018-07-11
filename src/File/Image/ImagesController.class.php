@@ -16,8 +16,6 @@
  *
  *
  * @author Prog
- * @version 2.1
- * @requires DB v2.1
  */
 class ImagesController 
 {
@@ -82,11 +80,11 @@ class ImagesController
 
             if($strong)
             {
-                ImageManager::StrongImageResize($newImage, $width, $height, $position);
+                ImageResizer::StrongImageResize($newImage, $width, $height, $position);
             }
             else
             {
-                ImageManager::ImageResize($newImage, $width, $height);
+                ImageResizer::ImageResize($newImage, $width, $height);
             }
             $newImage = preg_replace('/^\//', IncPaths::$ROOT_PATH, $newImage);
             return $this->ShowImage($newImage);
@@ -182,7 +180,7 @@ class ImagesController
         {
             if(!mkdir($newPath, 0777, true))
             {
-                throw new Exception();
+                throw new Exception('');
             }
         }
         $newImage = $newPath . "/" . $path['basename'];
