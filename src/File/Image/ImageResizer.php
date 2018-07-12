@@ -244,7 +244,7 @@ class ImageResizer
 
         if(!($imageInfo = getimagesize($imageFilePath))) throw new Exception("Файл " . $imageFilePath . " не является картинкой");
 
-        if(self::$proportionalResize)
+        if (self::$proportionalResize)
         { // вычисляем реальные размеры, на случай если требуется пропорциональная обрезка
             $size      = self::getMaxProportionalWidthAndHeight($imageInfo[0], $imageInfo[1], $maxWidth, $maxHeight);
             $maxWidth  = $size['width'];
