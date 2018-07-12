@@ -79,8 +79,12 @@ class Url {
      * 
      * @param string $url строка, содержащая url (ссылку)
      */
-    public function __construct($url) 
+    public function __construct($url = '') 
     {
+        if (!$url) {
+            $url = self::getFromCurrentRequest();
+        }
+        
         $urlData = parse_url($url);
         
         if ($urlData) {
@@ -118,5 +122,21 @@ class Url {
         }
         
         return $paramValue;
+    }
+    
+    /**
+     * Получит текущий URL с учетом http/https 
+     * (адрес страницы, запрошенный пользователем)
+     * 
+     * ВНИМАНИЕ: клиент может переда ПРОИЗВОЛЬНЫЕ $_SERVER[HTTP_HOST] и $_SERVER[REQUEST_URI] 
+     * (может сказаться на безопасности в ряде случае)
+     */
+    public static function getFromCurrentRequest()
+    {
+        $actual_link = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' 
+           ? "https" : "http") 
+           . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+        
+        return $actual_link;
     }
 }

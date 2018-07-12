@@ -1,6 +1,6 @@
 <?php
 
-namespace \ItForFree\rusphp\File\Image;
+namespace ItForFree\rusphp\File\Image;
 
 /**
  * Класс для изменение размеров (обрезки) изображений
@@ -59,7 +59,7 @@ class ImageResizer
             self::ImageResize($newImagePath, $width, $height);
         }
         
-        return $this->ShowImage($newImagePath);
+        return self::ShowImage($newImagePath);
         
     }
     
@@ -76,7 +76,7 @@ class ImageResizer
     private static function CopyImage($imagePath, $subdirName)
     {
         $path    = pathinfo($imagePath);
-        $newPath = $path['dirname'] . "/" . $size;
+        $newPath = $path['dirname'] . "/" . $subdirName;
         if(!is_dir($newPath))
         {
             if(!mkdir($newPath, 0777, true))
@@ -102,7 +102,8 @@ class ImageResizer
      */
     private static function ShowImage($image)
     {
-        $info = getImageSize($image);
+//        echo $image; die();
+        $info = getImageSize('/var/www/commontest/images/like.png');
 
         header("Content-Type: " . $info['mime']);
         header("Last-Modified: " . date(DATE_RFC822, filemtime($image)));
@@ -135,11 +136,6 @@ class ImageResizer
      */ 
     public static function ImageResize( $imageFilePath, $maxWidth, $maxHeight)
     {
-        /**
-         * Переводим абсолютный путь в относительный
-         */
-        if($imageFilePath{0} == "/") $imageFilePath = IncPaths::$ROOT_PATH . substr($imageFilePath, 1);
-
         /**
          * Провеяем файл на существование
          */
