@@ -73,7 +73,7 @@ class Url {
      * фунцией parse_str() @link https://secure.php.net/manual/ru/function.parse-str.php
      * @var array 
      */
-    protected $queryParams;
+    public $queryParams;
     
     /**
      * 
