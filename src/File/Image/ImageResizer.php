@@ -3,6 +3,7 @@
 namespace ItForFree\rusphp\File\Image;
 
 use ItForFree\rusphp\File\TempFile;
+use ItForFree\rusphp\Log\SimpleFileLog as FileLog;
 
 /**
  * Класс для изменение размеров (обрезки) изображений
@@ -49,35 +50,89 @@ class ImageResizer
      */
     public static function showInFormat($imageFilePath, $format = '', $usePlaceholderIfFileNotexists = true)
     {
-
-        $usePlaceholder = false;
+        $usePlaceHolder = false;
         if (!file_exists($imageFilePath)) {
+            
             if (self::$usePlaceholderIfFileNotexists) {
                 $imageFilePath = self::randomDefaultImage();
-                $usePlaceholder = true;
+                $usePlaceHolder = true;
             } else {
                 throw new \Exception('Source Image file not found!');
             }
         }
+        FileLog::$filePath = $_SERVER['DOCUMENT_ROOT'] . 'log.txt';
         
         if (!$format) {
             return self::ShowImage($imageFilePath); // отдаём как есть
         }
         
-        if (!$usePlaceholder) { // Зададим новый путь для картинки, параллельно скопировав её  
-            
-            $newImagePath = self::CopyImage($imageFilePath, $format);
-        } else {
-           $descriptor = TempFile::copy($imageFilePath);
-           self::$tmpFiles[$format]['link'] = $descriptor;
-           $newImagePath = TempFile::getPath($descriptor);
-           self::$tmpFiles[$format]['path'] = $newImagePath;
+        $maybeAlreadyExistsFile = self::getFormatVersionName($imageFilePath, $format, $usePlaceHolder);
+//        var_dump($maybeAlreadyExistsFile); die();
+        if ($maybeAlreadyExistsFile 
+                && is_file($maybeAlreadyExistsFile)) {
+            FileLog::me("Уже есть отдаём $format");
+            return self::ShowImage($maybeAlreadyExistsFile );  // отдаём, раз эта веррсия уже создана
+
         }
-        
+
+        $newImagePath = self::copyAndGetPath($imageFilePath, $format, $usePlaceHolder);
         self::resizeAsInFormat($newImagePath, $format);    
         
-        return self::ShowImage($newImagePath);
+        return self::ShowImage($newImagePath, $usePlaceHolder);
         
+    }
+    
+    /**
+     * Вернёт гипотетический путь (такой какой он будет при копировании, но без реального копирования) к отформатированной копии картинки,
+     * или если речь идёт о 
+     * 
+     * @param srting $imageFilePath путь к исходной картинке
+     * @param srting $subdirName   имя поддиректории для гипотетическогос сохранения к копии
+     * @param bool $tempFile     признак того, что речь идёт о временном файле
+     * @return string|false false в случае отсутствия предположения о возможном пути (по сути происходит в случае, когда подразумевается работа с временным файлом который ещё не был создан - а значит его не было в массиве)
+     */
+    protected static function getFormatVersionName($imageFilePath, $subdirName, $tempFile = false) 
+    {
+        $newPath = false;
+        $pathInfo = pathinfo($imageFilePath);
+        if (!$tempFile) {            
+            $newPath = $pathInfo['dirname'] . DIRECTORY_SEPARATOR 
+                . $subdirName . DIRECTORY_SEPARATOR . $pathInfo['basename'];
+            
+        } else {
+            if (isset(self::$tmpFiles['$subdirName']['path'])) {
+                $newPath = self::$tmpFiles['$subdirName']['path'];
+            }
+        }
+        
+        return $newPath;
+    }
+    
+    /**
+     * Изображение будет либо скопировано в обычную папку, либо во временную,
+     * для временных файлов, дескрипторы и пути будут сохранены в статическом поле данного класса
+     * 
+     * @param string $imageFilePath    путь к исходной картинке
+     * @param string $subFolder        имя подпапки
+     * @param bool $copyInTempFolder   Признак того,
+     *                             что надо копировать во временную папку, так-как копия лежит 
+     *                              в vendor-e, а туда писать нежелательно т.к. скорее всего неб удет прав)
+     * @return string           путь к копии
+     */
+    protected  static function copyAndGetPath($imageFilePath, $subFolder, $copyInTempFolder)
+    {
+        if (!$copyInTempFolder) { // Зададим новый путь для картинки, параллельно скопировав её  
+            $newImagePath = self::CopyImage($imageFilePath, $subFolder);
+            FileLog::me("Создаём реальны $subFolder");
+        } else {
+           $descriptor = TempFile::copy($imageFilePath);
+           self::$tmpFiles[$subFolder]['link'] = $descriptor;
+           $newImagePath = TempFile::getPath($descriptor);
+           self::$tmpFiles[$subFolder]['path'] = $newImagePath;
+           FileLog::me("Создаём временный $subFolder");
+        }
+        
+        return $newImagePath;
     }
     
     /**
@@ -110,7 +165,7 @@ class ImageResizer
      * @return string             путь к копии
      * @throws \Exception
      */
-    private static function CopyImage($imagePath, $subdirName)
+    protected static function CopyImage($imagePath, $subdirName)
     {
         $path = pathinfo($imagePath);
         
@@ -119,7 +174,7 @@ class ImageResizer
 
         if(!is_dir($newPath)) {
             if(!mkdir($newPath, 0777, true)) {
-                throw new \Exception('');
+                throw new \Exception('Не удалось скопировать изображение');
             }
         }
         $newImage = $newPath . "/" . $path['basename'];
@@ -151,15 +206,21 @@ class ImageResizer
     /**
      * Отдаст файл с установкой соответствующих заголовоков
      * 
-     * @param type $image
-     * @return \EmptyActionResult
+     * @param int $image   путь к картинке
+     * @param bool $isTempFile   является ли файл временным
      */
-    private static function ShowImage($image)
+    protected static function ShowImage($image, $isTempFile = false)
     {
         $info = getImageSize($image);
 
+        if ($isTempFile) {
+            $lastModifyDate = date(DATE_RFC822, strtotime("-7 days")); // временные файл всегда создаются только что, но выставим им старую дату, иначе кеширование браузером одного и тоже будет невомзожно
+        } else {
+            $lastModifyDate =  date(DATE_RFC822, filemtime($image));
+        }
+        
         header("Content-Type: " . $info['mime']);
-        header("Last-Modified: " . date(DATE_RFC822, filemtime($image)));
+        header("Last-Modified: " . $lastModifyDate);
         header("Cache-Control: private, max-age=10800, pre-check=10800");
         header("Pragma: private");
         header("Expires: " . date(DATE_RFC822, strtotime(" 2 day")));
