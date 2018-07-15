@@ -6,6 +6,8 @@
 
 Класс, для изображения  "на лету" и отдачи его в браузер. Используйте:
 ```php
+use ItForFree\rusphp\File\Image\ImageResizer;
+
 ImageResizer::showInFormat('полныйПутьКИзображению', 'СтрокаФормата');
 ```
 
