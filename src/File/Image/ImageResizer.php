@@ -21,17 +21,14 @@ class ImageResizer
     public static $allowBrowserImagesCache = true;
     
     /**
-     * Поддиректория общей директории загруженных файлов, в которой хранятся изображения
-     *
-     * @var string
+     * Показывать ли рыбы, вместо отсутствующих изображений
+     * @var bool 
      */
-    private static $uploadImagesDir = "images/";
-
-
-    
     public static $usePlaceholderIfFileNotexists = true;
     
     /**
+     * @see использование массива по сути бессмысленно, если скрипт инициллизирован для обработки одиночной картинки
+     * 
      * Массив открытых временных файлов --
      * подразумевается. что они будут использощваться для рыб, 
      * загруженных вместо ненайденных избражений.
@@ -51,26 +48,25 @@ class ImageResizer
     public static function showInFormat($imageFilePath, $format = '', $usePlaceholderIfFileNotexists = true)
     {
         $usePlaceHolder = false;
-        if (!file_exists($imageFilePath)) {
-            
+        if (!file_exists($imageFilePath)) {   
             if (self::$usePlaceholderIfFileNotexists) {
-                $imageFilePath = self::randomDefaultImage();
+                self::responePlaceholderNotModifiedIfNeed();
+                
+                $imageFilePath = self::getRandomDefaultImage();
                 $usePlaceHolder = true;
             } else {
                 throw new \Exception('Source Image file not found!');
             }
         }
-        FileLog::$filePath = $_SERVER['DOCUMENT_ROOT'] . 'log.txt';
         
         if (!$format) {
-            return self::ShowImage($imageFilePath); // отдаём как есть
+            return self::ShowImage($imageFilePath, $usePlaceHolder); // отдаём как есть
         }
         
         $maybeAlreadyExistsFile = self::getFormatVersionName($imageFilePath, $format, $usePlaceHolder);
 //        var_dump($maybeAlreadyExistsFile); die();
         if ($maybeAlreadyExistsFile 
                 && is_file($maybeAlreadyExistsFile)) {
-            FileLog::me("Уже есть отдаём $format");
             return self::ShowImage($maybeAlreadyExistsFile );  // отдаём, раз эта веррсия уже создана
 
         }
@@ -107,6 +103,7 @@ class ImageResizer
         
         return $newPath;
     }
+ 
     
     /**
      * Изображение будет либо скопировано в обычную папку, либо во временную,
@@ -123,13 +120,11 @@ class ImageResizer
     {
         if (!$copyInTempFolder) { // Зададим новый путь для картинки, параллельно скопировав её  
             $newImagePath = self::CopyImage($imageFilePath, $subFolder);
-            FileLog::me("Создаём реальны $subFolder");
         } else {
            $descriptor = TempFile::copy($imageFilePath);
            self::$tmpFiles[$subFolder]['link'] = $descriptor;
            $newImagePath = TempFile::getPath($descriptor);
            self::$tmpFiles[$subFolder]['path'] = $newImagePath;
-           FileLog::me("Создаём временный $subFolder");
         }
         
         return $newImagePath;
@@ -146,11 +141,11 @@ class ImageResizer
         $imgParams = FormatStringParser::getParams($format);
  
         if ($imgParams['strong']) { // определяем способ обрезки
-            self::StrongImageResize($imagePath, $imgParams['width'], 
+            self::resizeStrong($imagePath, $imgParams['width'], 
                 $imgParams['height'], $imgParams['position'], 
                 $imgParams['proportionalOnlyWithResolution']);
         } else {
-            self::ImageResize($imagePath, $imgParams['width'],
+            self::resize($imagePath, $imgParams['width'],
                 $imgParams['height']);
         }
     }
@@ -192,7 +187,7 @@ class ImageResizer
      * @param string $randomDir  путь к директории, откуда нужно взять случайный файл
      * @return string            путь к случайному файлу из этой директории
      */
-    public static function randomDefaultImage()
+    protected static function getRandomDefaultImage()
     {
         $randomDir = dirname(__FILE__) . '/placeholders';
         $files     = glob($randomDir . '/*.*');
@@ -209,14 +204,16 @@ class ImageResizer
      * @param int $image   путь к картинке
      * @param bool $isTempFile   является ли файл временным
      */
-    protected static function ShowImage($image, $isTempFile = false)
+    protected static function showImage($image, $isTempFile = false)
     {
+       // var_dump( $isTempFile); die();
         $info = getImageSize($image);
 
         if ($isTempFile) {
-            $lastModifyDate = date(DATE_RFC822, strtotime("-7 days")); // временные файл всегда создаются только что, но выставим им старую дату, иначе кеширование браузером одного и тоже будет невомзожно
+            $lastModifyDate = date(DATE_RFC822, strtotime("1 Semptember 2011")); // временные файл всегда создаются только что, но выставим им старую дату, иначе кеширование браузером одного и тоже будет невомзожно
+            touch($image, strtotime("1 Semptember 2011")); // меняем мета-дату файла
         } else {
-            $lastModifyDate =  date(DATE_RFC822, filemtime($image));
+           $lastModifyDate =  date(DATE_RFC822, filemtime($image));
         }
         
         header("Content-Type: " . $info['mime']);
@@ -237,6 +234,26 @@ class ImageResizer
 
         readfile($image);
     }
+    
+    /**
+     * Ответит, что ресурс бл измене давно (фиксировнная дата в прошлом), если срди заголовоком запроса 
+     * есть "IF_MODIFIED_SINCE"
+     * 
+     * Подразумевается, что эта функция вызывается для картинки-заметеля (если запрашиваемый файл не найден на диске, а 
+     * картинк-заменитель иже была загружен браузером.).
+     * 
+     * @see Если первый раз при загрузке произодёт ошибка уже после выставленных заголовоков файла, то неправильный ответ может закешироваться,
+     * но по-идее таких проблемы при развороте пакета быть не должно.
+     * 
+     */
+    protected static function responePlaceholderNotModifiedIfNeed()
+    {
+        if(isset($_SERVER['HTTP_IF_MODIFIED_SINCE'])) {
+            header('Last-Modified: ' . date(DATE_RFC822, strtotime("1 Semptember 2011")), true, 304);
+            exit;
+        }
+    }
+
 
     /**
      * Пропорционально уменьшает размеры изображения
@@ -245,7 +262,7 @@ class ImageResizer
      * @param int $maxWidth  Максимальная ширина уменьшенного изображения
      * @param int $maxHeight Максимальная высота уменьшенного изображения
      */ 
-    public static function ImageResize( $imageFilePath, $maxWidth, $maxHeight)
+    public static function resize( $imageFilePath, $maxWidth, $maxHeight)
     {
         /**
          * Провеяем файл на существование
@@ -347,7 +364,7 @@ class ImageResizer
      *                      но пропорциональным данным значениям.
      * @throws Exception
      */
-    public static function StrongImageResize($imageFilePath, $maxWidth, $maxHeight, 
+    public static function resizeStrong($imageFilePath, $maxWidth, $maxHeight, 
         $position = 0, $proportionalOnlyWithResolution = false)
     {
 
@@ -485,6 +502,20 @@ class ImageResizer
 
         return $result;
     }
+    
+    /**
+     * @todo Необходимо уточнить назначение и подправить документацию
+     * 
+     * @param string $imageFilePath
+     * @param type $x1
+     * @param type $y1
+     * @param type $x2
+     * @param type $y2
+     * @param type $width
+     * @param type $height
+     * @return string
+     * @throws \Exception
+     */
     public static function ImageCrop($imageFilePath, $x1, $y1, $x2, $y2, $width, $height)
     {
         if($imageFilePath{0} == "/") $imageFilePath = IncPaths::$ROOT_PATH . $imageFilePath;
@@ -563,7 +594,4 @@ class ImageResizer
          */
         return $newImageFilePath;
     }
-
-
-
 }

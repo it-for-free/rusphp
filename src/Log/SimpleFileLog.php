@@ -25,9 +25,13 @@ class SimpleFileLog extends SimpleLog
     
     
     
-    public static function me() 
+    public static function me($str, $clearoOld = false) 
     {
-        throw new \Exception('No realization of me() here!');
+        if ($clearoOld) {
+            file_put_contents(self::$filePath, $str  . "\n\n");
+        } else {
+            file_put_contents(self::$filePath, $str . "\n\n", FILE_APPEND);
+        }
     }
   
     
