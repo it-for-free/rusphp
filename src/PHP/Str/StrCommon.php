@@ -45,11 +45,15 @@ class StrCommon {
      * Проверт входит ли хотя бы одна строка из массива в данную стороку
      * 
      * @param string $str       строка, в которой осуществлять поиск
-     * @param array $subStrArr  массив подстрок
+     * @param array|string $subStrArr  массив подстро или порсто одна подстрока
      * @return boolean
      */
     public static function isOneFromArrHere($str, $subStrArr) {
         $result  = false;
+        
+        if (!is_array($subStrArr)) {
+            return self::isInStr($str, $subStrArr);
+        }
         
         foreach ($subStrArr as $substr) {
             if (self::isInStr($str, $substr)) {
