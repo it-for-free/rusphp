@@ -31,7 +31,7 @@ class SocialNetworkUrl extends Url {
      * 
      * @return string
      */
-    public static function getNetworkName()
+    public function getNetworkName()
     {
         foreach (self::$domainAndNameСonformity as $name => $domains) {
             if (StrCommon::isOneFromArrHere($this->host, $domains)) {
