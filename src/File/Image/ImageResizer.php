@@ -18,7 +18,6 @@ use ItForFree\rusphp\Log\SimpleFileLog as FileLog;
  */
 class ImageResizer
 {
-    
     /**
      * @var bool Позволяет выставить заголовок с датой последнего изменения файла,
      *           что в свою очередь даёт браузеру возможность не загружать картинку повторно
