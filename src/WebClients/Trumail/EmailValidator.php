@@ -8,7 +8,6 @@ namespace ItForFree\rusphp\WebClients\Trumail;
 class EmailValidator
 {
     
-    public $email = 'example@example.com';
     public static $baseUrl = 'https://api.trumail.io/';
     
     protected $guzzleClient = null;
@@ -20,7 +19,7 @@ class EmailValidator
         ]);
     }
     
-    public function verify($email)
+    public function verify($email = 'example@example.com')
     {
         $response = $this->getTrumailResponce($email);
         $response->getBody()->getContents();
