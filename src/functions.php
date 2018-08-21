@@ -25,7 +25,7 @@ if (!function_exists('pdie')) {
      * @param mixed $var
      */
     function pdie($var) {
-        echo '<pre>' . print_r($var) . '</pre>'; die();
+        echo '<pre>'; print_r($var); echo '</pre>'; die();
     }
 }
 
@@ -37,6 +37,6 @@ if (!function_exists('ppre')) {
      * @param mixed $var
      */
     function ppre($var) {
-        echo '<pre>' . print_r($var) . '</pre>';
+        echo '<pre>'; print_r($var); echo '</pre>'
     }
 }
