@@ -37,6 +37,6 @@ if (!function_exists('ppre')) {
      * @param mixed $var
      */
     function ppre($var) {
-        echo '<pre>'; print_r($var); echo '</pre>'
+        echo '<pre>'; print_r($var); echo '</pre>';
     }
 }
