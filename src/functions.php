@@ -17,6 +17,7 @@ if (!function_exists('rpath')) {
     }
 }
 
+/*------------------Обёртки над print_r()--------------------------------*/
 if (!function_exists('pdie')) {
   
     /**
@@ -40,3 +41,37 @@ if (!function_exists('ppre')) {
         echo '<pre>'; print_r($var); echo '</pre>';
     }
 }
+/*-------------------------------------------------------------------*/
+
+/*------------------Обёртки над var_dump()---------------------------*/
+if (!function_exists('vdie')) {
+  
+    /**
+     * Распечатка var_dump() и die() c окружением html-тегами pre
+     * 
+     * @param mixed $var
+     */
+    function vdie($var) {
+        $hasXdebug = extension_loaded('xdebug');
+        echo  (!$hasXdebug ? '<pre>' : ''); 
+        var_dump($var); 
+        echo  (!$hasXdebug ? '</pre>': '');
+        die();       
+    }
+}
+
+if (!function_exists('vpre')) {
+    /**
+     * Распечатка var_dump() c окружением html-тегами pre
+     * 
+     * @param mixed $var
+     */
+    function vpre($var) {
+        $hasXdebug = extension_loaded('xdebug');
+        echo  (!$hasXdebug ? '<pre>' : ''); 
+        var_dump($var); 
+        echo  (!$hasXdebug ? '</pre>': '');      
+    }
+}
+
+/*-------------------------------------------------------------------------*/
