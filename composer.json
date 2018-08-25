@@ -2,7 +2,8 @@
     "name": "it-for-free/rusphp",
     "type": "library",
     "description": "PHP fucntions library for different perposis",
-    "keywords": ["php", "ssh", "archive", "memory", "html", "table"],
+    "keywords": ["php", "ssh", "archive", "memory", "html", 
+        "table", "ram", "image", "crop", "resize", "email", "email verify"],
     "homepage": "http://fkn.ktu10.com/?q=node/8592",
     "license": "MIT",
     

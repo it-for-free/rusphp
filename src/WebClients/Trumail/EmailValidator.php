@@ -5,7 +5,7 @@ namespace ItForFree\rusphp\WebClients\Trumail;
 use GuzzleHttp\Client;
 
 /**
- * Валидация email-а
+ * Валидация verify email-а
  */
 class EmailValidator
 {
@@ -33,6 +33,20 @@ class EmailValidator
     {
         $Response = $this->getTrumailResponce($email);
         return ($Response->deliverable ?? false);
+    }
+    
+    /**
+     * Check mail is deliverable and (!) server not in "catch-All" mode
+     * @see http://fkn.ktu10.com/?q=node/10336
+     * 
+     * @param string $email
+     * @return bool
+     */
+    public function strongVerify($email)
+    {
+        $Response = $this->getTrumailResponce($email);
+        return ($Response->deliverable ?? false) 
+            && (!($Response->catchAll ?? false));
     }
    
     /**
