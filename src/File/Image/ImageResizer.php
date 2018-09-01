@@ -52,7 +52,7 @@ class ImageResizer
     public static function showInFormat($imageFilePath, $format = '', $usePlaceholderIfFileNotexists = true)
     {
         $usePlaceHolder = false;
-        if (!file_exists($imageFilePath)) {   
+        if (!is_file($imageFilePath) || !file_exists($imageFilePath)) {   
             if (self::$usePlaceholderIfFileNotexists) {
                 self::responePlaceholderNotModifiedIfNeed();
                 
