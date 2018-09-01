@@ -75,7 +75,7 @@ class ImageResizer
             }
         }
         
-        if (!$format) {
+        if (!$format && !$usePlaceHolder) { // в случае если формат не указан, НО при этом файл существует (и не предполгается использование замены-рыбы)
             return self::ShowImage($imageFilePath, $usePlaceHolder); // отдаём как есть
         }
         
@@ -92,8 +92,10 @@ class ImageResizer
     }
     
     /**
-     * Вернёт гипотетический путь (такой какой он будет при копировании, но без реального копирования) к отформатированной копии картинки,
-     * или если речь идёт о 
+     * Вернёт гипотетический путь к отформатированный версии картинк (такой какой он будет при копировании, но без реального копирования) 
+     * или если речь идёт о временном файле, созданном во время этого запуска скрипта -- то временный путь.
+     * Если же таких путей не обнаружено -- вернёт false/
+     * Метод нужен для использоватния в проверке существования файла @todo можно исопльзовать при переоперделении правила хранения отформатированных версий
      * 
      * @param srting $imageFilePath путь к исходной картинке
      * @param srting $subdirName   имя поддиректории для гипотетическогос сохранения к копии
@@ -103,14 +105,14 @@ class ImageResizer
     protected static function getFormatVersionName($imageFilePath, $subdirName, $tempFile = false) 
     {
         $newPath = false;
-        $pathInfo = pathinfo($imageFilePath);
-        if (!$tempFile) {            
+        if (!$tempFile) {
+            $pathInfo = pathinfo($imageFilePath);            
             $newPath = $pathInfo['dirname'] . DIRECTORY_SEPARATOR 
                 . $subdirName . DIRECTORY_SEPARATOR . $pathInfo['basename'];
             
         } else {
-            if (isset(self::$tmpFiles['$subdirName']['path'])) {
-                $newPath = self::$tmpFiles['$subdirName']['path'];
+            if (isset(self::$tmpFiles[$subdirName]['path'])) {
+                $newPath = self::$tmpFiles[$subdirName]['path'];
             }
         }
         
