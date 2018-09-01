@@ -75,8 +75,12 @@ class ImageResizer
             }
         }
         
-        if (!$format && !$usePlaceHolder) { // в случае если формат не указан, НО при этом файл существует (и не предполгается использование замены-рыбы)
-            return self::ShowImage($imageFilePath, $usePlaceHolder); // отдаём как есть
+        if (!$format) { // в случае если формат не указан
+            if (!$usePlaceHolder) { // и при этом файл существует (и не предполгается использование замены-рыбы)
+                return self::ShowImage($imageFilePath, $usePlaceHolder); // отдаём как есть
+            } else {
+                $format = 'origin';
+            }
         }
         
         $maybeAlreadyExistsFile = self::getFormatVersionName($imageFilePath, $format, $usePlaceHolder);
@@ -86,7 +90,9 @@ class ImageResizer
         }
 
         $newImagePath = self::copyAndGetPath($imageFilePath, $format, $usePlaceHolder);
-        self::resizeAsInFormat($newImagePath, $format);    
+        if ($format != 'origin') {
+            self::resizeAsInFormat($newImagePath, $format);    
+        }
         
         return self::ShowImage($newImagePath, $usePlaceHolder); 
     }
