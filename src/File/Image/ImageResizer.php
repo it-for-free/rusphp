@@ -6,13 +6,16 @@ use ItForFree\rusphp\File\TempFile;
 use ItForFree\rusphp\Log\SimpleFileLog as FileLog;
 
 /**
- * Класс для изменение размеров (обрезки) изображений как обычны образом, 
+ *  Класс для изменение размеров (обрезки) изображений как обычны образом, 
  * так и "на лету" с отдачей браузер 
  * (можно использовать в контроллере приложения,
- *  отственно за отдачу картинок в произвольных разрешениях).
+ * отственно за отдачу картинок в произвольных разрешениях).
  * 
- * Помимо собственно функций обрезки содержит удобный во многих случаях метод showInFormat(),
- *  производящий обреку изображения и его отдачу по заднногй ссылке в браузер "на лету".
+ *   Помимо собственно функций обрезки содержит удобный во многих случаях метод showInFormat(),
+ * производящий обреку изображения и его отдачу по заднногй ссылке в браузер "на лету".
+ * 
+ * @todo можно добавить опцию, чтобы складывать изменённые версии в отдельную папку -- это облегчало бы перенос сайтов, 
+ * а также позволяло бы без критических потерь очищать диск в случае нехватки места.
  * 
  * @author Eugene Ivkov <ghostichek@gmail.com> (автор идеи и основной реализации)
  */
@@ -45,9 +48,19 @@ class ImageResizer
     protected static $tmpFiles = array();
     
     /**
+     * Отдаст картинку браузеру как фалй (выставив необходимые заголовки), 
+     * в случае наличия формата, будет создана копия изображения (нужны права на запись), 
+     * преобразованная в соответсвтии с данным форматом (изменение размера).
      * 
-     * @param  $imageFilePath
-     * @param type $format
+     * В случае, если $imageFilePath не существует, будет использована картинрка-рыба,
+     * которая также поддаётся обратке по формату, преобразованная комия кладётся во временный php файл
+     * (т.е. не требуются права на запись в конкретные папки проекта).
+     * 
+     * @param string $imageFilePath  реальный полный путь к файлу изображения
+     * @param string $format     строка формата, см. документацию
+     * @param boolean $usePlaceholderIfFileNotexists  использовать ли картинку-рыбу в случае отсутствия файла (по умолчанию включено -- true), или бросать исключение-преджупреждение об отсутствии файла.
+     * @return null   т.к. производит отдачу файла в поток вывода  
+     * @throws \Exception
      */
     public static function showInFormat($imageFilePath, $format = '', $usePlaceholderIfFileNotexists = true)
     {
@@ -55,7 +68,6 @@ class ImageResizer
         if (!is_file($imageFilePath) || !file_exists($imageFilePath)) {   
             if (self::$usePlaceholderIfFileNotexists) {
                 self::responePlaceholderNotModifiedIfNeed();
-                
                 $imageFilePath = self::getRandomDefaultImage();
                 $usePlaceHolder = true;
             } else {
@@ -68,18 +80,15 @@ class ImageResizer
         }
         
         $maybeAlreadyExistsFile = self::getFormatVersionName($imageFilePath, $format, $usePlaceHolder);
-//        var_dump($maybeAlreadyExistsFile); die();
         if ($maybeAlreadyExistsFile 
                 && is_file($maybeAlreadyExistsFile)) {
             return self::ShowImage($maybeAlreadyExistsFile );  // отдаём, раз эта веррсия уже создана
-
         }
 
         $newImagePath = self::copyAndGetPath($imageFilePath, $format, $usePlaceHolder);
         self::resizeAsInFormat($newImagePath, $format);    
         
-        return self::ShowImage($newImagePath, $usePlaceHolder);
-        
+        return self::ShowImage($newImagePath, $usePlaceHolder); 
     }
     
     /**
