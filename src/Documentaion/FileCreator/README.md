@@ -8,7 +8,7 @@
 (потом его можно руками конвертировать во что угодна, например .docx)
 со всем исходным кодом вашего проекта.
 
-Пример вызова из корня вашего проекта (после установки `rusphp`):
+Пример вызова из корня вашего проекта (после установки `rusphp` средствами composer):
 
 ```shell
 php vendor/bin/create-source-code-file.php --exclude="vendor;web/assets;uploaded;libs;compile" --out="source.html"
