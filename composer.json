@@ -3,7 +3,8 @@
     "type": "library",
     "description": "PHP fucntions library for different perposis",
     "keywords": ["php", "ssh", "archive", "memory", "html", 
-        "table", "ram", "image", "crop", "resize", "email", "email verify"],
+        "table", "ram", "image", "crop", "resize", "email", "email verify",
+            "create html file for all source code peoject files", "documentation"],
     "homepage": "http://fkn.ktu10.com/?q=node/8592",
     "license": "MIT",
     
@@ -21,6 +22,7 @@
         },
         "files": ["src/functions.php"]
     },
+    "bin": ["src/Documentaion/FileCreator/create-source-code-file.php"],
     
     "repositories": [
         {
