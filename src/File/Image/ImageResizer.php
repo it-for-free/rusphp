@@ -368,9 +368,13 @@ class ImageResizer
                 case IMAGETYPE_PNG:
                     imagepng($oNewImage, $imageFilePath);
                     break;
+                
+                case IMAGETYPE_BMP:
+                    imagebmp($imageFilePath);
+                    break;
 
                 default:
-                    throw new Exception("Данный тип файла не поддерживается");
+                    throw new \Exception("Данный тип файла не поддерживается");
                     break;
             }
         }
@@ -491,6 +495,10 @@ class ImageResizer
                 case IMAGETYPE_PNG:
                     imagepng($oNewImage, $imageFilePath);
                     break;
+                
+                case IMAGETYPE_BMP:
+                    imagebmp($imageFilePath);
+                    break;
 
                 default:
                     throw new \Exception("Данный тип файла не поддерживается");
@@ -568,6 +576,9 @@ class ImageResizer
 
             case IMAGETYPE_PNG:
                 $image = imagecreatefrompng($imageFilePath);
+                break;
+            case IMAGETYPE_BMP:
+                $image = imagecreatefrombmp($imageFilePath);
                 break;
 
             default:
