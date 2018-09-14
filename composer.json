@@ -4,7 +4,8 @@
     "description": "PHP fucntions library for different perposis",
     "keywords": ["php", "ssh", "archive", "memory", "html", 
         "table", "ram", "image", "crop", "resize", "email", "email verify",
-            "create html file for all source code peoject files", "documentation"],
+            "create html file with source code of all project files",
+                 "documentation"],
     "homepage": "http://fkn.ktu10.com/?q=node/8592",
     "license": "MIT",
     
