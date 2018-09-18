@@ -5,11 +5,10 @@ use ItForFree\rusphp\PHP\Str\StrCommon;
 
 
 /**
- * Для работы с номером телефона:
- * - внутренний ли это номер
- * - даёт возможность получить номер в чистом виде (как мы набираем в телефоне, без скобок, пробелов и тире)
+ * Для работы с номером телефонаю
  */
-class PhoneNumber {
+class PhoneNumber 
+{
    
     /*
      * @var int|string исходный вид строки с телефоном.
@@ -17,6 +16,11 @@ class PhoneNumber {
     protected $sourcePhoneText;
     
 
+    /**
+     *
+     * @var string Код страны (начиная с +) 
+     */
+    protected $countryCode = '';
     
     /**
      * Номер: только цифры и знак плюса (если таковой имеется)
@@ -27,6 +31,7 @@ class PhoneNumber {
     public function __construct($phoneStr, $countryCode = '+7') 
     {
         $this->sourcePhoneText = $phoneStr;
+        $this->countryCode = $countryCode;
     }
     
     /**
@@ -36,7 +41,7 @@ class PhoneNumber {
     {
        $result = $this->clearPhoneNumber;
        if (is_null($result)) {
-           $result = preg_replace("/[^0-9, +]/", "", $this->sourcePhoneText); 
+           $result = preg_replace("/[^0-9+]/", "", $this->sourcePhoneText); 
            $this->clearPhoneNumber = $result;
        }
 
@@ -44,29 +49,4 @@ class PhoneNumber {
     }
     
     
-    /**
-     * Проверит является ли номер локальным (если начинается с данной последовательности) и 
-     * не начинается с плюса
-     * 
-     * @param string $localPhoneNumberStart с чего начинается локальный номер (по умолчанию = 8)
-     * @return bool
-     */
-    public function isLocal($localPhoneNumberStart = '8')
-    {
-        $clear = $this->getClear();
-        return (StrCommon::isStart($clear, $localPhoneNumberStart) &&
-               !StrCommon::isStart($clear, '+'));
-    }
-    
-    /**
-     * Проверит является ли номер внутренним
-     * 
-     * @param string $innerMaxLength
-     * @return bool
-     */
-    public function isInner($innerMaxLength = 5)
-    {
-        $clear = $this->getClear();
-        return (strlen($clear) >= $innerMaxLength);
-    }
 }

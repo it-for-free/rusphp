@@ -122,7 +122,7 @@ class StrCommon {
     
     
     /**
-     * Заменит строку на значение из массима, ключом которого является данная строка
+     * Заменит строку на значение из массива, ключом которого является данная строка
      * 
      * @param string $str
      * @param array $keyOldAndNewValues = ['old' => 'new', 'old2' => 'new2']
@@ -197,4 +197,5 @@ class StrCommon {
         
         return $result;
     }
+    
 }

@@ -2,10 +2,13 @@
     "name": "it-for-free/rusphp",
     "type": "library",
     "description": "PHP fucntions library for different perposis",
-    "keywords": ["php", "ssh", "archive", "memory", "html", 
-        "table", "ram", "image", "crop", "resize", "email", "email verify",
-            "create html file with source code of all project files",
-                 "documentation"],
+    "keywords": ["php", "ssh", "archive", "memory", 
+        "html table", "ram", "image crop resize on the fly", "email verify",
+        "create html file with source code of all project files for documentation",
+        "phone number info class: inner short",
+        "codeception log echo write into console addon"
+    
+    ],
     "homepage": "http://fkn.ktu10.com/?q=node/8592",
     "license": "MIT",
     
@@ -16,6 +19,11 @@
         "adbario/php-dot-notation": "*",
         "guzzlehttp/guzzle": "~6.0"
     },
+    
+    "require-dev": {
+        "codeception/codeception": "~2.0"
+    },
+    
     
     "autoload": {
         "psr-4": {
