@@ -16,17 +16,19 @@ class TokenWithTimestamp {
     /**
      * Проверит устарел ли ключ (если значение пусто, то считаем, что устарел)
      * 
-     * @param string $token_timestamp   токен и тайсмстэмп с временем создания токена, соединенные нижним подчеркиванием
+     * @param string $tokenWithTimestamp   токен и тайсмстэмп с временем создания токена, соединенные нижним подчеркиванием
      * @param int  $periodInSeconds     время жизни ключа в секундах (моментом создания считается прикреплённая временная метка)
      * @return boolean                  закончился ли указанный период
      */
-    public static function IsPeriodEnded($token_timestamp, $periodInSeconds) {
-        if (empty($token_timestamp)) {
+    public static function IsPeriodEnded($tokenWithTimestamp, $periodInSeconds) 
+    {
+        if (empty($tokenWithTimestamp)) {
             return true;
         }
 
-        $timestamp = (int) substr($token_timestamp, strrpos($token, '_') + 1);
+        $timestamp =  substr($tokenWithTimestamp, strrpos($tokenWithTimestamp, '_') + 1);
 
+        vdie($timestamp);
         return $timestamp + $periodInSeconds >= time();
     }
 
