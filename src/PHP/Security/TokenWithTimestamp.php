@@ -28,8 +28,7 @@ class TokenWithTimestamp {
 
         $timestamp =  substr($tokenWithTimestamp, strrpos($tokenWithTimestamp, '_') + 1);
 
-        vdie($timestamp);
-        return $timestamp + $periodInSeconds >= time();
+        return $timestamp + $periodInSeconds < time();
     }
 
 }
