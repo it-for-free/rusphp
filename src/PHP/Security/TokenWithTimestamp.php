@@ -15,11 +15,10 @@ use ItForFree\rusphp\PHP\Str\StrCommon;
  */
 class TokenWithTimestamp
 {
-
     /**
      * @var string  токен и тайсмстэмп с временем создания токена, соединенные нижним подчеркиванием (устанавливается в конструкторе)
      */
-    protected $sourceToken;
+    protected $sourceToken = '';
 
     protected $token = '';
     
@@ -31,9 +30,11 @@ class TokenWithTimestamp
      */
     public function __construct($sourceToken) 
     {
-        $this->sourceToken = $sourceToken;
-        $this->timestamp =  substr($sourceToken, strrpos($sourceToken, '_') + 1);
-        $this->token = StrCommon::replaceSubStrInTheEnd($sourceToken, '_' . $this->timestamp);
+        if (!empty($sourceToken)) {
+            $this->sourceToken = $sourceToken;
+            $this->timestamp =  substr($sourceToken, strrpos($sourceToken, '_') + 1);
+            $this->token = StrCommon::replaceSubStrInTheEnd($sourceToken, '_' . $this->timestamp);
+        }
     }
             
     /**
@@ -69,7 +70,7 @@ class TokenWithTimestamp
     /**
      * Вернёт актуальную строку вида токен_временнаяМетка
      */
-    public function get()
+    public function getFullStr()
     {
         return $this->token . '_' . $this->timestamp;
     }
@@ -91,7 +92,4 @@ class TokenWithTimestamp
     {
         return $this->token;
     }
-    
-    
-
 }
