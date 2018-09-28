@@ -87,6 +87,8 @@ class StrCommon {
         return $result;
     }
     
+
+    
     /**
      * Вернёт последний символ строки
      * 
@@ -139,6 +141,19 @@ class StrCommon {
         
         return $result;
     }
+    
+    /**
+     * Заменит подстроку в конце данной строки (если таковая найдётся)
+     * 
+     * @param string $sourceStr строка, в которой надо провести замену
+     * @param string $oldSubStr что заменять
+     * @param string $newSubStr на что заменять (не обязателен. Если хамена на пустую строку)
+     */
+    public static function  replaceSubStrInTheEnd($sourceStr, $oldSubStr, $newSubStr = '')
+    {
+        return preg_replace('/'. preg_quote($oldSubStr, '/') . '$/', $newSubStr, $sourceStr);
+    }
+    
     
     /**
      * Сравнит две строки относительно алфавита -- алфавитный порядок
