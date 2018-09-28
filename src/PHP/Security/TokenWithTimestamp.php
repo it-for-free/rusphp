@@ -72,7 +72,12 @@ class TokenWithTimestamp
      */
     public function getFullStr()
     {
-        return $this->token . '_' . $this->timestamp;
+        if  (!empty($this->token) && !empty($this->timestamp))
+        { 
+            return $this->token . '_' . $this->timestamp;
+        } else {
+            return '';
+        }
     }
     
     /**
