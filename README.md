@@ -29,6 +29,7 @@
 * [Создание файла c исходным кодом проекта](src/Documentaion/FileCreator/README.md)
 * [Работа с телефонными номерами](src/Common/Phone/PhoneNumber/README.md)
 * [Безопасноть (в частности секрентые ключи/токены)](src/PHP/Security/README.md)
+* [Работа с онлайн-картами (яндекс и google maps)](/var/www/rusphp/src/Common/Map/README.md)
 
 
 ## Дополнения к другим системам/библиотекам
