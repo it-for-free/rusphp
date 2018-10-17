@@ -8,6 +8,8 @@ namespace ItForFree\rusphp\Common\Map;
  *
  * Ключевые слова: координаты, геомертия, среднее арифметическое, центр прямоугольника,
  *  яндекс карты, гугл карты
+ * 
+ *  @author Eugene Ivkov <ghostichek@gmail.com> (автор идеи и основной реализации)
  */
 class MapConfigurator {
     
