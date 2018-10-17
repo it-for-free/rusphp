@@ -1,4 +1,4 @@
 # Web-клиенты к разным системам
 
 ## Trumail
- Проверка почты на "доставляемость"  возможна с помощью `ItForFree\rusphp\WebClients\Trumail\EmailVlidator`
+ Проверка  адреса электронной почты на "доставляемость"  возможна с помощью `ItForFree\rusphp\WebClients\Trumail\EmailVlidator`
