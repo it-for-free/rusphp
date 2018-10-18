@@ -84,14 +84,24 @@ class MapConfigurator {
     /**
      * Вернёт массив со всеми доступными настройками,
      * в частности координаты центра карты и значение приближения (zoom)
+     * 
+     * @param  bool $addCoords если true, то добавит в массив и переданные
+     *         в класс координаты, на базе которых производится рассчет 
+     *         остального как элемент 'coords' => []
      * @return array
      */
-    public function getAllSettings()
+    public function getAllSettings($addCoords = false)
     {
-        return [
+        $settings =  [
             'center' => $this->getCenter(),
             'zoom' => $this->getZoom(),
         ];
+        
+        if ($addCoords) {
+            $settings['coords'] = $this->coords;
+        }
+        
+        return $settings;
     }
 
     /**
