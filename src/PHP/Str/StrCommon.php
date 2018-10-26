@@ -105,6 +105,17 @@ class StrCommon {
         }
     }
     
+    /**
+     * Получит первый символ строки
+     * 
+     * @param  string $str
+     * @return char
+     */
+    public static function  getFirstSymbol($str)
+    {
+        return substr($str, 0, 1);
+    }
+    
     
     /**
      * (псевдоним)
