@@ -97,7 +97,11 @@ class StrCommon {
     public static function  getLastSymb($str, $encoding = null)
     {
         if (!empty($str)) {
-            return mb_substr($str, -1, null, $encoding);
+            if ($encoding) {
+                return mb_substr($str, -1, null, $encoding);
+            } else {
+                return mb_substr($str, -1);
+            }
         } else {
             throw new \Exception('Your String is Empty! Its impossible to get last symbol');
         }
@@ -112,7 +116,11 @@ class StrCommon {
      */
     public static function  getFirstSymbol($str, $encoding = null)
     {
-        return mb_substr($str, 0, 1, $encoding);
+        if ($encoding) {
+           return mb_substr($str, 0, 1, $encoding);
+        } else {
+           return mb_substr($str, 0, 1);
+        }
     }
     
     
