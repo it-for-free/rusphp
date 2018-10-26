@@ -107,13 +107,14 @@ class StrCommon {
     
     /**
      * Получит первый символ строки
-     * 
+     *
      * @param  string $str
+     * @param  string $encoding  (не обязательно) кодировка как для mb_substr() 
      * @return char
      */
-    public static function  getFirstSymbol($str)
+    public static function  getFirstSymbol($str, $encoding = null)
     {
-        return substr($str, 0, 1);
+        return mb_substr($str, 0, 1, $encoding);
     }
     
     
