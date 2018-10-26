@@ -86,20 +86,18 @@ class StrCommon {
         
         return $result;
     }
-    
 
-    
     /**
      * Вернёт последний символ строки
      * 
      * @param  string $str
-     * @return char
+     * @param  string $encoding  (не обязательно) кодировка как для mb_substr(). По умолчанию берётся из mb_internal_encoding()
      * @throws \Exception
      */
-    public static function  getLastSymb($str)
+    public static function  getLastSymb($str, $encoding = null)
     {
         if (!empty($str)) {
-            return substr($str, -1);
+            return mb_substr($str, -1, null, $encoding);
         } else {
             throw new \Exception('Your String is Empty! Its impossible to get last symbol');
         }
