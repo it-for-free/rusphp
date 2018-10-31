@@ -75,21 +75,23 @@ class Path {
     }
     
     /**
-     * Добавит данный путь к пути от корня сайта 
+     * Добавит слева  к переданному пути $additionalPath путь
+     * до корня сервера 
+     * 
      * @see зависит от $_SERVER['DOCUMENT_ROOT'] 
-     * @param string $additioanlPath  путь, который нужно прибавить к пути к корню сайта 
+     * @param string $additionalPath  путь, который нужно прибавить к пути к корню сайта 
      * 
      * @return string
      */
-    public static function addToDocumentRoot($additioanlPath)
+    public static function addToDocumentRoot($additionalPath)
     {
-        $path = $_SERVER['DOCUMENT_ROOT'] 
-                . DIRECTORY_SEPARATOR . $additioanlPath . DIRECTORY_SEPARATOR;
+        $path = static::removeEndSlash($_SERVER['DOCUMENT_ROOT'])
+            . static::addStartSlash($additionalPath);
         return $path;
     }
     
     /**
-     * Добавит разделитель директорий (прямой или обратый слеш), 
+     * Добавит разделитель директорий в конец пути (прямой или обратый слеш), 
      * если путь итак им не оканчивается.
      * 
      * @param string $path  путь, которому надо добавить в конец слеш, если его там нет
@@ -97,6 +99,46 @@ class Path {
      */
     public static function addEndSlash($path)
     {
-        return rtrim($path, DIRECTORY_SEPARATOR) .  DIRECTORY_SEPARATOR;;
-    }  
+        return rtrim($path, DIRECTORY_SEPARATOR) .  DIRECTORY_SEPARATOR;
+    } 
+    
+    
+    /**
+     * Добавит разделитель директорий в начало пути (прямой или обратый слеш), 
+     * если путь итак cнего не начинается.
+     * 
+     * @param string $path  путь, которому надо добавить в начало слеш, если его там нет
+     * @return string
+     */
+    public static function addStartSlash($path)
+    {
+        return (DIRECTORY_SEPARATOR 
+            . ltrim($path, DIRECTORY_SEPARATOR));
+    } 
+    
+    /**
+     * Удалит разделитель директорий (прямой или обратый слеш), 
+     * если путь им  оканчивается.
+     * 
+     * @param string $path  путь, с конца которого надо удалить разделитель диреткторий (если он там есть).
+     * @return string
+     */
+    public static function removeEndSlash($path)
+    {
+        return rtrim($path, DIRECTORY_SEPARATOR);
+    } 
+
+    /**
+     * Добавит разделитель директорий в начало и конец пути, если их там нет (прямой или обратый слеш), 
+     * если путь итак им не оканчивается.
+     * 
+     * @param string $path  путь, которому надо добавить начальный и конечные слеши, если их там нет
+     * @return string
+     */
+    public static function addSlashes($path)
+    {
+        return  DIRECTORY_SEPARATOR . 
+                trim($path, DIRECTORY_SEPARATOR)
+                .  DIRECTORY_SEPARATOR;
+    } 
 }
