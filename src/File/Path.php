@@ -87,4 +87,16 @@ class Path {
                 . DIRECTORY_SEPARATOR . $additioanlPath . DIRECTORY_SEPARATOR;
         return $path;
     }
+    
+    /**
+     * Добавит разделитель директорий (прямой или обратый слеш), 
+     * если путь итак им не оканчивается.
+     * 
+     * @param string $path  путь, которому надо добавить в конец слеш, если его там нет
+     * @return string
+     */
+    public static function addEndSlash($path)
+    {
+        return rtrim($path, DIRECTORY_SEPARATOR) .  DIRECTORY_SEPARATOR;;
+    }  
 }
