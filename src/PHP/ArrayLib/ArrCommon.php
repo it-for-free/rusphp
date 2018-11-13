@@ -99,6 +99,27 @@ class ArrCommon
     }
     
     /**
+     * Удалит $count первых элементов в массиве
+     * 
+     * @param array $arr  исходный массив
+     * @param int $count  число элементов  (с начала), которые надо удалить
+     * @return array 
+     */
+    public static function removeFirstElements($arr, $count)
+    {
+        $remCount = 0;
+        foreach ($arr as $key => $value) {
+            if ($remCount < $count) {
+                unset($arr[$key]);
+                $remCount++;
+            } else {
+                break;
+            }
+        }
+        return $arr;
+    }
+    
+    /**
      * Сортировка ассоциативного массива по ключам -- например, по алфавиту
      * 
      * @param type $arr
@@ -247,8 +268,5 @@ class ArrCommon
         }
         
         return $result;
-    }
-
-    
-   
+    } 
 }

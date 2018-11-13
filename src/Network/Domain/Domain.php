@@ -4,6 +4,7 @@ namespace ItForFree\rusphp\Network\Domain;
 
 use ItForFree\rusphp\Network\Url\Url;
 use ItForFree\rusphp\PHP\ArrayLib\Reverce;
+use ItForFree\rusphp\PHP\ArrayLib\ArrCommon;
 
 /**
  * Для работы со строкой домена сайта ("с доменом сайта").
@@ -59,5 +60,28 @@ class Domain {
         return $subdomain;  
     }
     
-    
+    /**
+     * Вернёт базовый домен для данного домена
+     * 
+     * @param int $minusLevel       насколько меньший уровень домена нужен, 
+     * например, для  $minusLevel =1 и домена abc.edf.example.com вернется  edf.example.com
+     * @param int $minimumBaseLevel  минимальный уровень домена, который должен 
+     * получится в итоге (по умолчанию 1 т.е. может быть равен, например ru, 
+     * если передать 2 то, минимальным будет уже site.ru), если получившийся 
+     * поддомен меньше минимального, то просто вернётся теущий поддомен $this->name 
+     * @return string
+     */
+    public function getBase($minusLevel = 1, $minimumBaseLevel = 1)
+    {
+        $baseDomain = $this->name;
+        $subdomains = explode('.', $this->name);
+        
+        $baseSubdomains = ArrCommon::removeFirstElements($subdomains, $minusLevel);
+        
+        if (count($baseSubdomains) >= $minimumBaseLevel) {
+            $baseDomain = implode('.', $baseSubdomains);
+        }
+
+        return $baseDomain;
+    }
 }
