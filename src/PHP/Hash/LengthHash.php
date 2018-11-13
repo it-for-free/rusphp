@@ -12,12 +12,14 @@ namespace ItForFree\rusphp\PHP\Hash;
 class LengthHash 
 {
     /**
+     * Вернёт фрагмент md5 хэша заданной длинны (начиная с начала)
      * 
-     * @param type $str
-     * @param type $length
+     * @param srting $str  исходная строка
+     * @param int $length  длина результата
+     * @return string
      */
     public static function md5($str, $length = 10)
     {
-        substr(md5($str), 0, $length);
+        return substr(md5($str), 0, $length);
     }
 }
