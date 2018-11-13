@@ -30,6 +30,7 @@
 * [Работа с телефонными номерами](src/Common/Phone/PhoneNumber/README.md)
 * [Безопасноть (в частности секрентые ключи/токены)](src/PHP/Security/README.md)
 * [Работа с онлайн-картами (яндекс и google maps)](src/Common/Map/README.md)
+* [Для работы с доменами](src/Network/Domain/README.md)
 
 
 ## Дополнения к другим системам/библиотекам
