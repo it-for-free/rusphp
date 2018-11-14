@@ -105,7 +105,7 @@ class Path {
     
     /**
      * Добавит разделитель директорий в начало пути (прямой или обратый слеш), 
-     * если путь итак cнего не начинается.
+     * если путь итак c него не начинается.
      * 
      * @param string $path  путь, которому надо добавить в начало слеш, если его там нет
      * @return string
@@ -140,5 +140,21 @@ class Path {
         return  DIRECTORY_SEPARATOR . 
                 trim($path, DIRECTORY_SEPARATOR)
                 .  DIRECTORY_SEPARATOR;
-    } 
+    }
+    
+    /**
+     * Удалит из пути путь до корня сайта, и вернёт то, что получилось
+     * 
+     * @param string $path            путь (подразумевается, что абсолютный)
+     * @param boolean $withStartSlash добавлять ли слеш в начале специально (если его там не было)
+     * @return type
+     */
+    public static function getWithoutDocumentRoot($path, $withStartSlash = false)
+    {
+        $relativePath = str_replace($_SERVER['DOCUMENT_ROOT'], '', $path);
+        if ($withStartSlash) {
+            $relativePath = static::addStartSlash($relativePath);
+        }
+        return $relativePath;
+    }
 }

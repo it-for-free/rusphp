@@ -269,4 +269,54 @@ class ArrCommon
         
         return $result;
     } 
+    
+    /**
+     * Копирует (клонирует) массив -- в т.ч. объектов
+     * 
+     * ((copy clone array of objects))
+     * 
+     * @param mixed[] $arrayOfObjects
+     * @param bool    $saveKeys        если false, то ключи будут заменены стандартными (численными)
+     * @return mixed[]
+     */
+    public static function copy($arrayOfObjects, $saveKeys = true)
+    {
+        $new = array();
+        if ($saveKeys) {
+            foreach ($arrayOfObjects as $k => $v) {
+                $new[$k] = clone $v;
+            }
+        } else {
+            foreach ($arrayOfObjects as $v) {
+                $new[] = clone $v;
+            }
+        }
+        
+        return $new;
+    } 
+    
+    /**
+     * Проверит меньше ли значение всех элементов из массива
+     * 
+     * @param mixed $element  значение
+     * @param mixed[] $arr    массив, с элементами которого сравниваем
+     * @param boolean $equial считать ли равенство допустимым (если <= то будем считать, что меньше)
+     * @return boolean
+     */
+    public static function isLessOfAll($element, $arr, $equial = true)
+    {
+        $less = true;
+        $min = min($arr);
+        
+        if ($equial) {
+            if ($element > $min) {
+                $less = false;
+            }   
+        } else {
+            if ($element >= $min) {
+                $less = false;
+            }
+        }
+        return $less;
+    }
 }
