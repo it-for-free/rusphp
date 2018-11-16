@@ -42,3 +42,8 @@
 *  [Клиенты](src/WebClients/README.md)
 
 
+## Вынесено в отделные пакеты
+
+* Web-клиенты к различным системам: https://github.com/it-for-free/php-web-clients
+
+

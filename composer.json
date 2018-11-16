@@ -18,8 +18,7 @@
         "php": ">=5.3.0",
         "ralouphie/mimey": "v1.0.*",
         "ramsey/array_column": "*",
-        "adbario/php-dot-notation": "*",
-        "guzzlehttp/guzzle": "~6.0"
+        "adbario/php-dot-notation": "*"
     },
     
     "require-dev": {
