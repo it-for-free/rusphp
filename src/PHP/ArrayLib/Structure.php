@@ -33,19 +33,20 @@ class Structure
         
         return $result;
     }
-    
+
     /**
      * Вернёт индекс (ключ) самого длинного вложенного подмассива массива
      * 
-     * @param  array $nestedArray   массив, которые может содержать вложенные массивы
-     * @return mixed               имя ключа (индекса)
+     * @param array $nestedArray   массив, которые может содержать вложенные массивы
+     * @param array $allowedKeys   ограничивающий список -- если нужно чтобы возвращаемый элементы был исключительно из этого этого списка 
+     * @return mixed               имя ключа (индекса) или тгдд
      */
-    public static function getKeyOfLogestSubarray($nestedArray)
+    public static function getKeyOfLogestSubarray($nestedArray, $allowedKeys = array())
     {
         $maxLength = 0;
-        $arrayKeyName = false;
+        $arrayKeyName = null;
         foreach ($nestedArray as $key => $value) {
-            if (is_array($value)) {
+            if (is_array($value) && (empty($allowedKeys) || in_array($key, $allowedKeys))) {
                 $length = count($value);
                 if ($length >= $maxLength) {
                     $maxLength = $length;
@@ -55,5 +56,22 @@ class Structure
         }
         
         return $arrayKeyName;
+    }
+    
+    /**
+     * Вернёт массив ключей тех элементов, котроые сами являются массивами
+     * 
+     * @param mixed[] $arr
+     * @return mixed[]
+     */
+    public static function getSubArraysKeys($arr)
+    {
+        $keys = array();
+        foreach ($arr as $key => $value) {
+            if (is_array($value)) {
+                $keys[] = $key;
+            }
+        }
+        return $keys;
     }
 }

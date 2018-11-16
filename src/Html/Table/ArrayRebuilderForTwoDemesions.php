@@ -69,7 +69,8 @@ class ArrayRebuilderForTwoDemesions extends ArrayRebuilder
      */
     private function getEntityResultForTwoDemisionalArray($twoDemArr)
     {
-        $maxLenghtName = ArrayStructure::getKeyOfLogestSubarray($twoDemArr);
+        $needleSubArraysKeys = ArrayStructure::getSubArraysKeys($this->needleElementsAndSubarrays);
+        $maxLenghtName = ArrayStructure::getKeyOfLogestSubarray($twoDemArr, $needleSubArraysKeys);
         
         $result = array();
         $inEntityTableRowNumber = 0;
@@ -83,7 +84,7 @@ class ArrayRebuilderForTwoDemesions extends ArrayRebuilder
                 $inEntityTableRowNumber++;
             }
         } else { // если самым "глубоким" в этой строке оказался пустой массив
-            $result = $this->getValueFromSlice($twoDemArr, 0); // просто берём 1 срез, так как по сути строка только 1
+            $result = $this->getValueFromSlice($twoDemArr, 0); // просто берём 1 срез, так как по сути строка только 1 (массив лиш формально двумерен)
         }      
         
         return $result;
