@@ -73,30 +73,30 @@ class ArrayRebuilderForTwoDemesions extends ArrayRebuilder
         
         $result = array();
         $inEntityTableRowNumber = 0;
-       // Log::pre($twoDemArr);
-        //Log::me('до цикла');
-        foreach ($twoDemArr[$maxLenghtName] as $subArrayKey => $value) {
-            
-            $sliceValues = $this->getValueFromSlice($twoDemArr, $inEntityTableRowNumber);
-            $result = array_merge($result, $sliceValues);
-           // Log::pre($sliceValues, "Срез № $inEntityTableRowNumber " . count($sliceValues[0]));
-            
-    
-            $inEntityTableRowNumber++;
-        }
-       // Log::me('после цикла');
+
+        if (!empty($twoDemArr[$maxLenghtName])) { // не пуст ли этот массив
+            foreach ($twoDemArr[$maxLenghtName] as $subArrayKey => $value) {
+
+                $sliceValues = $this->getValueFromSlice($twoDemArr, $inEntityTableRowNumber);
+                $result = array_merge($result, $sliceValues);
+
+                $inEntityTableRowNumber++;
+            }
+        } else { // если самым "глубоким" в этой строке оказался пустой массив
+            $result = $this->getValueFromSlice($twoDemArr, 0); // просто берём 1 срез, так как по сути строка только 1
+        }      
         
         return $result;
     }
 
     /**
-     *  Возвращает массив -- то что можно называть одной строкой html таблицы
+     *  Возвращает массив -- то что можно называть одной (видимой) строкой  html таблицы
      * 
      * "Режет" массив слоями (снимает очередной слой), вне зависимости, 
      *  является ли конкретное поле подмассивом (если не подмассив -- то создаётся пустая ячейка)
      * 
      * Подразумеваются, элементы вложенных массивов имеют одинаковую струкутру (число полей)
-     * А также, что элементы вложенных массивов имеют именованные ключи (чтобы можно было понять к какой коолонке относится)
+     * А также, что элементы вложенных массивов имеют именованные ключи (чтобы можно было понять к какой колонке относится)
      * 
      * @param array $twoDemArr         двумерный массив: в нём могут быть как единичные элементы так и подмассивы
      * @param int $inEntityTableRowNumber   номер среза для сущности (число срезов определяется глубиной вложенности)
