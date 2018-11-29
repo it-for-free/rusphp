@@ -6,6 +6,7 @@ use ItForFree\rusphp\PHP\Str\StrCommon;
 
 /**
  * Для работы с адресами социальных сетей
+ * и ссылками на аккаунты месседжеров
  */
 class SocialNetworkUrl extends Url {
     
@@ -22,7 +23,7 @@ class SocialNetworkUrl extends Url {
         'facebook' => 'facebook.com',
         'instagram' => 'instagram.com',
         'odnoklassniki' => ['odnoklassniki.ru', 'ok.ru'],
-        
+        'telegram' => ['telegram.me', 't.me'],
     ];
     
 
