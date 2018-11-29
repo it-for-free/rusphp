@@ -319,4 +319,41 @@ class ArrCommon
         }
         return $less;
     }
+    
+        /**
+     * Отфильтрует массив, оставивив в нём только элементы
+     * с ключами из  $keysAr
+     * 
+     * ((php array get fields with keys))
+     * 
+     * @param array $arr             исходный массив
+     * @param array $keysArr  массив нужных ключей
+     * @param bool $setEmptyIfKeyNotExists  устанавливать ли в результат пустые
+     *  значения, если очередного ключа в массиве нет
+     *  (по умолчанию просто пропускаем)
+     * @param mixed $defaultEmptyValue  значение, на случае если 
+     * поднят флаг $setEmptyIfKeyNotExist (для пустых значений)
+     * @return array  отфильтрованный массив
+     */
+    public static function getElemetsWithKeys($arr, $keysArr, $setEmptyIfKeyNotExists = false, $defaultEmptyValue = '')
+    {
+        $results = [];
+        
+        if ($setEmptyIfKeyNotExists) {
+            foreach ($keysArr as $key) {
+                if (array_key_exists($key, $arr)) {
+                   $results[$key] = $arr[$key];
+                } else {
+                   $results[$key] = $defaultEmptyValue; 
+                }
+            }
+        } else {
+            foreach ($keysArr as $key) {
+                if (array_key_exists($key, $arr)) {
+                   $results[$key] = $arr[$key];
+                }
+            }
+        }
+        return $results;
+    }
 }
