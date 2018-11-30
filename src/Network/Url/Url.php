@@ -125,6 +125,17 @@ class Url {
     }
     
     /**
+     * Вернёт хост с протоколом
+     * 
+     * @return string
+     */
+    public function getHostWithProtocol()
+    {
+        return $this->scheme 
+                . '://' . $this->host;
+    }
+    
+    /**
      * Получит текущий URL с учетом http/https 
      * (адрес страницы, запрошенный пользователем)
      * 
