@@ -356,4 +356,32 @@ class ArrCommon
         }
         return $results;
     }
+    
+    /**
+     * Рекурсивно проверит массив на пустоту.
+     * Фактически идёт проверка на содержание
+     *  в массиве на любом уровне непустых значений (не объектов)
+     * 
+     * ((php array empty recursive))
+     * 
+     * @param array $array
+     * @return boolean
+     */
+    public static function isEmptyRecursive($array) 
+    {
+        if (empty($array)) {
+            return true;
+        } else {
+            foreach ($array as $key => $value) {
+                if (is_array($value)) {
+                    static::isEmptyRecursive($value);
+                } else { // если это не массив
+                    if (!empty($value)) {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+    }
 }
