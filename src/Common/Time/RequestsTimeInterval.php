@@ -29,7 +29,7 @@ class RequestsTimeInterval
    public $startWaitInterval = 1;
    
    /**
-    * @param int $startWaitIterval стартовый интервал в секундах
+    * @param int $startWaitInterval стартовый интервал в секундах
     */
    public function __construct($startWaitInterval = 1) {
        $this->startWaitInterval = $startWaitInterval;
