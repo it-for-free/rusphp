@@ -28,11 +28,20 @@ class RequestsTimeInterval
     */
    public $startWaitInterval = 1;
    
+    /**
+    * Текущее время ожидания 
+     * (автоматически обновляется объектом класса по внутренней логике)
+    * 
+    * @var int
+    */
+   protected $timeInterval = 1;
+   
    /**
     * @param int $startWaitInterval стартовый интервал в секундах
     */
    public function __construct($startWaitInterval = 1) {
        $this->startWaitInterval = $startWaitInterval;
+       $this->timeInterval = $startWaitInterval;
    }
    
    /**
@@ -40,7 +49,7 @@ class RequestsTimeInterval
     */
    public function wait()
    {
-       sleep($this->baseIterval);
+       sleep($this->timeInterval);
    }
    
    /**
@@ -73,11 +82,11 @@ class RequestsTimeInterval
        if ($isPreviousResponceOk && $isNewResponceOk) {
            return; // просто выходим, ничего не меняя, если продолжается удачная полоса
        } else if (!$isPreviousResponceOk && $isNewResponceOk)  {
-           $this->startWaitInterval = intdiv($this->startWaitInterval, 2); // уменьшаем в 2 раза при переходе к удачной полосе
+           $this->timeInterval = intdiv($this->timeInterval, 2); // уменьшаем в 2 раза при переходе к удачной полосе
            $isPreviousResponceOk = $isNewResponceOk;
            return;
        } else if (!$isPreviousResponceOk && !$isNewResponceOk)  {
-           $this->startWaitInterval = $this->startWaitInterval * 2; // если неудачная полоса продолжается, то увеличиваем в 2 раза.
+           $this->timeInterval = $this->timeInterval * 2; // если неудачная полоса продолжается, то увеличиваем в 2 раза.
            return;
        }
        
