@@ -91,4 +91,13 @@ class RequestsTimeInterval
        }
        
    }
+   
+   /**
+    * Вернёт текущее значение паузы (для ближайшего запроса)
+    * @return int
+    */
+   public function getCurrentInterval()
+   {
+       return $this->timeInterval;
+   }
 }
