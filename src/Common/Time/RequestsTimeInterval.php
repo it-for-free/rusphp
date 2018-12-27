@@ -3,6 +3,8 @@
 namespace ItForFree\rusphp\Common\Time;
 
 /**
+ * Планировщик временных интервалов между запросами.
+ * 
  * Класс для определения эффективного временного интервала между запросами
  * к некоторому API (напр. бесплатному).
  * Цель: с одной стороны проверить быстрее, с другой не попасть в бан.
@@ -27,6 +29,14 @@ class RequestsTimeInterval
     * @var int
     */
    public $startWaitInterval = 1;
+   
+   
+   /**
+    * Минимальное время в секундах, которое надо выставлять,
+    *  в случае елси раньше интервал был = 0
+    * @var int 
+    */
+   public $minimumNotZero = 1;
    
     /**
     * Текущее время ожидания 
@@ -82,16 +92,30 @@ class RequestsTimeInterval
        if ($isPreviousResponceOk && $isNewResponceOk) {
            return; // просто выходим, ничего не меняя, если продолжается удачная полоса
        } else if (!$isPreviousResponceOk && $isNewResponceOk)  {
+           $this->setMinimumIntervalIfZero();
            $this->timeInterval = intdiv($this->timeInterval, 2); // уменьшаем в 2 раза при переходе к удачной полосе
            $isPreviousResponceOk = $isNewResponceOk;
            return;
-       } else if (!$isPreviousResponceOk && !$isNewResponceOk)  {
-           $this->timeInterval = $this->timeInterval * 2; // если неудачная полоса продолжается, то увеличиваем в 2 раза.
+       } else if (!$isNewResponceOk)  {
+           $this->setMinimumIntervalIfZero(); 
+           $this->timeInterval = $this->timeInterval * 2; // если неудачная полоса продолжается, или мы только перешли к ней.
            return;
        }
        
    }
    
+   /**
+    * Если интервал был равен нулю, то чт обы увеличивать его в 2 раза, 
+    * нам потребуется установить некое отлично от нуля число из поля 
+    * класса minimumNotZero
+    */
+   protected function setMinimumIntervalIfZero()
+   {
+        if (!$this->timeInterval) {
+            $this->timeInterval = $this->minimumNotZero; 
+        }
+   }
+
    /**
     * Вернёт текущее значение паузы (для ближайшего запроса)
     * @return int
