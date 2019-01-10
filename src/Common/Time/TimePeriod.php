@@ -33,14 +33,14 @@ class TimePeriod
      * Для выделения полных лет из общего количества месяцев можете использовать
      * метод TimePeriod::changeTermFormatToStrict()
      *
-     * @param int $monthTerm
      * @param int $yearsTerm
+     * @param int $monthTerm
      *
      * @return string
      *
      * @throws LogicException
      */
-    public static function termToString(int $monthTerm, int $yearsTerm): string
+    public static function termToString(int $yearsTerm, int $monthTerm): string
     {
         if (1 == $monthTerm) {
             $monthString = ' месяц';
@@ -48,6 +48,7 @@ class TimePeriod
             $monthString = ' месяца';
         } elseif (in_array($monthTerm, [5,6,7,8,9,10,11])) {
             $monthString = ' месяцев';
+        } elseif (0 == $monthTerm) {
         } else {
             throw new LogicException('Количество месяцев не может быть больше 11. Увеличьте количество лет.');
         }
@@ -58,18 +59,21 @@ class TimePeriod
             $yearsString = ' год ';
         } elseif (in_array($yearsTerm % 10, [2,3,4])) {
             $yearsString = ' года ';
+        } elseif (0 == $yearsTerm) {
         } else {
             $yearsString = ' лет ';
         }
 
-        if (empty($yearsTerm)) {
+        if (empty($yearsTerm) && empty($monthTerm)) {
+            $stringTerm = 'Не указано';
+        } elseif (empty($yearsTerm)) {
             $stringTerm = $monthTerm.$monthString;
         } elseif (empty($monthTerm)) {
             $stringTerm = $yearsTerm.$yearsString;
-        } elseif (empty($yearsTerm) && empty($monthTerm)) {
-            $stringTerm = 'Не указано';
         } else {
             $stringTerm = $yearsTerm.$yearsString.$monthTerm.$monthString;
         }
+
+        return $stringTerm;
     }
 }
