@@ -70,16 +70,16 @@ class StrCommon {
      * Заменит все указанные в массиве подстроки на указанную подстроку
      * Например: удалит все указанные подстроки из строки
      * 
-     * @param string $str
-     * @param array $substrs
-     * @param string $newSubStr
+     * @param string $str        строка, в которой производятся замены
+     * @param array $substrs     какие подстроки заменять
+     * @param string $newSubStr  на что заменять
      * @return type     
      */
     public static function  removeSubStrs($str, $substrs, $newSubStr = '')
     {
         $result = $str;
         
-        foreach ($substrs as $key => $val)
+        foreach ($substrs as $val)
         {
             $result = str_replace($val, $newSubStr, $result);
         }
