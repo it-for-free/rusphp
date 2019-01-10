@@ -9,8 +9,9 @@
         "phone number info class inner short",
         "codeception log echo write into console addon",
         "security token with timestamp",
-        "yandex maps goole maps center zoom for point coords set"
-
+        "yandex maps goole maps center zoom for point coords set",
+        "time interval for wait sleep between api requests",
+        "string filter html tags and url protocols"
     ],
     "homepage": "http://fkn.ktu10.com/?q=node/8592",
     "license": "MIT",
