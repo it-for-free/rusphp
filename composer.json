@@ -33,7 +33,6 @@
         },
         "files": ["src/functions.php"]
     },
-    "bin": ["src/Documentaion/FileCreator/create-source-code-file.php"],
     
     "repositories": [
         {
