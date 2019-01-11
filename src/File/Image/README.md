@@ -1,4 +1,4 @@
-## `ItForFree/File/Image/`
+## `ItForFree/rusphp/File/Image/`
 
 Содержит классы позвоялющие работать с изображениями.
 

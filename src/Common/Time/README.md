@@ -1,4 +1,4 @@
-## `ItForFree/Common/Time`
+## `ItForFree/rusphp/Common/Time`
 
 Содержит классы позвоялющие работать с временными периодами.
 
@@ -32,7 +32,7 @@ TimePeriod::changeTermFormatToStrict(17);
 ```php
 use ItForFree\rusphp\File\Common\Time;
 
-TimePeriod::changeTermFormatToStrict(17);
+TimePeriod::termToString(1, 5);
 ```
 где 1 - количество лет, а 5 - количество месяцев
 
