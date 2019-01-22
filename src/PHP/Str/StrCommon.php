@@ -230,5 +230,22 @@ class StrCommon {
 
         return $result;
     }
-
+    
+    /**
+     * Проверит оканчивается (заканчивается) ли строка данной подстрокой
+     * 
+     * @param string $string    строка 
+     * @param string $subString подстрока
+     * @return boolean
+     */
+    public static function isEndWith($string, $subString) {
+    
+        $strlen = strlen($string);
+        $testlen = strlen($subString);
+        if ($testlen > $strlen) { 
+            return false;
+        }
+        return substr_compare($string, $subString,
+            $strlen - $testlen, $testlen) === 0;
+    }
 }
