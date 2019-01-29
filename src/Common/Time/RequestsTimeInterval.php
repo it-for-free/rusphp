@@ -23,13 +23,33 @@ namespace ItForFree\rusphp\Common\Time;
 class RequestsTimeInterval 
 {
    /**
-    * Начальный временной интервал
-    * между запросами
+    * @var int Очередной ожидаемый интервал между запросами (по факту именно это значение испольуется для ожидания)
+    */
+   protected $timeInterval;
+   
+   /**
+    * @var int Cтолько секунд добавим к интервалу после удачного запроса, если предыдущий запрос был неудачным
+    */
+   protected $additionalToBtwSuccess = 1;
+   
+   /**
+    *
+    * @var int столько секунд добавим к интервалу между неудачными запрсаи, после каждого неудачного 
+    */
+   protected $additionalToBtwFails = 60;
+     
+   /**
+    * Текущее время ожидания между удачными запросами
+    * (автоматически обновляется объектом класса по внутренней логике)
     * 
     * @var int
     */
-   public $startWaitInterval = 1;
+   protected $timeIntervalBtwSuccess;
    
+   /**
+    * @var int  Текущее время ожидания  в секундах между неудачными запросами
+    */
+   protected $timeIntervalBtwFails;
    
    /**
     * Минимальное время в секундах, которое надо выставлять,
@@ -38,20 +58,24 @@ class RequestsTimeInterval
     */
    public $minimumNotZero = 1;
    
-    /**
-    * Текущее время ожидания 
-     * (автоматически обновляется объектом класса по внутренней логике)
-    * 
-    * @var int
-    */
-   protected $timeInterval = 1;
-   
    /**
-    * @param int $startWaitInterval стартовый интервал в секундах
+    * 
+    * @param int $timeIntervalBtwSuccess  начальное значение в секундах для ожидания после удачного запроса
+    * @param int $timeIntervalBtwFails   начальное значение в секундах для ожидания после неудачного запроса
+    * @param int $additionalToBtwSuccess столько секунд добавим к интервалу между удачными запросами, после выхода из поломы неудачных запросов
+    * @param int $additionalToBtwFails  столько секунд добавим к интервалу между неудачными запрсаи, после каждого неудачного 
     */
-   public function __construct($startWaitInterval = 1) {
-       $this->startWaitInterval = $startWaitInterval;
-       $this->timeInterval = $startWaitInterval;
+   public function __construct(
+           $timeIntervalBtwSuccess = 1,
+           $timeIntervalBtwFails = 60,
+           $additionalToBtwSuccess = 1,
+           $additionalToBtwFails = 60) {
+       $this->timeInterval = $timeIntervalBtwSuccess;
+       
+       $this->timeIntervalBtwSuccess = $timeIntervalBtwSuccess;
+       $this->timeIntervalBtwFails = $timeIntervalBtwFails;
+       $this->additionalToBtwSuccess = $additionalToBtwSuccess;
+       $this->additionalToBtwFails = $additionalToBtwFails;
    }
    
    /**
@@ -76,6 +100,7 @@ class RequestsTimeInterval
    }
    
    /**
+    * Обновит интервал очередного ожидания по ситуации
     * 
     * @staticvar boolean $isPreviousResponceOk  Хранит статус завершения предыдущего 
     * (относительно того, для которого вы сейчас можете вызвать этот метод) зароса.
@@ -91,21 +116,21 @@ class RequestsTimeInterval
        
        if ($isPreviousResponceOk && $isNewResponceOk) {
            return; // просто выходим, ничего не меняя, если продолжается удачная полоса
-       } else if (!$isPreviousResponceOk && $isNewResponceOk)  {
-           $this->setMinimumIntervalIfZero();
-           $this->timeInterval = intdiv($this->timeInterval, 2); // уменьшаем в 2 раза при переходе к удачной полосе
-           $isPreviousResponceOk = $isNewResponceOk;
-           return;
-       } else if (!$isNewResponceOk)  {
-           $this->setMinimumIntervalIfZero(); 
-           $this->timeInterval = $this->timeInterval * 2; // если неудачная полоса продолжается, или мы только перешли к ней.
-           return;
+       } else if (!$isPreviousResponceOk && $isNewResponceOk)  {    
+           $this->timeIntervalBtwSuccess += $this->additionalToBtwSuccess;
+           $this->timeInterval = $this->timeIntervalBtwSuccess; 
+       } else if ($isPreviousResponceOk && !$isNewResponceOk)  {
+           $this->timeInterval = $this->timeIntervalBtwFails;
+       } else if (!$isPreviousResponceOk && !$isNewResponceOk)  {
+           $this->timeIntervalBtwFails += $this->additionalToBtwFails;
+           $this->timeInterval = $this->timeIntervalBtwFails;
        }
        
+       $isPreviousResponceOk = $isNewResponceOk;
    }
    
    /**
-    * Если интервал был равен нулю, то чт обы увеличивать его в 2 раза, 
+    * Если интервал был равен нулю, то для умножения, 
     * нам потребуется установить некое отлично от нуля число из поля 
     * класса minimumNotZero
     */
