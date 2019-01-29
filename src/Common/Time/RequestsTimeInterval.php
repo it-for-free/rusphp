@@ -20,7 +20,7 @@ namespace ItForFree\rusphp\Common\Time;
  *
  *  (инервал времени, ожидание, пауза)
  */
-class RequestsTimeInterval 
+class RequestsTimeInterval implements RequestsTimeIntervalInterface
 {
    /**
     * @var int Очередной ожидаемый интервал между запросами (по факту именно это значение испольуется для ожидания)
