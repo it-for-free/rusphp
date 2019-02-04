@@ -36,13 +36,13 @@ class DateTimeDifference
     /**
      * Разница в днях между двумя датами
      * 
-     * @param \DateTime $startDateTime
-     * @param \DateTime $endDateTime
+     * @param \DateTime $startDateTime начальная дата
+     * @param \DateTime $endDateTime   конечная дата
      * @return int                     число дней
      */
     public static function inDays($startDateTime, $endDateTime)
     {
-        $days  = $startDateTime->diff($endDateTime)->d;
+        $days  = $startDateTime->diff($endDateTime)->days;
         return $days;
     }
                    
