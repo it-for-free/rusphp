@@ -384,4 +384,18 @@ class ArrCommon
             return true;
         }
     }
+    
+    /**
+     * Оставит только уникальные значения 
+     * и перенумерует их непрерывно стандартным для php образом
+     * 
+     * Работает на основе стандартных array_values() и array_unique()
+     * 
+     * @param mixed[] $arr исходный массив
+     * @return mixed[]
+     */
+    public static function uniqueAndRenumerate($arr)
+    {
+        return array_values(array_unique($arr));
+    }
 }
