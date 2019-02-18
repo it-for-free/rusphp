@@ -9,15 +9,16 @@ namespace ItForFree\rusphp\Html;
 class Tag
 {
     /**
-     * РАспечатает элемент гиперссылки (a href)
+     * Распечатает элемент гиперссылки (a href)
      * 
-     * @param string $hrefUrl  значение атрибута href
+     * @param string $hrefUrl    значение атрибута href
+     * @param string $text       текст ссылки  
      * @param string $attributes значения остальных атрибутов
      */
-    public static function a($hrefUrl, $attributes = [])
+    public static function a($hrefUrl, $text = '', $attributes = [])
     {
         $attributes['href'] = $hrefUrl;
-        self::printTag($attributes);
+        return self::getHtml($attributes, $text);
     }
     
     /**
@@ -28,13 +29,27 @@ class Tag
      */
     public static function printTag($tagName, $attributes = [])
     {
-        echo "<$tagName ";
-        foreach ($attributes as $key => $value) {
-            echo " $key='$value' ";
-        } 
-        echo "></$tagName>";
+        echo self::getHtml($tagName, $attributes);
     }
-  
-
+    
+    /**
+     * Вернёт html для указанного тега
+     * 
+     * @param string $tagName
+     * @param array $attributes ассоцитивный массив имен и значений атрибутов
+     *  @param string $content  содержимое блока тега
+     * @return type
+     */
+    public static function getHtml($tagName, $attributes = [], $content = '')
+    {
+        $result = '';
+        $result .= "<$tagName ";
+        foreach ($attributes as $key => $value) {
+            $result .= " $key='$value' ";
+        } 
+        $result .= ">$content</$tagName>";
+        
+        return $result;
+    }
 }
 

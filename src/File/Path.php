@@ -108,13 +108,19 @@ class Path {
      * если путь итак c него не начинается.
      * 
      * @param string $path  путь, которому надо добавить в начало слеш, если его там нет
+     * @param string $sepator разделитель (укажите, если нужно что-то нестадартное), 
+     *      по умолчанию будет использоваться системная константа DIRECTORY_SEPARATOR
+     * 
      * @return string
      */
-    public static function addStartSlash($path)
+    public static function addStartSlash($path, $sepator = '')
     {
+        if (empty($sepator)) {
+            $sepator = DIRECTORY_SEPARATOR;
+        }
         return (DIRECTORY_SEPARATOR 
             . ltrim($path, DIRECTORY_SEPARATOR));
-    } 
+    }
     
     /**
      * Удалит разделитель директорий (прямой или обратый слеш), 
