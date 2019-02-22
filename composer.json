@@ -19,7 +19,7 @@
     "require": {
         "php": ">=5.3.0",
         "ralouphie/mimey": "v1.0.*",
-        "ramsey/array_column": "*",
+        "it-for-free/array_column": "*",
         "adbario/php-dot-notation": "*"
     },
     
