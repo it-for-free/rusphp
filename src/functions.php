@@ -75,3 +75,17 @@ if (!function_exists('vpre')) {
 }
 
 /*-------------------------------------------------------------------------*/
+
+if (!function_exists('ptrace')) {
+  
+    /**
+     * "print trace": Трассировка к точке вызова
+     * 
+     * @param mixed $var
+     */
+    function ptrace() {
+        echo '<pre style="text-align: left">'; 
+        debug_print_backtrace(); 
+        echo '</pre>';
+    }
+}
