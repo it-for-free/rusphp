@@ -36,7 +36,10 @@
 
 ### UI Работа с  пользовательским интерфейсом
 
-Используйте классы пространcтва `ItForFree\rusphp\Common\Ui`. 
+Используйте классы пространcтва `ItForFree\rusphp\Common\Ui`:
+
+* [Хлебные крошки (breadcrumbs)](src/Common/Ui/Breadcrumbs/README.md)
+
 
 ### Дополнения к другим системам/библиотекам
 

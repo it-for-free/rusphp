@@ -11,7 +11,8 @@
         "security token with timestamp",
         "yandex maps goole maps center zoom for point coords set",
         "time interval for wait sleep between api requests",
-        "string filter html tags and url protocols"
+        "string filter html tags and url protocols",
+        "ui", "breadcrumbs"
     ],
     "homepage": "http://fkn.ktu10.com/?q=node/8592",
     "license": "MIT",
