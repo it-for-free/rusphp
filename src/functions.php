@@ -1,4 +1,6 @@
 <?php
+
+use ItForFree\rusphp\Log\DebugStyles;
 /**
  * Всегда загружаемые функции, в т.ч. кратки удобные псевдонимы для вызова
  */
@@ -30,7 +32,7 @@ if (!function_exists('pdie')) {
         if (!empty($comment)) {
             echo "<i>$comment:</i>";
         }
-        echo '<pre>'; print_r($var); echo '</pre>'; die();
+        echo DebugStyles::$preOpen; print_r($var); echo DebugStyles::$preClose; die();
     }
 }
 
@@ -47,7 +49,7 @@ if (!function_exists('ppre')) {
         if (!empty($comment)) {
             echo "<i>$comment:</i>";
         }
-        echo '<pre>'; print_r($var); echo '</pre>';
+        echo DebugStyles::$preOpen; print_r($var); echo DebugStyles::$preClose;
     }
 }
 /*-------------------------------------------------------------------*/
@@ -66,9 +68,9 @@ if (!function_exists('vdie')) {
         if (!empty($comment)) {
             echo "<i>$comment:</i>";
         }
-        echo  (!$hasXdebug ? '<pre>' : ''); 
+        echo  (!$hasXdebug ? DebugStyles::$preOpen : ''); 
         var_dump($var); 
-        echo  (!$hasXdebug ? '</pre>': '');
+        echo  (!$hasXdebug ? DebugStyles::$preClose: '');
         die();       
     }
 }
@@ -85,9 +87,9 @@ if (!function_exists('vpre')) {
             echo "<i>$comment:</i>";
         }
         $hasXdebug = extension_loaded('xdebug');
-        echo  (!$hasXdebug ? '<pre>' : ''); 
+        echo  (!$hasXdebug ? DebugStyles::$preOpen : ''); 
         var_dump($var); 
-        echo  (!$hasXdebug ? '</pre>': '');      
+        echo  (!$hasXdebug ? DebugStyles::$preClose: '');      
     }
 }
 
@@ -104,8 +106,8 @@ if (!function_exists('ptrace')) {
         if (!empty($comment)) {
             echo "<i>$comment:</i>";
         }
-        echo '<pre style="text-align: left">'; 
+        echo DebugStyles::$preOpen; 
         debug_print_backtrace(); 
-        echo '</pre>';
+        echo DebugStyles::$preClose;
     }
 }
