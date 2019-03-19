@@ -23,9 +23,13 @@ if (!function_exists('pdie')) {
     /**
      * Распечатка print_r() и die() c окружением html-тегами pre
      * 
-     * @param mixed $var
+     * @param mixed $var      значение для распечатки
+     * @param string $comment необязательный комментарий (пояснение)
      */
-    function pdie($var) {
+    function pdie($var, $comment = '') {
+        if (!empty($comment)) {
+            echo "<i>$comment:</i>";
+        }
         echo '<pre>'; print_r($var); echo '</pre>'; die();
     }
 }
@@ -35,9 +39,14 @@ if (!function_exists('ppre')) {
     /**
      * "print pre": Распечатка print_r()  c окружением html-тегами pre
      * 
+     * @param mixed $var      значение для распечатки
+     * @param string $comment необязательный комментарий (пояснение)
      * @param mixed $var
      */
-    function ppre($var) {
+    function ppre($var, $comment = '') {
+        if (!empty($comment)) {
+            echo "<i>$comment:</i>";
+        }
         echo '<pre>'; print_r($var); echo '</pre>';
     }
 }
@@ -49,10 +58,14 @@ if (!function_exists('vdie')) {
     /**
      * Распечатка var_dump() и die() c окружением html-тегами pre
      * 
-     * @param mixed $var
+     * @param mixed $var      значение для распечатки
+     * @param string $comment необязательный комментарий (пояснение)
      */
-    function vdie($var) {
+    function vdie($var, $comment = '') {
         $hasXdebug = extension_loaded('xdebug');
+        if (!empty($comment)) {
+            echo "<i>$comment:</i>";
+        }
         echo  (!$hasXdebug ? '<pre>' : ''); 
         var_dump($var); 
         echo  (!$hasXdebug ? '</pre>': '');
@@ -65,8 +78,12 @@ if (!function_exists('vpre')) {
      * Распечатка var_dump() c окружением html-тегами pre
      * 
      * @param mixed $var
+     * @param string $comment необязательный комментарий (пояснение)
      */
-    function vpre($var) {
+    function vpre($var, $comment = '') {
+        if (!empty($comment)) {
+            echo "<i>$comment:</i>";
+        }
         $hasXdebug = extension_loaded('xdebug');
         echo  (!$hasXdebug ? '<pre>' : ''); 
         var_dump($var); 
@@ -81,9 +98,12 @@ if (!function_exists('ptrace')) {
     /**
      * "print trace": Трассировка к точке вызова
      * 
-     * @param mixed $var
+     * @param string $comment необязательный комментарий (пояснение)
      */
-    function ptrace() {
+    function ptrace($comment = '') {
+        if (!empty($comment)) {
+            echo "<i>$comment:</i>";
+        }
         echo '<pre style="text-align: left">'; 
         debug_print_backtrace(); 
         echo '</pre>';
