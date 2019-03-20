@@ -3,7 +3,7 @@
 namespace ItForFree\rusphp\Log;
 
 /**
- * CSS для распечатки в браузере
+ * CSS и разметка для распечатки данных в браузере
  */
 class DebugStyles
 {
@@ -18,4 +18,18 @@ class DebugStyles
     */
    public static $preClose = "</pre>";
 
+   
+   /**
+    * @var string  xdebug Закрывающий тег или их последовательность д вывода с оригиналньыми отступам
+    */
+   public static $xdebugOpen = '<div style="text-align: left;">';
+   
+   /**
+    * @var string  xdebug Закрывающий тег или их последовательность д вывода с оригиналньыми отступам
+    */
+   public static $xdebugClose = "</div>";
+   
+   
+   public static $commentOpen = '<i style="background-color: #99ffcc;">';
+   public static $commentClose = "</i>";
 }

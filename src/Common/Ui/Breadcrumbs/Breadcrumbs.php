@@ -38,6 +38,6 @@ class Breadcrumbs
      */
     public function get()
     {
-       $parents[] = new BreadcrumbsElement($text, $url); 
+       return $this->parents; 
     }
 }

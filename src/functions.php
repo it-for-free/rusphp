@@ -30,7 +30,7 @@ if (!function_exists('pdie')) {
      */
     function pdie($var, $comment = '') {
         if (!empty($comment)) {
-            echo "<i>$comment:</i>";
+            echo DebugStyles::$commentOpen . "$comment:" . DebugStyles::$commentClose;
         }
         echo DebugStyles::$preOpen; print_r($var); echo DebugStyles::$preClose; die();
     }
@@ -47,7 +47,7 @@ if (!function_exists('ppre')) {
      */
     function ppre($var, $comment = '') {
         if (!empty($comment)) {
-            echo "<i>$comment:</i>";
+            echo DebugStyles::$commentOpen . "$comment:" . DebugStyles::$commentClose;
         }
         echo DebugStyles::$preOpen; print_r($var); echo DebugStyles::$preClose;
     }
@@ -66,11 +66,11 @@ if (!function_exists('vdie')) {
     function vdie($var, $comment = '') {
         $hasXdebug = extension_loaded('xdebug');
         if (!empty($comment)) {
-            echo "<i>$comment:</i>";
+            echo DebugStyles::$commentOpen . "$comment:" . DebugStyles::$commentClose;
         }
-        echo  (!$hasXdebug ? DebugStyles::$preOpen : ''); 
+        echo  (!$hasXdebug ? DebugStyles::$preOpen : DebugStyles::$xdebugOpen); 
         var_dump($var); 
-        echo  (!$hasXdebug ? DebugStyles::$preClose: '');
+        echo  (!$hasXdebug ? DebugStyles::$preClose: DebugStyles::$xdebugClose);
         die();       
     }
 }
@@ -84,12 +84,12 @@ if (!function_exists('vpre')) {
      */
     function vpre($var, $comment = '') {
         if (!empty($comment)) {
-            echo "<i>$comment:</i>";
+            echo DebugStyles::$commentOpen . "$comment:" . DebugStyles::$commentClose;
         }
         $hasXdebug = extension_loaded('xdebug');
-        echo  (!$hasXdebug ? DebugStyles::$preOpen : ''); 
+        echo  (!$hasXdebug ? DebugStyles::$preOpen : DebugStyles::$xdebugOpen); 
         var_dump($var); 
-        echo  (!$hasXdebug ? DebugStyles::$preClose: '');      
+        echo  (!$hasXdebug ? DebugStyles::$preClose: DebugStyles::$xdebugClose);      
     }
 }
 
@@ -104,7 +104,7 @@ if (!function_exists('ptrace')) {
      */
     function ptrace($comment = '') {
         if (!empty($comment)) {
-            echo "<i>$comment:</i>";
+            echo DebugStyles::$commentOpen . "$comment:" . DebugStyles::$commentClose;
         }
         echo DebugStyles::$preOpen; 
         debug_print_backtrace(); 
