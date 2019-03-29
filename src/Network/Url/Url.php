@@ -76,6 +76,11 @@ class Url {
     public $queryParams;
     
     /**
+     * @var string в частности: разделитель пути и параметров GET запроса
+     */
+    protected $pathQueryDelimiter = '?';
+    
+    /**
      * 
      * @param string $url строка, содержащая url (ссылку)
      */
@@ -139,7 +144,7 @@ class Url {
      * Получит текущий URL с учетом http/https 
      * (адрес страницы, запрошенный пользователем)
      * 
-     * ВНИМАНИЕ: клиент может переда ПРОИЗВОЛЬНЫЕ $_SERVER[HTTP_HOST] и $_SERVER[REQUEST_URI] 
+     * ВНИМАНИЕ: клиент может передать ПРОИЗВОЛЬНЫЕ $_SERVER[HTTP_HOST] и $_SERVER[REQUEST_URI] 
      * (может сказаться на безопасности в ряде случае)
      */
     public static function getFromCurrentRequest()
@@ -149,5 +154,24 @@ class Url {
            . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
         
         return $actual_link;
+    }
+    
+    /**
+     * Вернёт весь относительный URL (путь без домена и протокола, но с GET параметрами,)
+     *  если таковые есть, например: 
+     * Если текущий объект сделан на основе:
+     *   http://example.com/user/blog/?page=9
+     * то данный метод вернет строку:
+     *   /user/blog/?page=9
+     * 
+     * @return string
+     */
+    public function getPathWithParams()
+    {
+        $fullPath = $this->path;
+        if (!empty($this->query)) {
+            $fullPath .= $this->pathQueryDelimiter . $this->query;
+        }
+        return $fullPath;
     }
 }

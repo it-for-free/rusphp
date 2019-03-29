@@ -1,5 +1,7 @@
 <?php
+
 namespace ItForFree\rusphp\Network\Http;
+
 use ItForFree\rusphp\Network\Url\Url;
 
 /**
@@ -26,6 +28,23 @@ class Request
         }
         $originUrl = new Url($origin);
         return $originUrl;
-    }        
-
+    } 
+    
+    /**
+     * Вернет адрес предыдущего запроса 
+     * (если его удастся определить из $_SERVER['HTTP_REFERER']),
+     * в противном случае буедт использоваться значение по-умолчанию.
+     * 
+     * @param string $defaultAdress   адрес по-умолчанию (на случай если предыдущий определить не удастся)  
+     * @return \ItForFree\rusphp\Network\Url\Url объект, описывающий URL
+     */
+    public static function getReferer($defaultAdress = '/')
+    {
+        $url = $defaultAdress;
+        if (array_key_exists('HTTP_REFERER', $_SERVER)) {
+            $url = $_SERVER['HTTP_REFERER'];
+        }
+        $prevUrl = new Url($url);
+        return $prevUrl;
+    }
 }
