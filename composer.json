@@ -12,7 +12,8 @@
         "yandex maps goole maps center zoom for point coords set",
         "time interval for wait sleep between api requests",
         "string filter html tags and url protocols",
-        "ui", "breadcrumbs"
+        "ui", "breadcrumbs",
+        "array", "array filter only elements"
     ],
     "homepage": "http://fkn.ktu10.com/?q=node/8592",
     "license": "MIT",
