@@ -8,7 +8,7 @@ namespace ItForFree\rusphp\PHP\ArrayLib;
 class ArrayElement
 {
     /**
-     * Порядковый номер элмента ассоцитивного массива по его ключу
+     * Порядковый номер элемента ассоцитивного массива по его ключу
      * 
      * @param array $arrayKeys
      * @return mixed   int or FALSE
@@ -30,5 +30,28 @@ class ArrayElement
     public static function getRandom($arr)
     {
         return $arr[array_rand($arr, 1)];
+    }
+    
+    
+    /**
+     * Вернет для первого совпадающего элемента массива его ключ
+     * 
+     * (используется нестрогое сравнение)
+     * 
+     * @param array $arr  массив, в котором искать
+     * @param mixed $value  с чем сравнивать
+     * @return mixed|null   ключ или null в случае неудачи (если не удалось ничего найти)
+     */
+    public static function getFirstKeyForValue($arr, $value)
+    {
+        $resultKey = null;
+        foreach ($arr as $key => $val) {
+           if ($value == $val) {
+               $resultKey = $key;
+               break;
+           } 
+        }
+        
+        return $resultKey;
     }
 }

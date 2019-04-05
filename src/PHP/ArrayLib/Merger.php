@@ -100,5 +100,27 @@ class Merger
         }
 
         return $res;
-    } 
+    }
+    
+    /**
+     * php Объединение массивов с сохранением ключей 
+     * (если все ключи уникальны то второй массив будет добавлен после первого - порядок элементо сохранится)
+     * 
+     * @param array $arr1
+     * @param array $arr2
+     * @return array
+     */
+    public static function mergeSavingKeys($arr1, $arr2)
+    {
+        $result  = array();
+        foreach ($arr1 as $key => $value) {
+            $result[$key] = $value;
+        }
+        
+        foreach ($arr2 as $key => $value) {
+            $result[$key] = $value;
+        } 
+        
+        return $result;
+    }
 }
