@@ -74,4 +74,24 @@ class Structure
         }
         return $keys;
     }
+    
+    /**
+     * Извлечет из, как минимум, двумерного массива указаные поля первого уровня 
+     * 
+     * @param array $arr   массив или любая итерируемая структура, к элементам которой можно обращаться как к элементам массива
+     * @param string[] $elementsNames  имена извлекаемых элементом
+     * @return array    двумерный массив, содержащий только запрошенные поля
+     */
+    public static function getFileds($arr, $elementsNames)
+    {
+        $result = [];
+        $i = 0;
+        foreach ($arr as $value) {
+            foreach ($elementsNames as $name) {
+                $result[$i][$name] = $value[$name];
+            }
+            $i++;
+        }
+        return $result;
+    }
 }
