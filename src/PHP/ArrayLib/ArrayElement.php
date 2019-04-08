@@ -71,7 +71,7 @@ class ArrayElement
         $result  = null;
         foreach ($arr as $key => $subArray) {
            $nestedValue  = $NestedElement->get($subArray);
-           if (Compare::eq($nestedValue, $value, $this->strongCompare)) {
+           if (Compare::eq($nestedValue, $value, $NestedElement->isCompareStrong())) {
               $result  = $key; 
               break;
            }

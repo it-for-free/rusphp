@@ -59,20 +59,21 @@ class ArrSort {
      * 
      * @param array $arr  исходный массив
      * @param array $rightOrderedValues  шаблон (в этом массива значения выстроены в нужном порядке)
-     * @param \ItForFree\rusphp\PHP\ArrayLib\ArrNestedElement\ArrNestedElement $nestedElement  объект описывающий путь в элементе-массиве
+     * @param \ItForFree\rusphp\PHP\ArrayLib\ArrNestedElement\ArrNestedElement $NestedElement  объект описывающий путь в элементе-массиве
      * @param callable $handleOriginal     обработчик для элемента исходного массив (напр. использующий trim())
      * @param callable  $handleOrderedValues   обработчик для элемента шаблона (напр. использующий trim())
      * @param bool $addToStart           добавлять ли в начало итогового массива (по умолчанию), или в конец (если передано false)
      * @return array
      */
     public static function reorderSegmentByNestedElementAccordingTemplate(
-        $arr, $rightOrderedValues, $nestedElement, 
+        $arr, $rightOrderedValues, $NestedElement, 
         $handleOriginal = null, $handleOrderedValues = null, $addToStart = true
         )
     {
         $result = [];
         
-        $orginalFiltredArray = array_map($handleOriginal, $arr);
+        $orginalFiltredArray = $NestedElement->arrayMap($handleOriginal, $arr);
+        
         $filtredRightOrderedValues = 
             array_map($handleOrderedValues, $rightOrderedValues);
         
@@ -80,7 +81,7 @@ class ArrSort {
         foreach ($filtredRightOrderedValues as $value) {
             if (!is_null($currentKey = 
                 ArrElement::getFirstKeyForNestedElementValue(
-                    $orginalFiltredArray, $nestedElement))) {
+                    $orginalFiltredArray, $value, $NestedElement))) {
                 
                 $orderedPart[$currentKey] = $arr[$currentKey];
                 unset($arr[$currentKey]); // убираем из исходного массива, то что "отсортировано"

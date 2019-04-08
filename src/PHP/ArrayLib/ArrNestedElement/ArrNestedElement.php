@@ -51,7 +51,7 @@ class ArrNestedElement
      * Извлекает элемент массива по пути, заданному при создании данного объекта 
      *  @see http://fkn.ktu10.com/?q=node/10815
      * 
-     * @param array $arr  массив
+     * @param array $arr  массив, в котором исковый эелмент елжит по описываему данным объектом пути
      * @return mixed
      */
     public function get($arr)
@@ -66,6 +66,24 @@ class ArrNestedElement
         }
         
         return $value;
+    }
+    
+    /**
+     * Установит значение по пути, который описано в данном объекте
+     * 
+     * @param array $arr    массив в котором ищем нужный эелмент для перезаписи
+     * @param mixed $value  значение, которое запишем по нужному пути в массиве
+     * @return array   массив с замененным значением
+     */
+    public function set($arr, $value)
+    {
+        $link = &$arr;
+        foreach($this->segments as $key) {
+            $link = &$link[$key];
+        }
+        $link = $value; // устанавливаем новое значение
+        
+        return $arr;
     }
     
     /**
@@ -87,5 +105,46 @@ class ArrNestedElement
            }
         }
         return $result;
+    }
+    
+    /**
+     * Применит обработчик к подэлементу, соответствующему данному объекту
+     * 
+     * @param callable $handler
+     * @param array $arr    массив, в каждому элементу которого надо применить функцию
+     * @return array
+     */
+    public function applyHandler($handler, $arr)
+    {
+        $newSubvalue = $handler($this->get($arr));
+        return $this->set($arr, $newSubvalue);
+    }
+    
+    /**
+     * Реализация array_map для вложенного элемента массива:
+     *  колбек применяется не к элементу массива,
+     *  а к его подэлементу, путь к которому и описывается данным объектом)
+     * 
+     * @param callable $handler  функция-обработчик
+     * @param array $arr    массив, в каждому подэлемента элементу которого надо применить функцию
+     * @return array
+     */
+    public function arrayMap($handler, $arr)
+    {
+        $modifiedArray = [];
+        foreach ($arr as $key => $val) {
+            $modifiedArray[$key] = $this->applyHandler($handler, $val);
+        }
+        return $modifiedArray;
+    }
+    
+    /**
+     * Ну ли производить сравнение в строгом режиме
+     * 
+     * @return bool true  если в тсрогом, false если в нестрогом
+     */
+    public function isCompareStrong()
+    {
+        return $this->strongCompare;
     }
 }
