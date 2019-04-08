@@ -66,7 +66,7 @@ class ArrayElement
      * @param \ItForFree\rusphp\PHP\ArrayLib\ArrNestedElement\ArrNestedElement $NestedElement описание вложенного элемента
      * @return mixed|null  в случае если ключ не обнаружен, возвращем null @see http://fkn.ktu10.com/?q=node/10810
      */
-    public function getFirstKeyForNestedElementValue($arr, $value, $NestedElement)
+    public static function getFirstKeyForNestedElementValue($arr, $value, $NestedElement)
     {
         $result  = null;
         foreach ($arr as $key => $subArray) {
