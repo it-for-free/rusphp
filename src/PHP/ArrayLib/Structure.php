@@ -82,7 +82,7 @@ class Structure
      * @param string[] $elementsNames  имена извлекаемых элементом
      * @return array    двумерный массив, содержащий только запрошенные поля
      */
-    public static function getFileds($arr, $elementsNames)
+    public static function getFields($arr, $elementsNames)
     {
         $result = [];
         $i = 0;
