@@ -248,4 +248,31 @@ class StrCommon {
         return substr_compare($string, $subString,
             $strlen - $testlen, $testlen) === 0;
     }
+    
+    /**
+     * Проверит, что это
+     *  не пустая строка 
+     * и не null
+     * 
+     * @param mixed $value   строка или число
+     * @return boolean
+     */
+    public static function isEmptyStr($value)
+    {
+        $result  = ($value === '') || is_null($value);
+        return $result;
+    }
+    
+    /**
+     * Проверит что строка состоит не только из пробельных символов (и при этом не пуста)
+     * - в основе лежит применение trim()
+     * 
+     * @param mixed $value   строка или число
+     * @return boolean
+     */
+    public static function isSpaceOnly($value)
+    {
+        $trimed = trim($value);
+        return static::isEmptyStr($trimed);
+    }
 }
