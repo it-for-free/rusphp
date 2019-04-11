@@ -181,7 +181,7 @@ class ArrCommon
      */
     public static function countRecursive($arr)
     {
-        return \count($arr, COUNT_RECURSIVE);;
+        return \count($arr, COUNT_RECURSIVE);
     }
     
     /**
