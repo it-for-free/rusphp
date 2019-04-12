@@ -2,13 +2,12 @@
 
 namespace ItForFree\rusphp\PHP\Str;
 
-
 /**
  * Общая работа со строками
  *
  */
-class StrCommon {
-
+class StrCommon
+{
     /**
      * Проверит, что первая строка начинается со второй
      *
@@ -33,13 +32,13 @@ class StrCommon {
      * @return boolean
      */
     public static function  isInStr($str, $substr)
-     {
-       $result = strpos ($str, $substr);
-       if ($result === FALSE) // если это действительно FALSE, а не ноль, например
-         return false;
-       else
-         return true;
-     }
+    {
+        $result = strpos ($str, $substr);
+        if ($result === FALSE) // если это действительно FALSE, а не ноль, например
+            return false;
+        else
+            return true;
+    }
 
     /**
      * Проверт входит ли хотя бы одна строка из массива в данную стороку
@@ -169,7 +168,8 @@ class StrCommon {
      */
     public static function  replaceSubStrInTheEnd($sourceStr, $oldSubStr, $newSubStr = '')
     {
-        return preg_replace('/'. preg_quote($oldSubStr, '/') . '$/', $newSubStr, $sourceStr);
+        return preg_replace('/'. preg_quote($oldSubStr, '/')
+            . '$/', $newSubStr, $sourceStr);
     }
 
 
@@ -193,7 +193,8 @@ class StrCommon {
      * @param string $str
      * @return array
      */
-    public static function explodeByBR($str) {
+    public static function explodeByBR($str) 
+    {
         $brRegExp = '/<br[^>]*>/i';
         $arr = preg_split($brRegExp, $str);
 
@@ -238,13 +239,15 @@ class StrCommon {
      * @param string $subString подстрока
      * @return boolean
      */
-    public static function isEndWith($string, $subString) {
-    
+    public static function isEndWith($string, $subString) 
+    {
         $strlen = strlen($string);
         $testlen = strlen($subString);
+        
         if ($testlen > $strlen) { 
             return false;
         }
+        
         return substr_compare($string, $subString,
             $strlen - $testlen, $testlen) === 0;
     }
