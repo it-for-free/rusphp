@@ -17,7 +17,7 @@ class ArrNestedElement
     protected $path = '';
     
     /**
-     * @var srting разлитель сегментов пути 
+     * @var srting разделитель сегментов пути 
      */
     protected $delimiter = '.';
     

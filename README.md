@@ -23,7 +23,8 @@
 
 * [Массивы](src/PHP/ArrayLib/README.md)
 * [Функции обртного вызова (callable)](src/PHP/Callback/README.md) 
-* [Сравнение значений](src/PHP/Comparator/README.md) 
+* [Сравнение значений](src/PHP/Comparator/README.md)
+* [Сессии](src/PHP/Session/README.md)  
 
 А также:
 
