@@ -5,3 +5,34 @@
 
 * `Session` базовый класс для работы с сессией.
 * `Event` класс для работы с событиями (история этих событий хранится в сессии).
+
+
+##  `Event`
+
+Пример использования в смарти (опеределяем выводили ли мы этот блок уже или нет):
+
+```php
+{php} 
+$this->assign('popupFirstTime', 
+    \ItForFree\rusphp\PHP\Session\Event::isFirstTime('welcome-popup'));
+{/php}
+
+{if $popupFirstTime}
+    <div style="display: none;"id="welcome">
+       ......
+    </div>
+
+    <script type="text/javascript">
+        {literal}
+        jQuery(document).ready(function () {
+            setTimeout(function () {
+                $.fancybox.open({
+                    src:  '#welcome',
+                    type: 'inline',
+                });
+            }, 800);
+        });
+        {/literal}
+    </script>
+{/if}
+
