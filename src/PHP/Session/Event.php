@@ -16,13 +16,16 @@ class Event
     protected static $sectionName = '_session_events_storage';
    
     /**
-     * Проверит наличие флага $eventName (выставленного в true),
-     * в любом случае поднимет флаг
+     * Произошло ли это событие первый раз.
+     * 
+     * Проверит наличие флага  с имененм $eventName (выставленного в true),
+     * в подмассиве жранилища сессий, затем
+     * в любом случае поднимет флаг (считается что событие наступило).
      * 
      * @param type $eventName
      * @retrun boolean true если  флага не было или он был опущен, false во всех сотальных случаях
      */
-    function isFirst($eventName)
+    function isFirstTime($eventName)
     {
         Session::start();
         $result  = true;
