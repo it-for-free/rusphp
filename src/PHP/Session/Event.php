@@ -1,6 +1,6 @@
 <?php
 
-use ItForFree\rusphp\PHP\Session\Session;
+use ItForFree\rusphp\PHP\Session;
 
 /**
  * Работает с хранилищем сессии PHP
