@@ -8,7 +8,8 @@ use ItForFree\rusphp\PHP\Session;
  *
  * @todo Можно  было бы писать их в 
  */
-class Event {
+class Event 
+{
     
     protected static $sectionName = '_session_events_storage';
    

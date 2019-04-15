@@ -7,7 +7,8 @@ namespace ItForFree\rusphp\PHP\Session;
  *
  * @author qwe
  */
-class Session {
+class Session 
+{
     
     /**
      * Стартует сессию, если та ранее не была запущена
