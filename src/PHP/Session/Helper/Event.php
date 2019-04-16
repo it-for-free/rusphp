@@ -1,6 +1,6 @@
 <?php
 
-namespace ItForFree\rusphp\PHP\Session;
+namespace ItForFree\rusphp\PHP\Session\Helper;
 
 use ItForFree\rusphp\PHP\Session\Session;
 
@@ -13,6 +13,9 @@ use ItForFree\rusphp\PHP\Session\Session;
 class Event 
 {
     
+    /**
+     * @var string ключ подмассива в $_SESSION по которому будут хранится данные хэлпера
+     */
     protected static $sectionName = '_session_events_storage';
    
     /**

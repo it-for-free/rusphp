@@ -46,7 +46,7 @@
 Используйте классы пространcтва `ItForFree\rusphp\Common\Ui`:
 
 * [Хлебные крошки (breadcrumbs)](src/Common/Ui/Breadcrumbs/README.md)
-
+* [Сообщения/уведомления](src/Common/Ui/Message/README.md)
 
 ### Дополнения к другим системам/библиотекам
 
