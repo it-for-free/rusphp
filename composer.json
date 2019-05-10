@@ -1,7 +1,7 @@
 {
     "name": "it-for-free/rusphp",
     "type": "library",
-    "description": "PHP fucntions library for different perposis",
+    "description": "Universal PHP library for different perposis",
     "keywords": ["php", "php universal package",
         "ssh", "archive", "memory",
         "html table", "ram", "image crop resize on the fly", "email verify",
