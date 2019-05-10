@@ -1,6 +1,7 @@
 <?php
 
 namespace ItForFree\rusphp\Common\Ui\Breadcrumbs;
+use ItForFree\rusphp\File\Path;
 
 /**
  * Класс дял описания совокупности (списка) хлебных крошек
@@ -39,6 +40,23 @@ class Breadcrumbs
     public function get()
     {
        return $this->parents; 
+    }
+    
+    /**
+     * Для добавления элементов  в начало  списка хлебных крошек
+     * 
+     * @param array $arr массив где в качестве ключа url, а в качестве значения текст крошки
+     * @return $this
+     */
+    public function addToStart($arr)
+    {
+        $BreadcrumbsElements = [];
+        foreach($arr as $url => $text) {
+            $BreadcrumbsElements[] = new BreadcrumbsElement($text, $url);
+        }
+        
+        $this->parents = array_merge($BreadcrumbsElements, $this->parents);
+        return $this;
     }
     
     /**
