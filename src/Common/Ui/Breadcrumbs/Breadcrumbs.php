@@ -40,4 +40,47 @@ class Breadcrumbs
     {
        return $this->parents; 
     }
+    
+    /**
+     * Выведет html для имеющихся хлебных крошек
+     * 
+     * @param type $start  начало блока
+     * @param type $end  конец блока
+     * @param type $startElement  начало обычно элмента
+     * @param type $endElement конец обычного элемента
+     * @param type $delimiter  разделитель
+     * @param type $printCurrent   выводить ли текущий (последний) элемент
+     * @param type $currentStart начало текущего элемента (все что кроме самой ссылки)
+     * @param type $currentEnd  конец текущего элемента (все что кроме самой ссылки)
+     */
+    public function printHtml(
+            $start = '<ul>',
+            $end = '</ul>',
+            $startElement = '<li>',
+            $endElement = '</li>',
+            $delimiter = ' | ',
+            $printCurrent = true,
+            $currentStart = '<strong>',
+            $currentEnd = '</strong>')
+    {
+
+        echo $start;
+        if (!empty($this->parents)) {
+            $total = count($this->parents);
+            $count = 0;
+            foreach ($this->get() as $parent) {
+                $count++;
+                echo $startElement . "<a href='" 
+                    . Path::addEndSlash($parent->url, '/') . "'> "
+                    . $parent->text ." </a>" . $endElement;
+                if ($count != $total) {
+                    echo $delimiter ;
+                }
+            }
+        }
+        if ($printCurrent) {
+            echo $delimiter . $currentStart . $this->current . $currentEnd;
+        }
+        echo $end;
+    }
 }

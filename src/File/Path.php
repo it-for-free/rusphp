@@ -95,11 +95,15 @@ class Path {
      * если путь итак им не оканчивается.
      * 
      * @param string $path  путь, которому надо добавить в конец слеш, если его там нет
+     * @param type $separator (опционально) разделитель, по умолчанию используется значение из DIRECTORY_SEPARATOR 
      * @return string
      */
-    public static function addEndSlash($path)
+    public static function addEndSlash($path, $separator = '')
     {
-        return rtrim($path, DIRECTORY_SEPARATOR) .  DIRECTORY_SEPARATOR;
+        if ($separator === '') {
+            $separator =  DIRECTORY_SEPARATOR;
+        }
+        return rtrim($path, $separator) .  $separator;
     } 
     
     
