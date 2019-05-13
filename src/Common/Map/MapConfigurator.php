@@ -2,6 +2,8 @@
 
 namespace ItForFree\rusphp\Common\Map;
 
+use ItForFree\rusphp\Common\Map\MapSettings;
+
 /**
  * Для конфигурирования онлайн-карты,
  * в частности получения центра и зума по набору переданных  координат
@@ -88,17 +90,17 @@ class MapConfigurator {
      * @param  bool $addCoords если true, то добавит в массив и переданные
      *         в класс координаты, на базе которых производится рассчет 
      *         остального как элемент 'coords' => []
-     * @return array
+     * @return \ItForFree\rusphp\Common\Map\MapSettings
      */
     public function getAllSettings($addCoords = false)
     {
-        $settings =  [
-            'center' => $this->getCenter(),
-            'zoom' => $this->getZoom(),
-        ];
+        
+        $settings = new MapSettings();
+        $settings->center = $this->getCenter();
+        $settings->zoom = $this->getZoom();
         
         if ($addCoords) {
-            $settings['coords'] = $this->coords;
+            $settings->coords = $this->coords;
         }
         
         return $settings;
@@ -117,7 +119,7 @@ class MapConfigurator {
         $cx = preg_replace("/\,/",'.', strval(($arr['xMax'] + $arr['xMin']) / 2));
         $cy = preg_replace("/\,/",'.', strval(($arr['yMax'] + $arr['yMin']) / 2));
         
-        return [$cx,$cy];
+        return [$cx + 0, $cy  + 0];
     }
 
     /**
