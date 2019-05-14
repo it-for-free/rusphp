@@ -55,7 +55,12 @@ class Breadcrumbs
             $BreadcrumbsElements[] = new BreadcrumbsElement($text, $url);
         }
         
-        $this->parents = array_merge($BreadcrumbsElements, $this->parents);
+        if (!empty($this->parents)) {
+            $this->parents = array_merge($BreadcrumbsElements, $this->parents);
+        } else {
+            $this->parents = $BreadcrumbsElements;
+        }
+        
         return $this;
     }
     
@@ -102,3 +107,4 @@ class Breadcrumbs
         echo $end;
     }
 }
+
