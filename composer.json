@@ -13,7 +13,8 @@
         "time interval for wait sleep between api requests",
         "string filter html tags and url protocols",
         "ui", "breadcrumbs",
-        "array", "array filter only elements"
+        "array", "array filter only elements",
+        "regexp"
     ],
     "homepage": "http://fkn.ktu10.com/?q=node/8592",
     "license": "MIT",

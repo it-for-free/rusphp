@@ -19,12 +19,13 @@
 
 ## Что уже есть (основной функционал)
 
-Дополнения к общим возможностям PHP:
+Дополнения к общим возможностям `PHP`:
 
 * [Массивы](src/PHP/ArrayLib/README.md)
 * [Функции обртного вызова (callable)](src/PHP/Callback/README.md) 
 * [Сравнение значений](src/PHP/Comparator/README.md)
-* [Сессии](src/PHP/Session/README.md)  
+* [Сессии](src/PHP/Session/README.md)
+* [Регулярные выражения](src/PHP/Regexp/README.md)  
 
 А также:
 
