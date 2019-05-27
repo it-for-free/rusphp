@@ -3,7 +3,6 @@
 namespace ItForFree\rusphp\PHP\ArrayLib;
 
 use ItForFree\rusphp\PHP\Comparator\Compare;
-use ItForFree\rusphp\PHP\ArrayLib\ArrNestedElement\ArrNestedElement;
 
 /**
  * Для работы с элементом массива
@@ -77,5 +76,28 @@ class ArrayElement
            }
         }
         return $result;
+    }
+    
+    /**
+     * Вернет первый элемент массива
+     * 
+     * (работает, начиная с php5.4)
+     * 
+     * @param array $arr
+     * @return mixed значение первого элемента, в случае если его нет - null.
+     */
+    public static function getFirst($arr)
+    {
+
+        if (function_exists('array_key_first')) { // начиная с php 7.3
+            return $arr[array_key_first($arr)];
+        } else {  // начиная с php 5.4
+            $values = array_values($arr);
+            if (isset($values[0])) {
+                return  $values[0];
+            }
+        }
+        
+        return null;
     }
 }
