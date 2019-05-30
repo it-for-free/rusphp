@@ -4,12 +4,14 @@ namespace ItForFree\rusphp\PHP\ArrayLib;
 
 /**
  * Хэши для массива. Хеширование
+ * 
+ * Основная заметка по вопросу @see http://fkn.ktu10.com/?q=node/10936
  */
 class ArrHash
 {
     /**
      * Вычислит md5 хэш от даного массива.
-     * По поводу выбора вариантом см. тут: https://stackoverflow.com/a/7723730
+     * По поводу выбора вариантов реализации см. тут: @see http://fkn.ktu10.com/?q=node/10936
      * 
      * @param array $arr массив для которого нужно вычислить хэш
      * @param boolean $controlOrder Опционально: нужно ли рекурсивно сортировать массив 
