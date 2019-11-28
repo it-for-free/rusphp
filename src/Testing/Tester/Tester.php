@@ -19,7 +19,7 @@ class Tester
 
         $date = new \DateTime();
 
-        return $date->format('Y-m-d H:i:s');
+        return $str . $date->format('Y-m-d H:i:s');
     }
 
     /**
@@ -30,9 +30,25 @@ class Tester
      */
     public static function addDatetimeTogether($str)
     {
+
+        return $str . static::getDatetimeTogetherStr();
+    }
+
+    public static function getDatetimeTogetherStr()
+    {
         $date = new \DateTime();
 
         return $date->format('Y-m-d-H-i-s');
+    }
+
+    /**
+     * http url из текущих дат и времени
+     * 
+     * @return string
+     */
+    public static function getUrlOfHttpByDatetime()
+    {
+        return 'http://' . static::getDatetimeTogetherStr() . '.test';
     }
 
 }
