@@ -8,3 +8,4 @@ modules:
         - Asserts
         - \Helper\Unit
         - \ItForFree\rusphp\Testing\Codeception\Helper\IffConsoleLogger
+        - \ItForFree\rusphp\Testing\Codeception\Helper\IFFAssertHelper

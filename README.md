@@ -49,9 +49,14 @@
 * [Хлебные крошки (breadcrumbs)](src/Common/Ui/Breadcrumbs/README.md)
 * [Сообщения/уведомления](src/Common/Ui/Message/README.md)
 
-### Автоматическое тестирование
+## Автоматическое тестирование
 
 * Тестирование [с помощью codeception](docs/codeception.md)
+
+Запуск тестов:
+```shell
+cept run unit
+```
 
 
 ## Потомки rusphp ;) (вынесено в отделные пакеты)
