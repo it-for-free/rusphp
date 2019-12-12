@@ -13,17 +13,25 @@ class DateTimeFormat
 {
     
     /**
-     * Изменит формат строки даты  (дата и время)
+     * Изменит формат строки даты  (дата и время), в случае неуспеха вернет по-умолчанию пустую строку, 
+     * или, если $useSourceLikeDefault = true, то исходную
      * 
      * @param string $dateTimeStr строка формата
      * @param string $oldFormat   старый формат (как для \DateTime)
      * @param string $newFormat   новый формат (как для \DateTime)
+     * @return string строка даты в новом формате (в случае неудачи, резульат зависит от )
      * @return string строка даты в новом формате или пустая строка в случае неудачи
      */
     public static function get($dateTimeStr, 
-        $oldFormat = 'Y-m-d H:i:s', $newFormat = 'd.m.Y')
+        $oldFormat = 'Y-m-d H:i:s',
+        $newFormat = 'd.m.Y', 
+        $useSourceLikeDefault = false)
     {
         $result = '';
+        if ($useSourceLikeDefault) { 
+            $result = $dateTimeStr;
+        }
+        
         $DateTime = \DateTime::createFromFormat($oldFormat, $dateTimeStr);
         if ($DateTime) {
             $result = $DateTime->format($newFormat);
