@@ -19,8 +19,8 @@ class DateTimeFormat
      * @param string $dateTimeStr строка формата
      * @param string $oldFormat   старый формат (как для \DateTime)
      * @param string $newFormat   новый формат (как для \DateTime)
-     * @return string строка даты в новом формате (в случае неудачи, резульат зависит от )
-     * @return string строка даты в новом формате или пустая строка в случае неудачи
+     * @param string $useSourceLikeDefault  (default false) использовать ли исходную строку в качестве результата для неудачной попытки конвертации
+     * @return string 
      */
     public static function get($dateTimeStr, 
         $oldFormat = 'Y-m-d H:i:s',
