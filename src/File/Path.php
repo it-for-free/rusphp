@@ -106,6 +106,39 @@ class Path {
         return rtrim($path, $separator) .  $separator;
     } 
     
+    /**
+     * Корректно объединит фрагменты пути (без проверки на наличие слеша)
+     * 
+     * @param string[] $paths  Массив путей, которые нужно объединить
+     * @param string $separator разделитель (по умолчанию DIRECTORY_SEPARATOR)
+     * @return string
+     */
+    public static function concat($paths, $separator = '')
+    {
+        $result = '';
+        if ($separator === '') {
+            $separator =  DIRECTORY_SEPARATOR;
+        }
+        
+        $count = 0;
+        
+        foreach ($paths as $path) {
+           
+           $count++;
+           $added = '';
+            if ($count === 1) {
+               $added = static::addEndSlash($path);
+           } else if ($count < count($paths)) {
+               $added = static::removeStartSlash(static::addEndSlash($path));
+           } else {
+               $added = static::removeStartSlash($path);
+           } 
+           
+           $result .= $added;
+        }
+        
+        return $result;
+    } 
     
     /**
      * Добавит разделитель директорий в начало пути (прямой или обратый слеш), 
@@ -130,12 +163,35 @@ class Path {
      * Удалит разделитель директорий (прямой или обратый слеш), 
      * если путь им  оканчивается.
      * 
-     * @param string $path  путь, с конца которого надо удалить разделитель диреткторий (если он там есть).
+     * @param string $path  путь, с конца которого надо удалить разделитель диреткторий (если он там есть)
+     * @param string $sepator разделитель (укажите, если нужно что-то нестадартное), 
+     *      по умолчанию будет использоваться системная константа DIRECTORY_SEPARATOR
      * @return string
      */
-    public static function removeEndSlash($path)
+    public static function removeEndSlash($path, $sepator = '')
     {
-        return rtrim($path, DIRECTORY_SEPARATOR);
+        if (empty($sepator)) {
+            $sepator = DIRECTORY_SEPARATOR;
+        }
+        return rtrim($path, $sepator);
+    } 
+    
+    /**
+     * Удалит разделитель директорий (прямой или обратый слеш), 
+     * если путь с него начинается.
+     * 
+     * @param string $path  путь, с конца которого надо удалить разделитель диреткторий (если он там есть)
+     * @param string $sepator разделитель (укажите, если нужно что-то нестадартное), 
+     *      по умолчанию будет использоваться системная константа DIRECTORY_SEPARATOR
+     * @return string
+     */
+    public static function removeStartSlash($path, $sepator = '')
+    {
+        if (empty($sepator)) {
+            $sepator = DIRECTORY_SEPARATOR;
+        }
+        
+        return ltrim($path, $sepator);
     } 
 
     /**
