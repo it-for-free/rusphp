@@ -83,4 +83,15 @@ class Base64TempFile {
         return 'data:' . MIME::getForFile($filePath) . ';base64,'
             . base64_encode(file_get_contents($filePath));
     }
+    
+    
+    /**
+     * Return Mime from source "url data" prefix if exists
+     * 
+     * @return string
+     */
+    public function getMime()
+    {
+        return MIME::byExtention($this->getExtention());
+    }
 }
