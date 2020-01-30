@@ -2,6 +2,8 @@
 
 namespace ItForFree\rusphp\File;
 
+use ItForFree\rusphp\File\Path;
+
 /**
  * Для получения mime -- изначально просто обёртка
  */
@@ -44,5 +46,16 @@ class MIME
         }
 
         return array_unique($results); 
+    }
+    
+    /**
+     * First suitable MIME for your file 
+     * 
+     * @param  string $filePath
+     * @return string
+     */
+    public static function getForFile($filePath)
+    {
+        return static::byExtention(Path::getExtention($filePath));
     }
 }

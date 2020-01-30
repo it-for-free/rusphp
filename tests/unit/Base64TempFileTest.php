@@ -2,34 +2,65 @@
 
 use Codeception\Test\Unit;
 use ItForFree\rusphp\File\Base64\Base64TempFile;
+use ItForFree\rusphp\File\Directory\Directory;
+use ItForFree\rusphp\File\Path;
+use ItForFree\rusphp\File\MIME;
 
 class Base64TempFileTest extends Unit
 {
+
     /**
      * @var \UnitTester
      */
     protected $tester;
+    protected $testOutputDir = '';
 
+    
+    protected $testStrFromJs = "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEAYABgAAD/2wBDAAMCAgMCAgMDAwMEAwMEBQgFBQQEBQoHBwYIDAoMDAsKCwsNDhIQDQ4RDgsLEBYQERMUFRUVDA8XGBYUGBIUFRT/2wBDAQMEBAUEBQkFBQkUDQsNFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBT/wgARCAAyADIDAREAAhEBAxEB/8QAHAAAAgIDAQEAAAAAAAAAAAAAAAEGBwQFCAID/8QAFgEBAQEAAAAAAAAAAAAAAAAAAAEC/9oADAMBAAIQAxAAAAHqbIAB0CgADV1CalxvYUMryqirGOpD7Cisyma35aRM4zYxK5rqckzJpCgHXqo7G9j0AAOlAAAf/8QAHhAAAgMAAgMBAAAAAAAAAAAAAwQCBQYBEAAUMCD/2gAIAQEAAQUC+VjYirV+NkuA1dAkmO9BrFa5J+xDfU2cWbeOCUZD60GilGtq2EDKiSGBlTOGYSUW9QPjLHII7ZRlQ9Ln6mtpcujAKH5YpQslhDgcfl//xAAUEQEAAAAAAAAAAAAAAAAAAABQ/9oACAEDAQE/AUf/xAAUEQEAAAAAAAAAAAAAAAAAAABQ/9oACAECAQE/AUf/xAAxEAACAQIDBAgFBQAAAAAAAAABAgMEEQASIRMiMYEFEBRBQlFxkSAwMmGxIzNyofH/2gAIAQEABj8C+U0sh4C+XE20lE6llyCPQx30yt+efpirmkN8zZF9F/34KoQVERq4xormw98RmqaqKQzCOuV77WIH6BkHG+mv288UzVlO/R1FCpR4AZAankTujX+z54GUZQPDa1uuslo5uyrRuRNUSrpp4R6nTFDUQ5qivedtopVTK0g1F7t+3lPvxwazsscnSTrsYoabMfQC/kLXbQWHvT9umMM0e8i0zHcvxUk3zYCZ2kPe7cT1XETyfxF8S1cUdTPAXLk7DSIkAOuv1KwPvzxE8FzUFCmdlIcg8RblywtUx2tXMP1JD9vCvcF8rfFmeSXZls5hzbt/yORwFUBVAsAO75f/xAAgEAEBAQACAgIDAQAAAAAAAAABESEAMSBBUWEQcYHR/9oACAEBAAE/IfCeVcXUOp8/r764KpyItnYlJq34exPIZGaafVX+vhuCxbtiZl7/ALyvYsKeAQNrLJNclc9Og9ZOVvaStHK/kCvR6nLyc7pVh1ycVe9M36tx3CNVUQUdZQrETq7h0mXtuMb0DxQQ0E+aEHLgZnD9qctfnM/AatZ6n875i8+hQxQ4xw6POwyOY6uJH9kfs4+iDMhSY4Wxj3tvk/RlEv5jJLFAFOtaF8wcAdAePry//9oADAMBAAIAAwAAABDbYDbYADLCCBASbAQbAJbbDbbf/8QAFBEBAAAAAAAAAAAAAAAAAAAAUP/aAAgBAwEBPxBH/8QAGREAAgMBAAAAAAAAAAAAAAAAEBEBIDBB/9oACAECAQE/EMkUVkxGLty3/8QAHRABAQACAgMBAAAAAAAAAAAAAREAITFBECBRYf/aAAgBAQABPxD0E4kfUFwSWFq7cAGrTtDeGsgjRN2koUphEYpnbsJiU7dHkehyPgLknBYqYqAEcwgfmX3eG9CQdGkot3RCMC0RipUBwE5U2OaEfAgnGvmsnBOVvAWyGhQTZKjTiMKTvKOGgynjAFdeFhYcSsCpMLUn9DCj5g4qjRV3JzqRBQQaAgddu/A+IE8y8oahvRP0z4ehwa6jnF8SsWiyEW6QDBsEaFBElqgiBuQDS01vkY4NMiLxaBvQAumFOIPKnTUA0AAAcevb2//Z";
+    
     protected function _before()
     {
+        $path = codecept_output_dir() . '/Base64TempFileTest';
+        Directory::createRecIfNotExists($path);
+
+        $this->testOutputDir = $path;
     }
 
     protected function _after()
     {
+        Directory::clear($this->testOutputDir, true);
     }
 
-    public function testCreate()
+    public function testCreateFromString()
     {
         $tester = $this->tester;
+
         
-        
-        $source  = 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAMCAgICAgMCAgIDAwMDBAYEBAQEBAgGBgUGCQgKCgkICQkKDA8MCgsOCwkJDRENDg8QEBEQCgwSExIQEw8QEBD/2wBDAQMDAwQDBAgEBAgQCwkLEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBD/wAARCAAeAB0DASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwC/4e1a01jVY9PNnIN6sclvRSe30rK+Kdqmn3mnra7ow8chOGPPIrG1bxFq3w/1owaXFbyGaFJA93afOud33fm4BB/Gu+1Pwzqnj3RNC1gPZJK9ikku9SBudVY7QAcDrX5rlWQ0cJOljEkoNPdO+qffVH3uY55WxUKmFbbkrbPTddjyEzXGP9dJ/wB9GvWLG1LWVux5JiX+VYjfBrxHkkX+nYyf43/+IrtrbTmtreK3kwWiQISOmQMV4HG2MwtSFFYdq6cr2+R63CcMRSnVda+qVr/MxNQ+Kn7Pn2kW+veIdDu763jWGRzpk12BtHQSpCysBz0Yirtt8dPgnBClvaeNbaKKNQiRppl4qqo4AA8nAHtXwjbznA4rSguWAr9Vr5XCvCMHOSUe1v1TPzmljpUpOXKnfvf9Gj7jHxx+D7jjxvCf+3C8/wDjNZ7/ABh+E5Yn/hNYOTn/AI8bv/4zXxwl449acb1/evnMVwDlmMt7Sc9Ozj/8iezQ4rxuHvyRj9z/AMz/2Q==';
-        
-        $base64File = new Base64TempFile($source);
-        $base64File->copyTo(codecept_output_dir() . '/temp.jpg');
-        
-        
-        $tester->assertFileExists(codecept_output_dir() . '/temp.jpg');
-        
+
+        $base64File = new Base64TempFile($this->testStrFromJs);
+        $filePath = $this->testOutputDir . '/temp.' . $base64File->getExtention();
+        $base64File->copyTo($filePath);
+
+        $tester->assertFileExists($filePath);
     }
+
+    public function testFilesExtentionDetermination()
+    {
+        $testSourceFolder = codecept_data_dir() . '/images';
+        $filesPaths = Directory::getAllFilesPaths($testSourceFolder);
+
+        $number = 0;
+        foreach ($filesPaths as $path) {
+             $number++;
+             
+             $dataUrlBase64 = Base64TempFile::convertToDataUrl($path); 
+             
+             $base64File = new Base64TempFile($dataUrlBase64);      
+             $newFilePath = $this->testOutputDir . "/$number." . $base64File->getExtention();
+             $base64File->copyTo($newFilePath);
+             
+             $this->tester->assertSame(MIME::getForFile($path), MIME::getForFile($newFilePath)); // можно было бы сравнить Path::getExtention(), но не пойдет так как jpg переводится в jpeg
+        }
+    }
+
 }

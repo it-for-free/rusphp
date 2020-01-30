@@ -1,6 +1,8 @@
 <?php
 namespace ItForFree\rusphp\File\Directory;
 
+use ItForFree\rusphp\File\Path;
+
 /**
  * Для работы с директориями (папками)
  * (clear folder directory -- delete all files)
@@ -32,7 +34,6 @@ class Directory {
                rmdir($path);
            }   
          }
-
     }
     
     /**
@@ -51,4 +52,24 @@ class Directory {
         }
     }
     
+    
+    /**
+     * Вернет массив путей ко всем файлам в папке
+     * 
+     * @param string $dirPath
+     * @return string[]
+     */
+    public static function getAllFilesPaths($dirPath)
+    {
+        $files = scandir($dirPath);
+        
+        $result = [];
+        foreach ($files as $fileName) {
+            if ($fileName !== '.' && $fileName !== '..') {
+                $result[] = Path::concat([$dirPath, $fileName]);
+            }
+        }
+        
+        return $result;
+    }
 }
