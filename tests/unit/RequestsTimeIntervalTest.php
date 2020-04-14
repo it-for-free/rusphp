@@ -42,8 +42,7 @@ class RequestsTimeIntervalTest extends \Codeception\Test\Unit
             
 //            $tester->pre(Validator::isHumanName($source));
             $TimeInteraval->update($test['result']);
-            $tester->log('Результат ' . $test['result']
-                . ' новый интеревал ожидания: ' . $TimeInteraval->getCurrentInterval());
+//            $tester->log('Результат ' . $test['result'] . ' новый интеревал ожидания: ' . $TimeInteraval->getCurrentInterval());
 //            $tester->assertSame(Validator::isHumanName($source), $needle);
         }
     }
