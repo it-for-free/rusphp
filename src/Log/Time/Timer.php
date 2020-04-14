@@ -8,7 +8,7 @@ use ItForFree\rusphp\Log\SimpleEchoLog;
 /**
  * Класс для замера времени выполнения разных участков кода
  */
-class Timer extends ItForFree\rusphp\Log\SimpleLog {
+class Timer extends \ItForFree\rusphp\Log\SimpleLog {
     
     /**
      * Ассоциативный массив, где в качестве ключа указывается время 
@@ -157,4 +157,19 @@ class Timer extends ItForFree\rusphp\Log\SimpleLog {
         $time = self::getIntervalTime($intervalName);
         SimpleEchoLog::me($time, $intervalName);
     }
+	
+	/**
+     * Завершит интервал и вернет время (как результат -- число в секундах)
+     * Вернёт даже нулевое время
+	 * 
+     * @param string $intervalName имя уже записанного с помощью start() и end() интервала
+     * @return float    секунды
+     * @throws \Exception
+     */
+    public static function get($intervalName = 'noname')
+    {
+		self::end($intervalName);
+        return self::getIntervalTime($intervalName);
+    }
+	
 }

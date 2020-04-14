@@ -45,7 +45,10 @@ composer require it-for-free/rusphp
 * [Безопасноть (в частности секрентые ключи/токены)](src/PHP/Security/README.md)
 * [Работа с онлайн-картами (яндекс и google maps)](src/Common/Map/README.md)
 * [Для работы с доменами](src/Network/Domain/README.md)
-* [Для работы с временем/временными периодами (в том числе интервалы между запросами к API)](src/Common/Time/README.md)
+* Для работы с **временем**:
+   - [Работа со временем вообще](src/Common/Time/README.md)
+   - [Замер времени выполнения фрагментов кода](src/Log/Time/README.md)
+
 
 ### UI Работа с  пользовательским интерфейсом
 
