@@ -37,10 +37,5 @@
         "files": ["src/functions.php"]
     },
     
-    "repositories": [
-        {
-           "type": "vcs",
-           "url": "https://github.com/it-for-free/php-new-to-old"
-        }
-    ]
+    "repositories": []
 }
