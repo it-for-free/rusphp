@@ -1,6 +1,5 @@
 <?php
-namespace ItForFree\rusphp\Codeception\Acceptance;
-
+namespace ItForFree\rusphp\Testing\Codeception\Acceptance;
 
 use ItForFree\rusphp\Network\Url\Url as Url;
 
