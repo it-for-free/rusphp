@@ -32,4 +32,19 @@ class ObjectFactory {
        return $result;
    }
    
+   /**
+    * @param string $classname
+    * @param array $config
+    * @return null|object
+    */
+   public static function createObjectByConstruct(string $classname,
+       array $config = [])
+   {
+       $resultObject = null;
+       if (Constructor::isPublic($classname)) { 
+           $reflection = (new \ReflectionClass($classname))
+               ->newInstanceArgs($config);
+       }
+       return $resultObject;
+   }
 }
