@@ -47,4 +47,20 @@ class ObjectFactory {
        }
        return $resultObject;
    }
+
+    /**
+     * @param $object
+     * @param array $params
+     * @return object
+     */
+   public static function setPublicParams($object, array $params =[]): object
+   {
+       if (!empty($params)) {
+           foreach ($params as $param) {
+               $object->$param = '';
+           }
+       }
+
+       return $object;
+   }
 }
