@@ -41,9 +41,12 @@ class ObjectFactory {
        array $config = [])
    {
        $resultObject = null;
-       if (Constructor::isPublic($classname)) { 
-           $reflection = (new \ReflectionClass($classname))
+       if (Constructor::isPublic($classname)) {
+           
+           $resultObject = (new \ReflectionClass($classname))
                ->newInstanceArgs($config);
+           
+           
        }
        return $resultObject;
    }

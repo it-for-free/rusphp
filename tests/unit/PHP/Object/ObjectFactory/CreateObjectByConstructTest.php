@@ -40,29 +40,47 @@ class CreateObjectByConstruct extends \Codeception\Test\Unit
 
     public function testBySimpleArray()
     {
-        ObjectFactory::createObjectByConstruct(ObjectTestByConstruct::class, [
+        $tester = $this->tester;
+         
+        $obj = ObjectFactory::createObjectByConstruct(ObjectTestByConstruct::class, [
             new ObjectDependency1,
             2,
             3
         ]);
+        
+        $tester->assertSame($obj->dep instanceof ObjectDependency1, true);
+        $tester->assertSame(gettype($obj->b), 'integer');
+        $tester->assertSame(gettype($obj->c), 'integer');
     }
     
     public function testByFullAssocArrayInDirectOrder()
     {
-        ObjectFactory::createObjectByConstruct(ObjectTestByConstruct::class, [
+        $tester = $this->tester;
+         
+        $obj = ObjectFactory::createObjectByConstruct(ObjectTestByConstruct::class, [
             'dep' => new ObjectDependency1,
-            'b' => 2,
-            'c' => 3
+            'b' => 50,
+            'c' => 100
         ]);
+        
+        $tester->assertSame($obj->dep instanceof ObjectDependency1, true);
+        $tester->assertSame(gettype($obj->b), 'integer');
+        $tester->assertSame(gettype($obj->c), 'integer');
     }
     
     public function testByFullAssocArrayInNotDirectOrder()
     {
-        ObjectFactory::createObjectByConstruct(ObjectTestByConstruct::class, [
-            'b' => 2,
-            'c' => 3,
+        $tester = $this->tester;
+         
+        $obj = ObjectFactory::createObjectByConstruct(ObjectTestByConstruct::class, [
+            'b' => 100,
+            'c' => 50,
             'dep' => new ObjectDependency1
         ]);
+        
+        $tester->assertSame($obj->dep instanceof ObjectDependency1, true);
+        $tester->assertSame(gettype($obj->b), 'integer');
+        $tester->assertSame(gettype($obj->c), 'integer');
     }
     
     public function testByNotFullAssocArray()
@@ -71,7 +89,9 @@ class CreateObjectByConstruct extends \Codeception\Test\Unit
          
         $obj = ObjectFactory::createObjectByConstruct(ObjectTestByConstruct::class, [
             'dep' => new ObjectDependency1,
-            'c' => 2
+            'c' => 50
         ]);
+        
+        $tester->assertSame(gettype($obj->b), 'integer');
     }
 }
