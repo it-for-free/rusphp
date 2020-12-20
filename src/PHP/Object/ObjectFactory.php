@@ -49,15 +49,16 @@ class ObjectFactory {
    }
 
     /**
+     * Универсальный сеттер
      * @param $object
-     * @param array $params
+     * @param array $data ассоциативный массив вида ['propertyName' => propertyValue]
      * @return object
      */
-   public static function setPublicParams($object, array $params =[]): object
+   public static function setPublicParams($object, array $data =[]): object
    {
-       if (!empty($params)) {
-           foreach ($params as $param) {
-               $object->$param = '';
+       if (!empty($data)) {
+           foreach ($data as $property => $value) {
+               $object->$property = $value;
            }
        }
 
