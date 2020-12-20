@@ -8,7 +8,12 @@ require '/var/www/iff/rusphp/src/PHP/Object/ObjectFactory.php';
 use ItForFree\rusphp\PHP\Object\ObjectClass\Constructor;
 use ItForFree\rusphp\PHP\Object\ObjectFactory;
 
-function debug($var = []) { echo '<pre>'; print_r($var); echo '</pre>'; }
+function debug($var = []) {
+    echo '<pre>';
+    print_r($var);
+    echo '</pre>';
+    die;
+}
 
 class Before
 {
@@ -24,6 +29,16 @@ class Testing
     }
 }
 
-$objF = ObjectFactory::createObjectByConstruct('Testing', [
-    'before' => new Before
-]);
+//$objF = ObjectFactory::createObjectByConstruct('Testing', [
+//    'before' => new Before
+//]);
+
+
+$data = [
+    'b' => 100,
+    'c' => 50,
+    'dep' => new ObjectDependency1
+];
+
+
+$obj = ObjectFactory::createObjectByConstruct(ObjectTestByConstruct::class, $data);

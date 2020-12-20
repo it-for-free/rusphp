@@ -9,6 +9,12 @@ class ObjectDependency2
 {
 }
 
+class integration
+{
+
+}
+
+
 class ObjectTestByConstruct
 {
     public $dep;
@@ -62,25 +68,31 @@ class CreateObjectByConstruct extends \Codeception\Test\Unit
             'b' => 50,
             'c' => 100
         ]);
-        
+
         $tester->assertSame($obj->dep instanceof ObjectDependency1, true);
         $tester->assertSame(gettype($obj->b), 'integer');
         $tester->assertSame(gettype($obj->c), 'integer');
+        $tester->assertSame($obj->b ,50);
     }
     
     public function testByFullAssocArrayInNotDirectOrder()
     {
         $tester = $this->tester;
-         
-        $obj = ObjectFactory::createObjectByConstruct(ObjectTestByConstruct::class, [
+        $data = [
             'b' => 100,
-            'c' => 50,
+            'c' => new integration,
             'dep' => new ObjectDependency1
-        ]);
+        ];
+
+
+        $obj = ObjectFactory::createObjectByConstruct(ObjectTestByConstruct::class, $data);
+
+        $tester->log(print_r($obj, true));
         
         $tester->assertSame($obj->dep instanceof ObjectDependency1, true);
         $tester->assertSame(gettype($obj->b), 'integer');
         $tester->assertSame(gettype($obj->c), 'integer');
+        $tester->assertFalse($obj->b instanceof ObjectDependency1, true);
     }
     
     public function testByNotFullAssocArray()

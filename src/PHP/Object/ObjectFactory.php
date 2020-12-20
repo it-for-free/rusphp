@@ -31,25 +31,66 @@ class ObjectFactory {
        
        return $result;
    }
-   
-   /**
-    * @param string $classname
-    * @param array $config
-    * @return null|object
-    */
+
+    /**
+     * @param string $classname
+     * @param array $config
+     * @return null|object
+     * @throws \ReflectionException
+     */
    public static function createObjectByConstruct(string $classname,
-       array $config = [])
+       array $config = []): ?object
    {
        $resultObject = null;
+       $sorted = [];
        if (Constructor::isPublic($classname)) {
-           
-           $resultObject = (new \ReflectionClass($classname))
-               ->newInstanceArgs($config);
-           
-           
+           $class = new \ReflectionClass($classname);
+           $classConstruct = $class->getConstructor();
+           $constructParams = $classConstruct->getParameters();
+           foreach ($constructParams as $param) {
+               $constructParamType = $param->getType()->getName();
+               foreach ($config as $property => $value) {
+                   $type = self::getType($value);
+                   if ($constructParamType === $type) {
+                       $sorted[$property] = $value;
+                       unset($config[$property]);
+                   }
+               }
+           }
+
+           $resultObject = $class->newInstanceArgs($sorted);
        }
+
        return $resultObject;
    }
+
+    /**
+     * @param null $value
+     * @return false|string
+     */
+    private static function getType($value = null)
+    {
+        if (is_object($value)) {
+            $type = get_class($value);
+        } else {
+            $type = gettype($value);
+        }
+        switch ($type) {
+            case 'integer' :
+                $type = 'int';
+                break;
+            case 'boolean' :
+                $type = 'bool';
+                break;
+            case 'double' :
+                $type = 'float';
+                break;
+        }
+
+        return $type;
+    }
+
+
 
     /**
      * Универсальный сеттер
