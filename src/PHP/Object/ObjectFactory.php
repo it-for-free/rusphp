@@ -2,6 +2,7 @@
 
 namespace ItForFree\rusphp\PHP\Object;
 
+use ItForFree\rusphp\PHP\Object\Exception\CountException;
 use ItForFree\rusphp\PHP\Object\Exception\TypeException;
 use ItForFree\rusphp\PHP\Object\ObjectClass\Constructor;
 
@@ -51,8 +52,7 @@ class ObjectFactory {
        if (Constructor::isPublic($classname)) {
            $class = new \ReflectionClass($classname);
            $classConstruct = $class->getConstructor();
-           $constructorData = self::extractConstructor($classConstruct);
-           $sorted = self::sortArgs($constructorData, $config);
+           $sorted = self::sortArgs($classConstruct, $config);
            $resultObject = $class->newInstanceArgs($sorted);
        }
 
@@ -81,12 +81,13 @@ class ObjectFactory {
 
     /**
      * Расставляет элементы $config в понятном для конструктора порядке.
-     * @param array $constructorData
      * @param array $config
      * @return array
      */
-   private static function sortArgs(array $constructorData, array $config): array
+   private static function sortArgs($classConstruct, array $config): array
    {
+       $constructorData = self::extractConstructor($classConstruct);
+
        $sorted = [];
        $i = 0;
        foreach ($constructorData as $propertyName => $propertyType) {
@@ -112,7 +113,44 @@ class ObjectFactory {
            $i++;
        }
 
+       self::checkCountCorrect($classConstruct, $sorted);
+
+
        return $sorted;
+   }
+
+    /**
+     * Количество обязательных аргументов конструктора
+     * должно быть равно количеству отсортированных элементов из sorted
+     * @param $classConstruct
+     * @param $sorted
+     * @throws CountException
+     */
+   private static function checkCountCorrect($classConstruct, array $sorted)
+   {
+       $constructParams = $classConstruct->getParameters();
+       $countNeeded = count($constructParams);
+       $optionalParams = [];
+       foreach ($constructParams as $constructParam) {
+           if ($constructParam->isOptional() === true) {
+               $optionalParams[] = $constructParam->getName();
+               $countNeeded--;
+           }
+       }
+
+       $params = array_keys($sorted);
+       $countSorted = count($sorted);
+       foreach ($params as $param) {
+           //если параметр в sorted не обязательный, его не считаем
+           if (in_array($param, $optionalParams)) {
+               $countSorted--;
+           }
+       }
+
+       if ($countNeeded !== $countSorted) {
+           throw new CountException();
+       }
+
    }
 
     /**

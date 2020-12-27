@@ -1,4 +1,7 @@
 <?php
+
+use ItForFree\rusphp\PHP\Object\Exception\CountException;
+use ItForFree\rusphp\PHP\Object\Exception\TypeException;
 use ItForFree\rusphp\PHP\Object\ObjectFactory;
 
 class ObjectDependency1
@@ -29,6 +32,20 @@ class ObjectTestByConstruct
     }
 }
 
+class ObjectTestByConstruct2
+{
+    public $dep;
+    public $b;
+    public $c;
+
+    public function __construct(ObjectDependency1 $dep, int $b, int $c = 3)
+    {
+        $this->dep = $dep;
+        $this->b = $b;
+        $this->c = $c;
+    }
+}
+
 class CreateObjectByConstruct extends \Codeception\Test\Unit
 {
     /**
@@ -47,13 +64,13 @@ class CreateObjectByConstruct extends \Codeception\Test\Unit
     public function testBySimpleArray()
     {
         $tester = $this->tester;
-         
+
         $obj = ObjectFactory::createObjectByConstruct(ObjectTestByConstruct::class, [
             new ObjectDependency1,
             2,
             3
         ]);
-        
+
         $tester->assertSame($obj->dep instanceof ObjectDependency1, true);
         $tester->assertSame(gettype($obj->b), 'integer');
         $tester->assertSame(gettype($obj->c), 'integer');
@@ -96,7 +113,7 @@ class CreateObjectByConstruct extends \Codeception\Test\Unit
     }
     
     public function testByNotFullAssocArray()
-    {;
+    {
         $tester = $this->tester;
          
         $obj = ObjectFactory::createObjectByConstruct(ObjectTestByConstruct::class, [
@@ -105,5 +122,35 @@ class CreateObjectByConstruct extends \Codeception\Test\Unit
         ]);
         
         $tester->assertSame(gettype($obj->b), 'integer');
+    }
+
+    public function testByWrongParamsTypes()
+    {
+        $tester = $this->tester;
+        try {
+            $obj = ObjectFactory::createObjectByConstruct(ObjectTestByConstruct2::class, [
+                'dep' => new ObjectDependency1,
+                'b' => 'qwe',
+                'c' => 'rty'
+            ]);
+        } catch (Exception $exception) {
+
+            $tester->assertSame($exception instanceof CountException, true);
+        }
+
+    }
+
+    public function testByWrongParamsCount()
+    {
+        $tester = $this->tester;
+        try {
+            $obj = ObjectFactory::createObjectByConstruct(ObjectTestByConstruct2::class, [
+                'dep' => new ObjectDependency1,
+            ]);
+        } catch (Exception $exception) {
+
+            $tester->assertSame($exception instanceof CountException, true);
+        }
+
     }
 }
