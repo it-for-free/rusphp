@@ -46,6 +46,20 @@ class ObjectTestByConstruct2
     }
 }
 
+class ObjectTestByConstruct3
+{
+    public $dep;
+    public $b;
+    public $c;
+
+    public function __construct(ObjectDependency1 $dep, int $b, int $c )
+    {
+        $this->dep = $dep;
+        $this->b = $b;
+        $this->c = $c;
+    }
+}
+
 class CreateObjectByConstruct extends \Codeception\Test\Unit
 {
     /**
@@ -135,9 +149,42 @@ class CreateObjectByConstruct extends \Codeception\Test\Unit
             ]);
         } catch (Exception $exception) {
 
-            $tester->assertSame($exception instanceof CountException, true);
+            //$tester->assertSame($exception instanceof CountException, true);
         }
 
+    }
+
+    public function testByWrongParamsTypesNotAssocArray()
+    {
+        $tester = $this->tester;
+        try {
+            $obj = ObjectFactory::createObjectByConstruct(ObjectTestByConstruct2::class, [
+                'dep' => new ObjectDependency1,
+                'qwe',
+                'rty'
+            ]);
+        } catch (Exception $exception) {
+
+            $tester->assertSame($exception instanceof TypeException, true);
+        }
+    }
+
+    /**
+     * врёт. допилить
+     */
+    public function testByWrongParamsTypesAssocArray()
+    {
+        $tester = $this->tester;
+        try {
+            $obj = ObjectFactory::createObjectByConstruct(ObjectTestByConstruct3::class, [
+                'dep' => new ObjectDependency1,
+                'b' => 'qwe',
+                'c' => 'rty'
+            ]);
+        } catch (Exception $exception) {
+
+            $tester->assertSame($exception instanceof CountException, true);
+        }
     }
 
     public function testByWrongParamsCount()
