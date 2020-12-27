@@ -2,6 +2,7 @@
 
 namespace ItForFree\rusphp\PHP\Object;
 
+use ItForFree\rusphp\PHP\Object\Exception\TypeException;
 use ItForFree\rusphp\PHP\Object\ObjectClass\Constructor;
 
 /**
@@ -47,46 +48,86 @@ class ObjectFactory {
        array $config = []): ?object
    {
        $resultObject = null;
-       $sorted = [];
        if (Constructor::isPublic($classname)) {
            $class = new \ReflectionClass($classname);
            $classConstruct = $class->getConstructor();
-           $constructParams = $classConstruct->getParameters();
-           $constructorData = [];
-           foreach ($constructParams as $param) {
-               $constructParamType = $param->getType()->getName();
-               $constructorPropertyName = $param->getName();
-               $constructorData[$constructorPropertyName] = $constructParamType;
-           }
-           //ключи ассоциативного массива, переданного в метод, содержат названия всех аргументов,
-           // которые ожидает конструктор
-           if (self::isArrayKeysEqual($constructorData, $config) === true) {
-               foreach ($constructorData as $propertyName => $propertyType) {
-                   $value = $config[$propertyName];
-                   $type = self::getType($value);
-                   if ($type === $propertyType) {
-                       $sorted[$propertyName] = $value;
-                       unset($config[$propertyName]);
-                   }
-               }
-           } else {
-               //$config - не ассоциативный. разрулим все на основе сравнения типов
-               foreach ($constructorData as $propertyName => $propertyType) {
-                   foreach ($config as $property => $value) {
-                       $type = self::getType($value);
-                       if ($propertyType === $type) {
-                           $sorted[$property] = $value;
-                           unset($config[$property]);
-                       }
-                   }
-               }
-           }
+           $constructorData = self::extractConstructor($classConstruct);
+           $sorted = self::sortArgs($constructorData, $config);
            $resultObject = $class->newInstanceArgs($sorted);
-
-           }
+       }
 
        return $resultObject;
    }
+
+    /**
+     * Извлекает данные из конструктора в виде
+     * [propertyName => propertyType]
+     *
+     * @param $classConstruct
+     * @return array
+     */
+   private static function extractConstructor($classConstruct): array
+   {
+       $constructParams = $classConstruct->getParameters();
+       $constructorData = [];
+       foreach ($constructParams as $param) {
+           $constructParamType = $param->getType()->getName();
+           $constructorPropertyName = $param->getName();
+           $constructorData[$constructorPropertyName] = $constructParamType;
+       }
+
+       return $constructorData;
+   }
+
+    /**
+     * Расставляет элементы $config в понятном для конструктора порядке.
+     * @param array $constructorData
+     * @param array $config
+     * @return array
+     */
+   private static function sortArgs(array $constructorData, array $config): array
+   {
+       $sorted = [];
+       $i = 0;
+       foreach ($constructorData as $propertyName => $propertyType) {
+           //$config - ассоциативный массив
+           if (array_key_exists($propertyName, $config)) {
+               if (self::isTypeEquals($propertyType, $propertyName, $config) === true) {
+                   $sorted[$propertyName] = $config[$propertyName];
+                   unset($config[$propertyName]);
+               }
+
+           } else {
+               if (array_key_exists($i, $config)) {
+                   if (self::isTypeEquals($propertyType, $i, $config) === true) {
+                       $sorted[$propertyName] = $config[$i];
+                       unset($config[$i]);
+                   } else {
+                       throw new TypeException();
+                   }
+               }
+
+
+           }
+           $i++;
+       }
+
+       return $sorted;
+   }
+
+    /**
+     * @param $propertyType
+     * @param $index
+     * @param $config
+     * @return bool
+     */
+   private static function isTypeEquals($propertyType, $index, $config)
+   {
+       $value = $config[$index];
+       $type = self::getType($value);
+       return $type === $propertyType;
+   }
+
 
     /**
      * Сравнивает ключи двух массивов.
@@ -135,8 +176,6 @@ class ObjectFactory {
 
         return $type;
     }
-
-
 
     /**
      * Универсальный сеттер
