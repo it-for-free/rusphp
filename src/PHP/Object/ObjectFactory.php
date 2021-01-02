@@ -5,13 +5,16 @@ namespace ItForFree\rusphp\PHP\Object;
 use ItForFree\rusphp\PHP\Object\Exception\CountException;
 use ItForFree\rusphp\PHP\Object\Exception\TypeException;
 use ItForFree\rusphp\PHP\Object\ObjectClass\Constructor;
+use ReflectionException;
 
 /**
  * Для порождения объектов
  *
  */
 class ObjectFactory {
-   
+
+    private static $classConstruct, $constructorParams, $constructorOptionalParams, $constructorData;
+
    /**
     * Вернёт экземпляр класса -- или обычный объект или "одиночку" 
     * (по паттерну Singletone)
@@ -43,7 +46,9 @@ class ObjectFactory {
      * Если массив вида [0, 10, 'string'],
      * а конструктор ожидает sting, int, int ему будут переданы string, 0, 10 входного массива
      * @return null|object
-     * @throws \ReflectionException
+     * @throws CountException
+     * @throws TypeException
+     * @throws ReflectionException
      */
    public static function createObjectByConstruct(string $classname,
        array $config = []): ?object
@@ -51,8 +56,10 @@ class ObjectFactory {
        $resultObject = null;
        if (Constructor::isPublic($classname)) {
            $class = new \ReflectionClass($classname);
-           $classConstruct = $class->getConstructor();
-           $sorted = self::sortArgs($classConstruct, $config);
+           self::$classConstruct = $class->getConstructor();
+           self::extractConstructor();
+           $sorted = self::sortArgs($config);
+           self::checkCorrect($sorted);
            $resultObject = $class->newInstanceArgs($sorted);
        }
 
@@ -60,89 +67,122 @@ class ObjectFactory {
    }
 
     /**
-     * Извлекает данные из конструктора в виде
-     * [propertyName => propertyType]
-     *
-     * @param $classConstruct
-     * @return array
+     * Извлекает данные из конструктора
      */
-   private static function extractConstructor($classConstruct): array
+   private static function extractConstructor()
    {
-       $constructParams = $classConstruct->getParameters();
-       $constructorData = [];
-       foreach ($constructParams as $param) {
+       self::$constructorParams = self::$classConstruct->getParameters();
+       self::$constructorData = [];
+       foreach (self::$constructorParams as $param) {
            $constructParamType = $param->getType()->getName();
            $constructorPropertyName = $param->getName();
-           $constructorData[$constructorPropertyName] = $constructParamType;
+           self::$constructorData[$constructorPropertyName] = $constructParamType;
+           if ($param->isDefaultValueAvailable() === true) { //->isOptional() не всегда работает
+               self::$constructorOptionalParams[$param->getName()] = $param->getDefaultValue();
+           }
        }
 
-       return $constructorData;
    }
 
     /**
      * Расставляет элементы $config в понятном для конструктора порядке.
      * @param array $config
      * @return array
+     * @throws CountException
+     * @throws TypeException
      */
-   private static function sortArgs($classConstruct, array $config): array
+   private static function sortArgs(array $config): array
    {
-       $constructorData = self::extractConstructor($classConstruct);
-
        $sorted = [];
        $i = 0;
-       foreach ($constructorData as $propertyName => $propertyType) {
+       foreach (self::$constructorData as $propertyName => $propertyType) {
            //$config - ассоциативный массив
            if (array_key_exists($propertyName, $config)) {
-               if (self::isTypeEquals($propertyType, $propertyName, $config) === true) {
-                   $sorted[$propertyName] = $config[$propertyName];
-                   unset($config[$propertyName]);
-               }
+               $sorted[$propertyName] = $config[$propertyName];
 
            } else {
+               //$config - не ассоциативный массив, находим свойства просто по порядку
                if (array_key_exists($i, $config)) {
-                   if (self::isTypeEquals($propertyType, $i, $config) === true) {
-                       $sorted[$propertyName] = $config[$i];
-                       unset($config[$i]);
-                   } else {
-                       throw new TypeException();
-                   }
+                   $sorted[$propertyName] = $config[$i];
                }
-
 
            }
            $i++;
        }
 
-       self::checkCountCorrect($classConstruct, $sorted);
-
-
        return $sorted;
    }
+
+
+    /**
+     * Проверяет отсортированный массив на соответствие типов и количества аргументов
+     * @param $sorted array
+     * @throws TypeException
+     * @throws CountException
+     */
+   private static function checkCorrect(array $sorted)
+   {
+       self::checkCountCorrect($sorted);
+       self::checkTypeCorrect($sorted);
+   }
+
+
+    /**
+     * Проверяет соответствие переданных типов и ожидаемых конструктором
+     * @param $sorted array
+     * @throws TypeException
+     */
+   private static function checkTypeCorrect(array $sorted)
+   {
+
+       $sortedTypes = self::getSortedTypes($sorted);
+        foreach (self::$constructorData as $paramName => $paramType) {
+            //аргумент обязательный
+            if (!array_key_exists($paramName, self::$constructorOptionalParams)) {
+                if (array_key_exists($paramName, $sortedTypes)) {
+                    if ($paramType !== $sortedTypes[$paramName]) {
+                        throw new TypeException();
+                    }
+                }
+            }
+
+        }
+
+    }
+
+    /**
+     * Определяет типы переданных аргументов.
+     * Приводит их к синтаксису описания типов в конструкторе.
+     * Подробнее в описании self::getType
+     * @param $sorted array
+     * @return array
+     */
+    private static function getSortedTypes(array $sorted): array
+    {
+        $res = [];
+        foreach ($sorted as $name => $value) {
+            $res[$name]= self::getType($value);
+        }
+        return $res;
+    }
 
     /**
      * Количество обязательных аргументов конструктора
      * должно быть равно количеству отсортированных элементов из sorted
-     * @param $classConstruct
      * @param $sorted
      * @throws CountException
      */
-   private static function checkCountCorrect($classConstruct, array $sorted)
+   private static function checkCountCorrect(array $sorted)
    {
-       $constructParams = $classConstruct->getParameters();
-       $countNeeded = count($constructParams);
-       $optionalParams = [];
-       foreach ($constructParams as $constructParam) {
-           if ($constructParam->isOptional() === true) {
-               $optionalParams[] = $constructParam->getName();
-               $countNeeded--;
-           }
-       }
+
+       $countNeeded = count(self::$constructorParams) - count(self::$constructorOptionalParams);
 
        $params = array_keys($sorted);
        $countSorted = count($sorted);
+
        foreach ($params as $param) {
            //если параметр в sorted не обязательный, его не считаем
-           if (in_array($param, $optionalParams)) {
+           if (array_key_exists($param, self::$constructorOptionalParams)) {
                $countSorted--;
            }
        }
@@ -154,40 +194,9 @@ class ObjectFactory {
    }
 
     /**
-     * @param $propertyType
-     * @param $index
-     * @param $config
-     * @return bool
-     */
-   private static function isTypeEquals($propertyType, $index, $config)
-   {
-       $value = $config[$index];
-       $type = self::getType($value);
-       return $type === $propertyType;
-   }
-
-
-    /**
-     * Сравнивает ключи двух массивов.
-     * Вернёт true, если ключи одного массива равны ключам другого
-     * не зависимо от порядка их следования
-     * @param $first array первый массив
-     * @param $second array второй массив
-     * @return bool
-     */
-   private static function isArrayKeysEqual(array $first, array $second): bool
-   {
-
-       $keysFirst = array_keys($first);
-       $keysSecond = array_keys($second);
-       asort($keysFirst);
-       asort($keysSecond);
-       return ($keysFirst === $keysSecond);
-   }
-
-    /**
      * Функция gettype для типа integer вернёт тип integer.
-     * Но в свойствах конструктора тип integer называется int.
+     * Но в свойствах конструктора тип integer называется int,
+     * boolean - bool
      *
      * @param null $value
      * @return false|string

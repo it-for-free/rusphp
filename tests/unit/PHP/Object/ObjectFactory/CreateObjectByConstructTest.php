@@ -111,7 +111,7 @@ class CreateObjectByConstruct extends \Codeception\Test\Unit
         $tester = $this->tester;
         $data = [
             'b' => 100,
-            'c' => new integration,
+            'c' => 50,
             'dep' => new ObjectDependency1
         ];
 
@@ -149,7 +149,7 @@ class CreateObjectByConstruct extends \Codeception\Test\Unit
             ]);
         } catch (Exception $exception) {
 
-            //$tester->assertSame($exception instanceof CountException, true);
+            $tester->assertSame($exception instanceof TypeException, true);
         }
 
     }
@@ -169,9 +169,6 @@ class CreateObjectByConstruct extends \Codeception\Test\Unit
         }
     }
 
-    /**
-     * врёт. допилить
-     */
     public function testByWrongParamsTypesAssocArray()
     {
         $tester = $this->tester;
@@ -183,7 +180,7 @@ class CreateObjectByConstruct extends \Codeception\Test\Unit
             ]);
         } catch (Exception $exception) {
 
-            $tester->assertSame($exception instanceof CountException, true);
+            $tester->assertSame($exception instanceof TypeException, true);
         }
     }
 
