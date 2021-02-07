@@ -1,0 +1,36 @@
+version: '3.7'
+services:
+  web:
+    build:
+      context: .docker/php
+      dockerfile: Dockerfile
+    ports:
+      - 9121:80
+      - 9123:81
+    volumes:
+      - '../:/var/www/html/site'
+#      - './config/apache/apache-config.conf:/etc/apache2/sites-enabled/000-default.conf'
+#      - './config/apache/ports.conf:/etc/apache2/ports.conf'
+#      - './config/php/php.ini:/etc/php/7.4/apache2/php.ini'
+      - './docker/php/xdebug.ini:/etc/php/7.4/mods-available/xdebug.ini'
+    networks:
+      frontnet:
+        ipv4_address: 172.30.1.2
+  db:
+    image: postgres:12.2
+    environment:
+      POSTGRES_PASSWORD: mycool_password
+      POSTGRES_USER: mycool_user
+      POSTGRES_MULTIPLE_DATABASES: mycool_db,mycool_db_test
+    ports:
+      - 9122:5432
+    networks:
+      frontnet:
+        ipv4_address: 172.30.1.4
+
+networks:
+  frontnet:
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.30.0.0/16
