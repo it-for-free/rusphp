@@ -21,7 +21,7 @@
     
     "require": {
         "php": ">=5.3.0",
-        "ralouphie/mimey": "v1.0.*",
+        "jmoati/mimey": "3.0.*",
         "it-for-free/array_column": "*",
         "adbario/php-dot-notation": "*"
     },

@@ -67,6 +67,11 @@ cept run unit
 ```
 
 
+## @ToDo
+
+* Выяснить ситуацию с обновлением `ralouphie/mimey` до PHP8 https://packagist.org/packages/ralouphie/mimey 
+   и вернуться на него обратно с временного `jmoati/mimey`.
+
 ## Потомки rusphp ;) (вынесено в отделные пакеты)
 
 * Web-клиенты к различным системам: https://github.com/it-for-free/php-web-clients
