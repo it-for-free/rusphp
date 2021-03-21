@@ -22,21 +22,21 @@ class ObjectFactory {
             
     /**
      * 
-     * @var type Array[]
+     * @var type Array
      * Массив параметров конструктора 
      */        
     private static $constructorParams;
            
     /**
      * 
-     * @var type Array[]
+     * @var type Array
      * Массив, хранящий в себе параметры, для которых в конструкторе есть значения по умолчанию 
      */    
     private static $constructorOptionalParams;
        
     /**
      * 
-     * @var type Array[]
+     * @var type Array
      * Массив, содержащий типы передаваемых переменных
      */
     private static $constructorData;
@@ -65,6 +65,7 @@ class ObjectFactory {
 
     /**
      * Создает объект через конструктор.
+     * 
      * @param string $classname имя класса для создания объекта
      * @param array $config массив аргументов для конструктора
      * Порядок следования аргументов не обязательно должен совпадать с порядком, который ожидает конструктор.
@@ -80,7 +81,6 @@ class ObjectFactory {
        array $config = []): ?object
    {
        $resultObject = null;
-//       self::$constructorOptionalParams = null;
        self::cleanProperties();
        if (Constructor::isPublic($classname)) {
            $class = new \ReflectionClass($classname);
@@ -109,11 +109,11 @@ class ObjectFactory {
                self::$constructorOptionalParams[$param->getName()] = $param->getDefaultValue();
            }
        }
-
    }
 
     /**
      * Расставляет элементы $config в понятном для конструктора порядке.
+     * 
      * @param array $config
      * @return array
      * @throws CountException
@@ -133,17 +133,16 @@ class ObjectFactory {
                if (array_key_exists($i, $config)) {
                    $sorted[$propertyName] = $config[$i];
                }
-
            }
            $i++;
        }
-
        return $sorted;
    }
 
 
     /**
      * Проверяет отсортированный массив на соответствие типов и количества аргументов
+     * 
      * @param $sorted array
      * @throws TypeException
      * @throws CountException
@@ -157,6 +156,9 @@ class ObjectFactory {
 
     /**
      * Проверяет соответствие переданных типов и ожидаемых конструктором
+     * 
+     * В случае, если количество переданных типов не соответствует ожидаемому, бросается исключение 
+     * 
      * @param $sorted array
      * @throws TypeException
      */
@@ -165,23 +167,20 @@ class ObjectFactory {
 
        $sortedTypes = self::getSortedTypes($sorted);
         foreach (self::$constructorData as $paramName => $paramType) {
-            //проверяет аргумент обязательный или для него есть значение по умолчанию
-//            if (!array_key_exists($paramName, self::$constructorOptionalParams)) { 
                 if (array_key_exists($paramName, $sortedTypes)) {
                     if ($paramType !== $sortedTypes[$paramName]) { 
                         throw new TypeException();
                     }
                 }
-//            }
-
         }
-
     }
 
     /**
      * Определяет типы переданных аргументов.
+     * 
      * Приводит их к синтаксису описания типов в конструкторе.
      * Подробнее в описании self::getType
+     * 
      * @param $sorted array
      * @return array
      */
@@ -195,14 +194,16 @@ class ObjectFactory {
     }
 
     /**
+     * Проверяет количество переданных параметров с количеством обязательных
+     * 
      * Количество обязательных аргументов конструктора
      * должно быть равно количеству отсортированных элементов из sorted
+     * 
      * @param $sorted
      * @throws CountException
      */
    private static function checkCountCorrect(array $sorted)
    {
-       
        $countNeeded = count(self::$constructorParams) - count(self::$constructorOptionalParams);
 
        $params = array_keys($sorted);
@@ -218,10 +219,11 @@ class ObjectFactory {
        if ($countNeeded !== $countSorted) {
            throw new CountException();
        }
-
    }
 
     /**
+     * Возвращает тип переданного значения
+     * 
      * Функция gettype для типа integer вернёт тип integer.
      * Но в свойствах конструктора тип integer называется int,
      * boolean - bool
@@ -248,12 +250,14 @@ class ObjectFactory {
                 $type = 'float';
                 break;
         }
-
         return $type;
     }
 
     /**
      * Универсальный сеттер
+     * 
+     * Возвращает объект, заполненный переданными параметрами 
+     * 
      * @param $object
      * @param array $data ассоциативный массив вида ['propertyName' => propertyValue]
      * @return object
@@ -265,13 +269,11 @@ class ObjectFactory {
                $object->$property = $value;
            }
        }
-
        return $object;
    }
    
-   
    /**
-    * Метод очистки статических свойств между тестами
+    * Очистит статические свойства класса 
     */
    public static function cleanProperties()
    {
