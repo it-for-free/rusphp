@@ -46,7 +46,8 @@ class ObjectFactory {
     * (по паттерну Singletone)
     * 
     * @param string $className   Имя класса
-    * @param string $singletoneInstanceAccessStaticMethodName  необязательное имя статического метода для доступа к объекту-одиночке. По умолчанию 'get'
+    * @param string $singletoneInstanceAccessStaticMethodName  необязательное 
+    *   имя статического метода для доступа к объекту-одиночке. По умолчанию 'get'
     * @return object
     */
    public static function getInstanceOrSingletone($className, 
@@ -73,13 +74,14 @@ class ObjectFactory {
      * Если массив вида [0, 10, 'string'],
      * а конструктор ожидает sting, int, int ему будут переданы string, 0, 10 входного массива
      * @return null|object
+     * 
      * @throws CountException
      * @throws TypeException
      * @throws ReflectionException
      */
-   public static function createObjectByConstruct(string $classname,
+    public static function createObjectByConstruct(string $classname,
        array $config = []): ?object
-   {
+    {
        $resultObject = null;
        self::cleanProperties();
        if (Constructor::isPublic($classname)) {
@@ -92,13 +94,13 @@ class ObjectFactory {
        }
 
        return $resultObject;
-   }
+    }
 
     /**
      * Извлекает данные из конструктора
      */
-   private static function extractConstructor()
-   {
+    private static function extractConstructor()
+    {
        $params = self::$constructorParams = self::$classConstruct->getParameters();
        self::$constructorData = [];
        foreach (self::$constructorParams as $param) {
@@ -109,25 +111,25 @@ class ObjectFactory {
                self::$constructorOptionalParams[$param->getName()] = $param->getDefaultValue();
            }
        }
-   }
+    }
 
     /**
      * Расставляет элементы $config в понятном для конструктора порядке.
      * 
      * @param array $config
      * @return array
+     * 
      * @throws CountException
      * @throws TypeException
      */
-   private static function sortArgs(array $config): array
-   {
+    private static function sortArgs(array $config): array
+    {
        $sorted = [];
        $i = 0;
        foreach (self::$constructorData as $propertyName => $propertyType) {
            //$config - ассоциативный массив
            if (array_key_exists($propertyName, $config)) {
                $sorted[$propertyName] = $config[$propertyName];
-
            } else {
                //$config - не ассоциативный массив, находим свойства просто по порядку
                if (array_key_exists($i, $config)) {
@@ -137,7 +139,7 @@ class ObjectFactory {
            $i++;
        }
        return $sorted;
-   }
+    }
 
 
     /**
@@ -153,7 +155,6 @@ class ObjectFactory {
        self::checkTypeCorrect($sorted);
    }
 
-
     /**
      * Проверяет соответствие переданных типов и ожидаемых конструктором
      * 
@@ -162,17 +163,16 @@ class ObjectFactory {
      * @param $sorted array
      * @throws TypeException
      */
-   private static function checkTypeCorrect(array $sorted)
-   {
-
-       $sortedTypes = self::getSortedTypes($sorted);
-        foreach (self::$constructorData as $paramName => $paramType) {
-                if (array_key_exists($paramName, $sortedTypes)) {
-                    if ($paramType !== $sortedTypes[$paramName]) { 
-                        throw new TypeException();
-                    }
-                }
-        }
+    private static function checkTypeCorrect(array $sorted)
+    {
+        $sortedTypes = self::getSortedTypes($sorted);
+         foreach (self::$constructorData as $paramName => $paramType) {
+                 if (array_key_exists($paramName, $sortedTypes)) {
+                     if ($paramType !== $sortedTypes[$paramName]) { 
+                         throw new TypeException();
+                     }
+                 }
+         }
     }
 
     /**
@@ -202,8 +202,8 @@ class ObjectFactory {
      * @param $sorted
      * @throws CountException
      */
-   private static function checkCountCorrect(array $sorted)
-   {
+    private static function checkCountCorrect(array $sorted)
+    {
        $countNeeded = count(self::$constructorParams) - count(self::$constructorOptionalParams);
 
        $params = array_keys($sorted);
@@ -219,7 +219,7 @@ class ObjectFactory {
        if ($countNeeded !== $countSorted) {
            throw new CountException();
        }
-   }
+    }
 
     /**
      * Возвращает тип переданного значения
@@ -262,24 +262,24 @@ class ObjectFactory {
      * @param array $data ассоциативный массив вида ['propertyName' => propertyValue]
      * @return object
      */
-   public static function setPublicParams($object, array $data =[]): object
-   {
+    public static function setPublicParams($object, array $data =[]): object
+    {
        if (!empty($data)) {
            foreach ($data as $property => $value) {
                $object->$property = $value;
            }
        }
        return $object;
-   }
+    }
    
    /**
     * Очистит статические свойства класса 
     */
-   public static function cleanProperties()
-   {
+    private static function cleanProperties()
+    {
        self::$classConstruct = array();
        self::$constructorData = array();
        self::$constructorOptionalParams = array();
        self::$constructorParams = array();
-   }
+    }
 }
