@@ -90,6 +90,7 @@ class CreateObjectByConstruct extends \Codeception\Test\Unit
         $tester->assertSame(gettype($obj->c), 'integer');
     }
     
+    
     public function testByFullAssocArrayInDirectOrder()
     {
         $tester = $this->tester;
@@ -106,6 +107,7 @@ class CreateObjectByConstruct extends \Codeception\Test\Unit
         $tester->assertSame($obj->b ,50);
     }
     
+    
     public function testByFullAssocArrayInNotDirectOrder()
     {
         $tester = $this->tester;
@@ -117,14 +119,12 @@ class CreateObjectByConstruct extends \Codeception\Test\Unit
 
 
         $obj = ObjectFactory::createObjectByConstruct(ObjectTestByConstruct::class, $data);
-
-        $tester->log(print_r($obj, true));
-        
         $tester->assertSame($obj->dep instanceof ObjectDependency1, true);
         $tester->assertSame(gettype($obj->b), 'integer');
         $tester->assertSame(gettype($obj->c), 'integer');
         $tester->assertFalse($obj->b instanceof ObjectDependency1, true);
     }
+    
     
     public function testByNotFullAssocArray()
     {
@@ -137,6 +137,7 @@ class CreateObjectByConstruct extends \Codeception\Test\Unit
         
         $tester->assertSame(gettype($obj->b), 'integer');
     }
+    
 
     public function testByWrongParamsTypes()
     {
@@ -144,15 +145,15 @@ class CreateObjectByConstruct extends \Codeception\Test\Unit
         try {
             $obj = ObjectFactory::createObjectByConstruct(ObjectTestByConstruct2::class, [
                 'dep' => new ObjectDependency1,
-                'b' => 'qwe',
-                'c' => 'rty'
+                'b' => 'qwe', // неверный тип данных для b и c, что вызывает ошибку в пятом тесте
+                'c' => 'rty'  //
             ]);
         } catch (Exception $exception) {
 
             $tester->assertSame($exception instanceof TypeException, true);
         }
-
     }
+    
 
     public function testByWrongParamsTypesNotAssocArray()
     {
@@ -161,13 +162,14 @@ class CreateObjectByConstruct extends \Codeception\Test\Unit
             $obj = ObjectFactory::createObjectByConstruct(ObjectTestByConstruct2::class, [
                 'dep' => new ObjectDependency1,
                 'qwe',
-                'rty'
+                'rty'  //Вызывает ошибку для шестого теста
             ]);
         } catch (Exception $exception) {
 
             $tester->assertSame($exception instanceof TypeException, true);
         }
     }
+    
 
     public function testByWrongParamsTypesAssocArray()
     {
@@ -175,14 +177,15 @@ class CreateObjectByConstruct extends \Codeception\Test\Unit
         try {
             $obj = ObjectFactory::createObjectByConstruct(ObjectTestByConstruct3::class, [
                 'dep' => new ObjectDependency1,
-                'b' => 'qwe',
-                'c' => 'rty'
+                'b' => 'qwe', //вызывает ошибку для 7 теста
+                'c' => 'rty'  //
             ]);
         } catch (Exception $exception) {
 
             $tester->assertSame($exception instanceof TypeException, true);
         }
     }
+    
 
     public function testByWrongParamsCount()
     {
@@ -190,11 +193,27 @@ class CreateObjectByConstruct extends \Codeception\Test\Unit
         try {
             $obj = ObjectFactory::createObjectByConstruct(ObjectTestByConstruct2::class, [
                 'dep' => new ObjectDependency1,
+                                                //ожидает значения для свойств b и c типа integer, но их нет, поэтому выдает ошибку
             ]);
         } catch (Exception $exception) {
 
             $tester->assertSame($exception instanceof CountException, true);
         }
-
+    }
+    
+    
+    public function testWrongParamsTypesForDefaults()
+    {  
+        $tester = $this->tester;
+        try {
+            $obj = ObjectFactory::createObjectByConstruct(ObjectTestByConstruct::class, [
+                'dep' => new ObjectDependency1,
+                'b' => 'advc', 
+                'c' => 'etc' 
+            ]);
+        } catch (Exception $exception) {
+            
+            $tester->assertSame($exception instanceof TypeException, true);
+        }
     }
 }
