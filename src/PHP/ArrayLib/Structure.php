@@ -94,4 +94,31 @@ class Structure
         }
         return $result;
     }
-}
+    
+    /**
+     * 
+     * @param array $arr
+     * @param string $fieldName
+     * @param string $value
+     * @return array  массив ключей пути до элемента, начиная с корня исходого массива
+     */
+    public static function getPathForElementWithValue($arr, $fieldName, $fieldValue)
+    {
+	$result = [];
+	$found = false;
+	foreach ($arr as  $key => $value)  {
+	    if (is_array($value)) {
+		if (// ! проверяешь $fieldName, $fieldValue
+		) {
+		    return [$key]; 
+		}  else {
+		    $recResult = getPathForElementWithValue($value, $fieldName, $fieldValue);
+		    if (!empty($recResult)) {
+			return array_unshift($recResult, $key); 
+		    }
+		    
+		}	
+	    }
+	}
+	return $result;
+    }
