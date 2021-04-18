@@ -10,35 +10,35 @@ namespace ItForFree\rusphp\PHP\ArrayLib;
  * (напр. разворачивание в одномерный массив значений многомерного)
  */
 class Structure
-{   
+{
     /**
      * Все значения будут выстроены в линию (одномерный массив)
      * с "заходом" во вложенные массивы
      * (рекурсивная функция)
-     * 
-     * @param  array $nestedArray   массив, которые может содержать вложенные массивы
+     *
+     * @param array $nestedArray массив, которые может содержать вложенные массивы
      * @return array
      */
     public static function getAllValuesAsOneDemisionalArray($nestedArray)
     {
         $result = array();
         foreach ($nestedArray as $key => $arrElement) {
-            if  (is_array($arrElement)) {
+            if (is_array($arrElement)) {
                 $subResults = self::getAllValuesAsOneDemisionalArray($arrElement);
                 $result = array_merge($result, $subResults);
             } else {
-               $result[] = $arrElement;
+                $result[] = $arrElement;
             }
         }
-        
+
         return $result;
     }
 
     /**
      * Вернёт индекс (ключ) самого длинного вложенного подмассива массива
-     * 
-     * @param array $nestedArray   массив, которые может содержать вложенные массивы
-     * @param array $allowedKeys   ограничивающий список -- если нужно чтобы возвращаемый элементы был исключительно из этого этого списка 
+     *
+     * @param array $nestedArray массив, которые может содержать вложенные массивы
+     * @param array $allowedKeys ограничивающий список -- если нужно чтобы возвращаемый элементы был исключительно из этого этого списка
      * @return mixed               имя ключа (индекса) или тгдд
      */
     public static function getKeyOfLogestSubarray($nestedArray, $allowedKeys = array())
@@ -54,13 +54,13 @@ class Structure
                 }
             }
         }
-        
+
         return $arrayKeyName;
     }
-    
+
     /**
      * Вернёт массив ключей тех элементов, котроые сами являются массивами
-     * 
+     *
      * @param mixed[] $arr
      * @return mixed[]
      */
@@ -74,12 +74,12 @@ class Structure
         }
         return $keys;
     }
-    
+
     /**
-     * Извлечет из каждого элемента массива указаные поля первого уровня 
-     * 
-     * @param array $arr   массив или любая итерируемая структура, к элементам которой можно обращаться как к элементам массива
-     * @param string[] $elementsNames  имена извлекаемых элементом
+     * Извлечет из каждого элемента массива указаные поля первого уровня
+     *
+     * @param array $arr массив или любая итерируемая структура, к элементам которой можно обращаться как к элементам массива
+     * @param string[] $elementsNames имена извлекаемых элементом
      * @return array    двумерный массив, содержащий только запрошенные поля
      */
     public static function getFields($arr, $elementsNames)
@@ -94,9 +94,9 @@ class Structure
         }
         return $result;
     }
-    
+
     /**
-     * 
+     *
      * @param array $arr
      * @param string $fieldName
      * @param string $value
@@ -104,21 +104,20 @@ class Structure
      */
     public static function getPathForElementWithValue($arr, $fieldName, $fieldValue)
     {
-	$result = [];
-	$found = false;
-	foreach ($arr as  $key => $value)  {
-	    if (is_array($value)) {
-		if (// ! проверяешь $fieldName, $fieldValue
-		) {
-		    return [$key]; 
-		}  else {
-		    $recResult = getPathForElementWithValue($value, $fieldName, $fieldValue);
-		    if (!empty($recResult)) {
-			return array_unshift($recResult, $key); 
-		    }
-		    
-		}	
-	    }
-	}
-	return $result;
+        $result = [];
+        $found = false;
+        foreach ($arr as $key => $value) {
+            if (is_array($value)) {
+                if ($value[$fieldName] === $fieldValue) {
+                    return [$key];
+                } else {
+                    $recResult = getPathForElementWithValue($value, $fieldName, $fieldValue);
+                    if (!empty($recResult)) {
+                        return array_unshift($recResult, $key);
+                    }
+                }
+            }
+        }
+        return $result;
     }
+}
