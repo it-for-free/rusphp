@@ -102,18 +102,37 @@ class Structure
      * @param string $value
      * @return array  массив ключей пути до элемента, начиная с корня исходого массива
      */
+//    public static function getPathForElementWithValue($arr, $fieldName, $fieldValue, $result = [])
+//    {
+//        foreach ($arr as $key => $value) {
+//            if ($key === $fieldName && $value === $fieldValue) {
+//                return array_merge($result, [$key]);
+//            } else {
+//                if (is_array($value)) {
+//                        $recResult = self::getPathForElementWithValue($value, $fieldName, $fieldValue, array_merge($result, [$key]));
+//                        if (!empty($recResult)) {
+//                            return $recResult;
+//                        }
+//                    }
+//            }
+//        }
+//        return null;
+//    }
+    
+    
     public static function getPathForElementWithValue($arr, $fieldName, $fieldValue)
     {
         $result = [];
         $found = false;
         foreach ($arr as $key => $value) {
             if (is_array($value)) {
-                if ($value[$fieldName] === $fieldValue) {
+                if (isset($value[$fieldName]) && ($value[$fieldName] === $fieldValue)) {
                     return [$key];
                 } else {
-                    $recResult = getPathForElementWithValue($value, $fieldName, $fieldValue);
+                    $recResult = self::getPathForElementWithValue($value, $fieldName, $fieldValue);
                     if (!empty($recResult)) {
-                        return array_unshift($recResult, $key);
+                        array_unshift($recResult, $key);
+                        return ($recResult);
                     }
                 }
             }
