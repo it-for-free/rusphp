@@ -9,6 +9,9 @@ class NumberOne {
     
     public $arrs;
     
+    /*
+     * Класс теста номер 1
+     */
     public function __construct() {
         
         $this->arrs = [
@@ -17,7 +20,7 @@ class NumberOne {
             'three' => [
                 'part' => [
                     'sername' => [
-//                        'alias' => '@asef'
+                        'uuu' => 'neoo'
                     ]
                 ]
                 
@@ -26,6 +29,9 @@ class NumberOne {
     }
 }
 
+/*
+* Класс теста номер 2
+*/
 class NumberTwo{
     
     public $arrs;
@@ -45,6 +51,9 @@ class NumberTwo{
     
 }
 
+/*
+* Класс теста номер 3
+*/
 class NumberThree {
     
     public $arrs;
@@ -82,6 +91,9 @@ class NumberThree {
     }
 }
 
+/*
+* Класс теста номер 4
+*/
 class NumberFour {
     
     public $arrs;
@@ -99,6 +111,9 @@ class NumberFour {
     }
 }
 
+/*
+* Класс теста номер 5
+*/
 class NumberFive {
     
     public $arrs;
@@ -110,7 +125,7 @@ class NumberFive {
             'dgsdg' => [],
             'gdfbv' => 'bvcb',
             'fdg' => [
-//                'alias' => '@asef'
+                'alias' => '@asef'
             ]
         ];
     }
@@ -120,86 +135,74 @@ class NumberFive {
 
 class TestsGetPath extends \Codeception\Test\Unit {
 
-    public $arrs = [
-        1123,
-        'qwe' => [
-            'alias' => '@asef',
-            'qwe' => 123,
-        ]
-    ];
 
+    /*
+     * Тест номер 1
+     */
     public function testGetPathForElementValueOne() {
         
+        $ExpectedResponse = [];
         $tester = $this->tester;
         $object = new NumberOne();
         $arrs = $object->arrs;
-
-        try {
-            $result = ArrayStructure::getPathForElementWithValue($arrs, 'alias', '@asef');
-            $twoResult = $result;
-        } catch (Exception $exception) {
-            $error = $exception;
-//            $tester->assertSame($exception instanceof TypeException, true);
-        }
+        $result = ArrayStructure::getPathForElementWithValue($arrs, 'alias', '@asef');
+        $twoResult = $result;
+        $tester->assertSame($ExpectedResponse, $result);
     }
     
-    
+    /*
+     * Тест номер 2
+     */
     public function testGetForElementValueTwo() {
+        
+        $ExpectedResponse = ['abs', 'abc', 'abc'];
         $tester = $this->tester;
         $object = new NumberTwo();
         $arrs = $object->arrs;
-
-        try {
-            $result = ArrayStructure::getPathForElementWithValue($arrs, 'alias', '@asef');
-            $twoResult = $result;
-        } catch (Exception $exception) {
-            $error = $exception;
-//            $tester->assertSame($exception instanceof TypeException, true);
-        }
+        $result = ArrayStructure::getPathForElementWithValue($arrs, 'alias', '@asef');
+        $twoResult = $result;
+        $tester->assertSame($ExpectedResponse, $result);
     }
     
+    /*
+     * Тест номер 3
+     */
     public function testGetForElementValueThree() {
         
+        $ExpectedResponse = ['tyu', 'mbor', 'gfg', 'gdhb'];
         $tester = $this->tester;
         $object = new NumberThree();
         $arrs = $object->arrs;
-        try {
-            $result = ArrayStructure::getPathForElementWithValue($arrs, 'alias', '@asef');
-            $twoResult = $result;
-        } catch (Exception $exception) {
-            $error = $exception;
-//            $tester->assertSame($exception instanceof TypeException, true);
-        }
+        $result = ArrayStructure::getPathForElementWithValue($arrs, 'alias', '@asef');
+        $twoResult = $result;
+        $tester->assertSame($ExpectedResponse, $result); //сравнение ожидаемого значения и полученного
     }
     
+    /*
+     * Тест номер 4
+     */
     public function testGetForElementValueFour() {
         
+        $ExpectedResponse = ['arr', 'gdsg'];
         $tester = $this->tester;
         $object = new NumberFour();
         $arrs = $object->arrs;
-
-        try {
-            $result = ArrayStructure::getPathForElementWithValue($arrs, 'alias', '@asef');
-            $twoResult = $result;
-        } catch (Exception $exception) {
-            $error = $exception;
-//            $tester->assertSame($exception instanceof TypeException, true);
-        }
+        $result = ArrayStructure::getPathForElementWithValue($arrs, 'alias', '@asef');
+        $twoResult = $result;
+        $tester->assertSame($ExpectedResponse, $result);
     }
     
+    /*
+     * Тест номер 5
+     */
     public function testGetForElementValueFive() {
         
+        $ExpectedResponse = ['fdg'];
         $tester = $this->tester;
         $object = new NumberFive();
         $arrs = $object->arrs;
-
-        try {
-            $result = ArrayStructure::getPathForElementWithValue($arrs, 'alias', '@asef');
-            $twoResult = $result;
-        } catch (Exception $exception) {
-            $error = $exception;
-//            $tester->assertSame($exception instanceof TypeException, true);
-        }
+        $result = ArrayStructure::getPathForElementWithValue($arrs, 'alias', '@asef');
+        $twoResult = $result;
+        $tester->assertSame($ExpectedResponse, $result);
     }
-
 }
