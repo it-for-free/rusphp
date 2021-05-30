@@ -109,9 +109,13 @@ class Structure
     {
         $result = [];
         $found = false;
+        if(isset($arr[$fieldName]) && $arr[$fieldName] === $fieldValue) {
+            return $result;
+        }
         foreach ($arr as $key => $value) {
             if (is_array($value)) {
                 if (isset($value[$fieldName]) && ($value[$fieldName] === $fieldValue)) {
+                    $found = true;
                     return [$key];
                 } else {
                     $recResult = self::getPathForElementWithValue($value, $fieldName, $fieldValue);
@@ -122,6 +126,8 @@ class Structure
                 }
             }
         }
-        return $result;
+        if ($found) {
+            return $result;
+        } else return false;
     }
 }
