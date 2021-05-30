@@ -146,7 +146,6 @@ class TestsGetPath extends \Codeception\Test\Unit {
         $object = new NumberOne();
         $arrs = $object->arrs;
         $result = ArrayStructure::getPathForElementWithValue($arrs, 'alias', '@asef');
-        $twoResult = $result;
         $tester->assertSame($ExpectedResponse, $result);
     }
     
@@ -160,7 +159,6 @@ class TestsGetPath extends \Codeception\Test\Unit {
         $object = new NumberTwo();
         $arrs = $object->arrs;
         $result = ArrayStructure::getPathForElementWithValue($arrs, 'alias', '@asef');
-        $twoResult = $result;
         $tester->assertSame($ExpectedResponse, $result);
     }
     
@@ -174,7 +172,6 @@ class TestsGetPath extends \Codeception\Test\Unit {
         $object = new NumberThree();
         $arrs = $object->arrs;
         $result = ArrayStructure::getPathForElementWithValue($arrs, 'alias', '@asef');
-        $twoResult = $result;
         $tester->assertSame($ExpectedResponse, $result); //сравнение ожидаемого значения и полученного
     }
     
@@ -188,7 +185,6 @@ class TestsGetPath extends \Codeception\Test\Unit {
         $object = new NumberFour();
         $arrs = $object->arrs;
         $result = ArrayStructure::getPathForElementWithValue($arrs, 'alias', '@asef');
-        $twoResult = $result;
         $tester->assertSame($ExpectedResponse, $result);
     }
     
@@ -202,7 +198,6 @@ class TestsGetPath extends \Codeception\Test\Unit {
         $object = new NumberFive();
         $arrs = $object->arrs;
         $result = ArrayStructure::getPathForElementWithValue($arrs, 'alias', '@asef');
-        $twoResult = $result;
         $tester->assertSame($ExpectedResponse, $result);
     }
 }
