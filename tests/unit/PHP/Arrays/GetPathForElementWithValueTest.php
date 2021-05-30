@@ -87,6 +87,8 @@ class TestData {
             ]
         ];
   
+   //данные для шестого теста
+  
   public static $arrSixTest = [
       
       'class' => 'userTeset',
@@ -155,6 +157,9 @@ class TestsGetPath extends \Codeception\Test\Unit {
         $tester->assertSame($ExpectedResponse, $result);
     }
     
+    /*
+     * Тест номер 6
+     */
     public function testGetForElementValueSix() {
         
         $ExpectedResponse = [];
