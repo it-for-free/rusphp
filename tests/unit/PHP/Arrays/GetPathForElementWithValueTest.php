@@ -9,7 +9,7 @@ class TestData {
     
   //данные для первого теста
     
-  public static $arrOneTest = [
+  public static $noHaveAlias = [
             'one' => 'name',
             'two' => 'lastname',
             'three' => [
@@ -24,7 +24,7 @@ class TestData {
           
   //данные для второго теста
   
-  public static $arrTwoTest = [
+  public static $similarKeysDesiredElementOnTheThirdLevel = [
             'abs' => [
                 'abc' => [
                     'abc' => [
@@ -36,7 +36,7 @@ class TestData {
   
   //данные для третьего теста
   
-  public static $arrThreeTest = [
+  public static $aLotOfNestingDesiredElementOnTheFifthLevel = [
             'qwe' => [
                 'gfd' => [
                     'dgsdg' => [
@@ -67,7 +67,7 @@ class TestData {
   
   //данные для четвертого теста
   
-  public static $arrFourTest = [
+  public static $desiredElementOnTheThirdLevel = [
             'neq' => 'kklg',
             'arr' => [
                 'gdsg' => [
@@ -78,7 +78,7 @@ class TestData {
   
   //данные для пятого теста
   
-  public static $arrFiveTest = [
+  public static $desiredElementOnTheSecondLevel = [
             'cvb' => 'bvb',
             'dgsdg' => [],
             'gdfbv' => 'bvcb',
@@ -89,7 +89,7 @@ class TestData {
   
    //данные для шестого теста
   
-  public static $arrSixTest = [
+  public static $desiredElementInRoot = [
       'class' => 'userTest',
       'key' => 'f02#e4wt',
       'alias' => '@asef',
@@ -102,68 +102,68 @@ class TestsGetPath extends \Codeception\Test\Unit {
 
 
     /*
-     * Тест номер 1
+     * Тест, где нет алиаса
      */
-    public function testGetPathForElementValueOne() {
+    public function testGetPathNoHaveAlias() {
         
         $ExpectedResponse = false;
         $tester = $this->tester;
-        $result = ArrayStructure::getPathForElementWithValue(TestData::$arrOneTest, 'alias', '@asef');
+        $result = ArrayStructure::getPathForElementWithValue(TestData::$noHaveAlias, 'alias', '@asef');
         $tester->assertSame($ExpectedResponse, $result);
     }
     
     /*
-     * Тест номер 2
+     * Тест с похожими ключами, искомый элемент на третьем уровне
      */
-    public function testGetForElementValueTwo() {
+    public function testGetForSimilarKeysDesiredElementOnTheThirdLevel() {
         
         $ExpectedResponse = ['abs', 'abc', 'abc'];
         $tester = $this->tester;
-        $result = ArrayStructure::getPathForElementWithValue(TestData::$arrTwoTest, 'alias', '@asef');
+        $result = ArrayStructure::getPathForElementWithValue(TestData::$similarKeysDesiredElementOnTheThirdLevel, 'alias', '@asef');
         $tester->assertSame($ExpectedResponse, $result);
     }
     
     /*
-     * Тест номер 3
+     * Тест с искомым элементом на пятом уровне
      */
-    public function testGetForElementValueThree() {
+    public function testGetForALotOfNestingDesiredElementOnTheFifthLevel() {
         
         $ExpectedResponse = ['tyu', 'mbor', 'gfg', 'gdhb'];
         $tester = $this->tester;
-        $result = ArrayStructure::getPathForElementWithValue(TestData::$arrThreeTest, 'alias', '@asef');
+        $result = ArrayStructure::getPathForElementWithValue(TestData::$aLotOfNestingDesiredElementOnTheFifthLevel, 'alias', '@asef');
         $tester->assertSame($ExpectedResponse, $result); //сравнение ожидаемого значения и полученного
     }
     
     /*
-     * Тест номер 4
+     * Тест с искомым элементом на третьем уровне
      */
-    public function testGetForElementValueFour() {
+    public function testGetDesiredElementOnTheThirdLevel() {
         
         $ExpectedResponse = ['arr', 'gdsg'];
         $tester = $this->tester;
-        $result = ArrayStructure::getPathForElementWithValue(TestData::$arrFourTest, 'alias', '@asef');
+        $result = ArrayStructure::getPathForElementWithValue(TestData::$desiredElementOnTheThirdLevel, 'alias', '@asef');
         $tester->assertSame($ExpectedResponse, $result);
     }
     
     /*
-     * Тест номер 5
+     * Тест с искомым элементом на втором уровне
      */
-    public function testGetForElementValueFive() {
+    public function testGetForDesiredElementOnTheSecondLevel() {
         
         $ExpectedResponse = ['fdg'];
         $tester = $this->tester;
-        $result = ArrayStructure::getPathForElementWithValue(TestData::$arrFiveTest, 'alias', '@asef');
+        $result = ArrayStructure::getPathForElementWithValue(TestData::$desiredElementOnTheSecondLevel, 'alias', '@asef');
         $tester->assertSame($ExpectedResponse, $result);
     }
     
     /*
-     * Тест номер 6
+     * Тест с искомым элементом на первом уровнеЫ
      */
-    public function testGetForElementValueSix() {
+    public function testGetForDesiredElementInRoot() {
         
         $ExpectedResponse = [];
         $tester = $this->tester;
-        $result = ArrayStructure::getPathForElementWithValue(TestData::$arrSixTest, 'alias', '@asef');
+        $result = ArrayStructure::getPathForElementWithValue(TestData::$desiredElementInRoot, 'alias', '@asef');
         $tester->assertSame($ExpectedResponse, $result);
     }
 }
