@@ -5,16 +5,11 @@ use ItForFree\rusphp\PHP\Object\Exception\CountException;
 use ItForFree\rusphp\PHP\Object\Exception\TypeException;
 use ItForFree\rusphp\PHP\Object\ObjectFactory;
 
-class NumberOne {
+class TestData {
     
-    public $arrs;
+  //данные для первого теста
     
-    /*
-     * Класс теста номер 1
-     */
-    public function __construct() {
-        
-        $this->arrs = [
+  public static $arrOneTest = [
             'one' => 'name',
             'two' => 'lastname',
             'three' => [
@@ -26,19 +21,10 @@ class NumberOne {
                 
             ],
         ];
-    }
-}
-
-/*
-* Класс теста номер 2
-*/
-class NumberTwo{
-    
-    public $arrs;
-    
-    public function __construct() {
-        
-        $this->arrs = [
+          
+  //данные для второго теста
+  
+  public static $arrTwoTest = [
             'abs' => [
                 'abc' => [
                     'abc' => [
@@ -47,20 +33,10 @@ class NumberTwo{
                 ]
             ]
         ];
-    }
-    
-}
-
-/*
-* Класс теста номер 3
-*/
-class NumberThree {
-    
-    public $arrs;
-    
-    public function __construct() {
-        
-        $this->arrs = [
+  
+  //данные для третьего теста
+  
+  public static $arrThreeTest = [
             'qwe' => [
                 'gfd' => [
                     'dgsdg' => [
@@ -88,19 +64,10 @@ class NumberThree {
                 ]
             ]
         ];
-    }
-}
-
-/*
-* Класс теста номер 4
-*/
-class NumberFour {
-    
-    public $arrs;
-    
-    public function __construct() {
-        
-        $this->arrs = [
+  
+  //данные для четвертого теста
+  
+  public static $arrFourTest = [
             'neq' => 'kklg',
             'arr' => [
                 'gdsg' => [
@@ -108,19 +75,10 @@ class NumberFour {
                 ]
             ]
         ];
-    }
-}
-
-/*
-* Класс теста номер 5
-*/
-class NumberFive {
-    
-    public $arrs;
-    
-    public function __construct() {
-        
-        $this->arrs = [
+  
+  //данные для пятого теста
+  
+  public static $arrFiveTest = [
             'cvb' => 'bvb',
             'dgsdg' => [],
             'gdfbv' => 'bvcb',
@@ -128,8 +86,7 @@ class NumberFive {
                 'alias' => '@asef'
             ]
         ];
-    }
-    
+  
 }
 
 
@@ -143,9 +100,7 @@ class TestsGetPath extends \Codeception\Test\Unit {
         
         $ExpectedResponse = [];
         $tester = $this->tester;
-        $object = new NumberOne();
-        $arrs = $object->arrs;
-        $result = ArrayStructure::getPathForElementWithValue($arrs, 'alias', '@asef');
+        $result = ArrayStructure::getPathForElementWithValue(TestData::$arrOneTest, 'alias', '@asef');
         $tester->assertSame($ExpectedResponse, $result);
     }
     
@@ -156,9 +111,7 @@ class TestsGetPath extends \Codeception\Test\Unit {
         
         $ExpectedResponse = ['abs', 'abc', 'abc'];
         $tester = $this->tester;
-        $object = new NumberTwo();
-        $arrs = $object->arrs;
-        $result = ArrayStructure::getPathForElementWithValue($arrs, 'alias', '@asef');
+        $result = ArrayStructure::getPathForElementWithValue(TestData::$arrTwoTest, 'alias', '@asef');
         $tester->assertSame($ExpectedResponse, $result);
     }
     
@@ -169,9 +122,7 @@ class TestsGetPath extends \Codeception\Test\Unit {
         
         $ExpectedResponse = ['tyu', 'mbor', 'gfg', 'gdhb'];
         $tester = $this->tester;
-        $object = new NumberThree();
-        $arrs = $object->arrs;
-        $result = ArrayStructure::getPathForElementWithValue($arrs, 'alias', '@asef');
+        $result = ArrayStructure::getPathForElementWithValue(TestData::$arrThreeTest, 'alias', '@asef');
         $tester->assertSame($ExpectedResponse, $result); //сравнение ожидаемого значения и полученного
     }
     
@@ -182,9 +133,7 @@ class TestsGetPath extends \Codeception\Test\Unit {
         
         $ExpectedResponse = ['arr', 'gdsg'];
         $tester = $this->tester;
-        $object = new NumberFour();
-        $arrs = $object->arrs;
-        $result = ArrayStructure::getPathForElementWithValue($arrs, 'alias', '@asef');
+        $result = ArrayStructure::getPathForElementWithValue(TestData::$arrFourTest, 'alias', '@asef');
         $tester->assertSame($ExpectedResponse, $result);
     }
     
@@ -195,9 +144,7 @@ class TestsGetPath extends \Codeception\Test\Unit {
         
         $ExpectedResponse = ['fdg'];
         $tester = $this->tester;
-        $object = new NumberFive();
-        $arrs = $object->arrs;
-        $result = ArrayStructure::getPathForElementWithValue($arrs, 'alias', '@asef');
+        $result = ArrayStructure::getPathForElementWithValue(TestData::$arrFiveTest, 'alias', '@asef');
         $tester->assertSame($ExpectedResponse, $result);
     }
 }
