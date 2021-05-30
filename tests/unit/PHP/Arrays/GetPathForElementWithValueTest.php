@@ -87,6 +87,13 @@ class TestData {
             ]
         ];
   
+  public static $arrSixTest = [
+      
+      'class' => 'userTeset',
+      'newData' => 'f02f#wr',
+      'alias' => '@asef',
+  ];
+  
 }
 
 
@@ -98,7 +105,7 @@ class TestsGetPath extends \Codeception\Test\Unit {
      */
     public function testGetPathForElementValueOne() {
         
-        $ExpectedResponse = [];
+        $ExpectedResponse = false;
         $tester = $this->tester;
         $result = ArrayStructure::getPathForElementWithValue(TestData::$arrOneTest, 'alias', '@asef');
         $tester->assertSame($ExpectedResponse, $result);
@@ -145,6 +152,14 @@ class TestsGetPath extends \Codeception\Test\Unit {
         $ExpectedResponse = ['fdg'];
         $tester = $this->tester;
         $result = ArrayStructure::getPathForElementWithValue(TestData::$arrFiveTest, 'alias', '@asef');
+        $tester->assertSame($ExpectedResponse, $result);
+    }
+    
+    public function testGetForElementValueSix() {
+        
+        $ExpectedResponse = [];
+        $tester = $this->tester;
+        $result = ArrayStructure::getPathForElementWithValue(TestData::$arrSixTest, 'alias', '@asef');
         $tester->assertSame($ExpectedResponse, $result);
     }
 }
