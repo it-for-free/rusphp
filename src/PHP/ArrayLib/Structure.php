@@ -96,22 +96,26 @@ class Structure
     }
 
     /**
-     *
-     * @param array $arr
-     * @param string $fieldName
-     * @param string $value
-     * @return array Находит массив ключей пути до элемента, начиная с корня исходого массива
-     * Функция основана на рекурсии: если текущий элемент в цикле является массивом, то функция вызывается рекурсивно,
-     *  перед этим проверяется переданный для поиска ключ и значение. Если текущий элемент в цикле содержит переданный для поиска ключ и значение,
-     *  то она возвращает ключ текущего элемента массива, таким образом формируется весь путь к псевдониму.
+     * Выполняет поиск пути от корня массива до элемента, содержащего указанноге значение по указанному ключу.
+     * Результат вернет в виде массива.
+     * 
+     * @param array $arr          исходный массив
+     * @param string $fieldName   ключ, значение по которому ищем
+     * @param string $value       значение, которе ищем
+     * @return array              список ключей, образующих путь от корня массива, до найденного элемента
      */
     public static function getPathForElementWithValue($arr, $fieldName, $fieldValue)
     {
         $result = [];
         $found = false;
+
+        if(isset($arr[$fieldName]) && $arr[$fieldName] === $fieldValue) {
+            return $result;
+        }
         foreach ($arr as $key => $value) {
             if (is_array($value)) {
                 if (isset($value[$fieldName]) && ($value[$fieldName] === $fieldValue)) {
+                    $found = true;
                     return [$key];
                 } else {
                     $recResult = self::getPathForElementWithValue($value, $fieldName, $fieldValue);
@@ -122,6 +126,8 @@ class Structure
                 }
             }
         }
-        return $result;
+        if ($found) {
+            return $result;
+        } else return false;
     }
 }
