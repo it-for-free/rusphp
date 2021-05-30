@@ -90,9 +90,8 @@ class TestData {
    //данные для шестого теста
   
   public static $arrSixTest = [
-      
-      'class' => 'userTeset',
-      'newData' => 'f02f#wr',
+      'class' => 'userTest',
+      'key' => 'f02#e4wt',
       'alias' => '@asef',
   ];
   

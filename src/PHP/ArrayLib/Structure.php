@@ -108,8 +108,10 @@ class Structure
     {
         $result = [];
         $found = false;
-        if (isset($arr[$fieldName]) && $arr[$fieldName] === $fieldValue) {
-            return $result; }
+
+        if(isset($arr[$fieldName]) && $arr[$fieldName] === $fieldValue) {
+            return $result;
+        }
         foreach ($arr as $key => $value) {
             if (is_array($value)) {
                 if (isset($value[$fieldName]) && ($value[$fieldName] === $fieldValue)) {
@@ -124,7 +126,7 @@ class Structure
                 }
             }
         }
-        if ($found){
+        if ($found) {
             return $result;
         } else return false;
     }

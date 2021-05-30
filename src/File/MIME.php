@@ -25,7 +25,8 @@ class MIME
     /**
      * Все mime типы для данных расшерений (или расшерения)
      * 
-     * @param string|array $fileExtensions  расширения (или одно), для которых нужно получить список mime-типов
+     * @param string|array $fileExtensions  расширения (или одно),
+     *  для которых нужно получить список mime-типов
      * @return array of string
      */
     public static function getAllbyExtentions($fileExtensions)
