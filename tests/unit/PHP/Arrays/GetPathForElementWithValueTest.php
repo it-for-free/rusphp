@@ -157,7 +157,7 @@ class TestsGetPath extends \Codeception\Test\Unit {
     }
     
     /*
-     * Тест с искомым элементом на первом уровнеЫ
+     * Тест с искомым элементом на первом уровне
      */
     public function testGetForDesiredElementInRoot() {
         
