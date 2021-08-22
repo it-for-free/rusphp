@@ -42,6 +42,16 @@ class ObjectTestByClass {
     }
 }
 
+class MixedParameterInTheConstructor
+{
+    public $constructParam;
+    
+    public function __construct(mixed $variable)
+    {
+        $this->constructParam = $variable;
+    }
+}
+
 
 class CreateObjectByConstructWithoutTypeHintingTest extends \Codeception\Test\Unit
 {
@@ -58,7 +68,7 @@ class CreateObjectByConstructWithoutTypeHintingTest extends \Codeception\Test\Un
     }
     
     
-    
+//    
     public function testCreateObjectByConstructWithoutTest()
     {
         $tester = $this->tester;
@@ -74,5 +84,26 @@ class CreateObjectByConstructWithoutTypeHintingTest extends \Codeception\Test\Un
         $tester->assertSame($obj->constructParam, 77);
         $tester->assertSame($secondObject->oneProperty, "line of link");
         $tester->assertSame($secondObject->twoProperty, 2);
+    }
+    
+    public function testCreateObjectWithMixedType()
+    {
+        $tester = $this->tester;
+        
+        $objectInt = ObjectFactory::createObjectByConstruct(MixedParameterInTheConstructor::class, [
+            'variable' => 5
+        ]);
+        
+        $objectString = ObjectFactory::createObjectByConstruct(MixedParameterInTheConstructor::class, [
+            'variable' => 'line'
+        ]);
+        
+        $objectArray = ObjectFactory::createObjectByConstruct(MixedParameterInTheConstructor::class, [
+            'variable' => [5]
+        ]);
+        
+        $tester->assertSame($objectInt->constructParam, 5);
+        $tester->assertSame($objectString->constructParam, 'line');
+        $tester->assertSame($objectArray->constructParam, [5]);
     }
 }

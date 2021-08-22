@@ -170,7 +170,7 @@ class ObjectFactory {
         $sortedTypes = self::getSortedTypes($sorted);
          foreach (self::$constructorData as $paramName => $paramType) {
                  if (array_key_exists($paramName, $sortedTypes)) {
-                     if (!is_null($paramType) && $paramType !== $sortedTypes[$paramName]) {
+                     if (!is_null($paramType) && $paramType !== 'mixed' && $paramType !== $sortedTypes[$paramName]) {
                         throw new TypeException();
                      }                   
                  }
