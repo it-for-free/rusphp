@@ -98,7 +98,7 @@ class ObjectFactory {
 
     /**
      * Извлекает данные из конструктора и устанавливает тип параметров конструктора по type hinting.
-     * Если type hinting не указан, то он обозначается null,
+     * Если type hinting не указан, то он считается, что тип равен null,
      * который будет позволяет получать на вход любой тип данных
      */ 
      private static function extractConstructor()
