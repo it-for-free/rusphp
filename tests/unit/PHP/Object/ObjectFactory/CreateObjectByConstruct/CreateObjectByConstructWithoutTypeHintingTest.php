@@ -1,5 +1,10 @@
 <?php
 
+use ItForFree\rusphp\PHP\Object\Exception\CountException;
+use ItForFree\rusphp\PHP\Object\Exception\TypeException;
+use ItForFree\rusphp\PHP\Object\ObjectFactory;
+
+require __DIR__ . '/includes/constructonClassForCrObByConstTest.php';
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -14,10 +19,12 @@
 class ObjectForProperty {
     
     public $jump;
+    public $constructParam;
     
-    public function __construct() {
+    public function __construct($constructParam) {
         
         $this->jump = 'I am jumping';
+        $this->constructParam = $constructParam;
     }
 }
 
@@ -27,7 +34,7 @@ class ObjectTestByClass {
     public $twoProperty;
     public $threeProperty;
     
-    public function __construct(ObjectForProperty $oneProperty, $twoProperty = 2, $threeProperty = 3)
+    public function __construct(string $oneProperty, int $twoProperty = 2, array $threeProperty = [])
     {
         $this->oneProperty = $oneProperty;
         $this->twoProperty = $twoProperty;
@@ -36,7 +43,8 @@ class ObjectTestByClass {
 }
 
 
-class CreateObjectByConstructWithoutTypeHintingTest {
+class CreateObjectByConstructWithoutTypeHintingTest extends \Codeception\Test\Unit
+{
     //put your code here
     
     protected $tester;
@@ -55,14 +63,14 @@ class CreateObjectByConstructWithoutTypeHintingTest {
     {
         $tester = $this->tester;
          
-        $obj = ObjectFactory::createObjectByConstruct(ObjectTestByConstruct::class, [
-            'oneProperty' => new ObjectForProperty,
-            'twoProperty' => 50,
-            'threeProperty' => 'a boat'
+        $obj = ObjectFactory::createObjectByConstruct(ObjectForProperty::class, [
+            'constructParam' => 77
         ]);
+//        $secondObject = ObjectFactory::createObjectByConstruct(ObjectTestByClass::class, [
+//            'oneProperty' => 'line of link'
+//        ]);
 
-        $tester->assertSame($obj->oneProperty instanceof ObjectForProperty, true);
-        $tester->assertSame(gettype($obj->twoProperty), 'integer');
-        $tester->assertSame(gettype($obj->threeProperty), 'string');
+        $tester->assertSame($obj->jump, "I am jumping");
+        $tester->assertSame($obj->constructParam, 77);
     }
 }

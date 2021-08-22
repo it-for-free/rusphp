@@ -97,14 +97,16 @@ class ObjectFactory {
     }
 
     /**
-     * Извлекает данные из конструктора
-     */
-    private static function extractConstructor()
+     * Извлекает данные из конструктора и устанавливает тип параметров конструктора по type hinting.
+     * Если type hinting не указан, то обозначает параметр специальным символом,
+     * который позволяет получать на вход любой тип данных
+     */ 
+     private static function extractConstructor()
     {
        $params = self::$constructorParams = self::$classConstruct->getParameters();
        self::$constructorData = [];
        foreach (self::$constructorParams as $param) {
-           $constructParamType = $param->getType()->getName();
+           $constructParamType = ($param->getType() ? $param->getType()->getName() : null) ? $param->getType()->getName() : '*';
            $constructorPropertyName = $param->getName();
            self::$constructorData[$constructorPropertyName] = $constructParamType;
            if ($param->isDefaultValueAvailable() === true) { //->isOptional() не всегда работает
@@ -168,9 +170,11 @@ class ObjectFactory {
         $sortedTypes = self::getSortedTypes($sorted);
          foreach (self::$constructorData as $paramName => $paramType) {
                  if (array_key_exists($paramName, $sortedTypes)) {
-                     if ($paramType !== $sortedTypes[$paramName]) { 
-                         throw new TypeException();
-                     }
+                     if ($paramType !== '*') {
+                         if ($paramType !== $sortedTypes[$paramName]) { 
+                            throw new TypeException();
+                        }
+                     }                   
                  }
          }
     }
