@@ -66,11 +66,13 @@ class CreateObjectByConstructWithoutTypeHintingTest extends \Codeception\Test\Un
         $obj = ObjectFactory::createObjectByConstruct(ObjectForProperty::class, [
             'constructParam' => 77
         ]);
-//        $secondObject = ObjectFactory::createObjectByConstruct(ObjectTestByClass::class, [
-//            'oneProperty' => 'line of link'
-//        ]);
+        $secondObject = ObjectFactory::createObjectByConstruct(ObjectTestByClass::class, [
+            'oneProperty' => 'line of link'
+        ]);
 
         $tester->assertSame($obj->jump, "I am jumping");
         $tester->assertSame($obj->constructParam, 77);
+        $tester->assertSame($secondObject->oneProperty, "line of link");
+        $tester->assertSame($secondObject->twoProperty, 2);
     }
 }
